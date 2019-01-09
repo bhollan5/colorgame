@@ -1,3 +1,5 @@
+require "scripts/piet"
+
 world = {}
 
 -- table for love.physics objects
@@ -10,6 +12,9 @@ world.gravity = {
 
 function world:load()
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
+    world.spr = love.graphics.newImage("/assets/blue.png")
+    self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
+
 
     -- platform
     world:newArenaStructure(1, 2, 1, 1)
@@ -29,6 +34,11 @@ function world:newArenaStructure(x, y, w, h)
     structure.body = love.physics.newBody(self.world, xPos, yPos)
     structure.shape = love.physics.newRectangleShape(width, height)
     structure.fixture = love.physics.newFixture(structure.body, structure.shape)
+    structure.x = xPos
+    structure.y = yPos
+    structure.w = width
+    structure.h = height
+    structure.fixture:setUserData("solid")
 
     table.insert(self.arena, structure)
 end
@@ -37,20 +47,61 @@ function world:update(dt)
     self.world:update(dt)
 end
 
--- function world:draw()
---     for i in ipairs(self.arena) do
---         love.graphics.polygon("fill", self.arena[i].body:getWorldPoints(self.arena[i].shape:getPoints()))
---         local xStart = self.blocks[i].x - (self.blocks[i].w / 2)
---         local yStart = self.blocks[i].y - (self.blocks[i].h / 2)
---         love.graphics.draw(self.spr, xStart, yStart, 0, 1, 1)
---     end
--- end
-
 function world:draw()
-    for _, body in pairs(self.world:getBodies()) do
-        for _, fixture in pairs(body:getFixtures()) do
-            local shape = fixture:getShape()
-            love.graphics.polygon("fill", body:getWorldPoints(shape:getPoints()))
+    -- Tiling solid blocks: 
+    for i in ipairs(self.arena) do
+        -- *Start calculates the top right corner of the box
+        local xStart = self.arena[i].x - (self.arena[i].w / 2)
+        local yStart = self.arena[i].y - (self.arena[i].h / 2)
+
+        -- These will be used to iterate through the width and height in increments of 32
+        local widthRemaining = self.arena[i].w
+
+        -- We'll subtract 32 from widthRemaining until it's 0
+        while widthRemaining > 0 do
+            local xVal = xStart + self.arena[i].w - widthRemaining
+            local heightRemaining = self.arena[i].h
+
+            while heightRemaining > 0 do
+                local yVal = yStart + self.arena[i].h - heightRemaining
+                love.graphics.draw(self.spr, xVal, yVal, 0, 1, 1)
+                heightRemaining = heightRemaining - 32
+            end
+
+            widthRemaining = widthRemaining - 32
+        end
+
+        love.graphics.draw(self.spr, xStart, yStart, 0, 1, 1)
+    end
+end
+
+-- contact behavior
+function beginContact(a, b, coll)
+
+    -- X and Y give a UNIT VECTOR from the first shape to the second
+    -- So if a is cake and b is a block below Cake at normal orientation,
+    -- X and Y will be (0, -1)
+    x, y = coll:getNormal() 
+    local aType = a:getUserData()
+    local bType = b:getUserData()
+    -- text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..    
+    if (aType == "solid" and bType == "piet") then
+        if (x == 0 and y == -1) then
+            piet.isGrounded = true
+            piet.hasDouble = true
         end
     end
+    
+end
+
+function endContact(a, b, coll)
+ 
+end
+ 
+function preSolve(a, b, coll)
+ 
+end
+ 
+function postSolve(a, b, coll, normalimpulse, tangentimpulse)
+ 
 end
