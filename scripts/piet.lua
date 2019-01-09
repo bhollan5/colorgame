@@ -7,6 +7,7 @@ piet.xVel = 0
 
 piet.isGrounded = true
 piet.hasDouble = true
+piet.upKeyBuffer = true
 
 piet.spd = 200
 
@@ -27,23 +28,22 @@ function piet:update(dt)
         self.body:setLinearVelocity(self.spd, self.yVel)
     end
 
-    if love.keyboard.isDown("up") and (self.isGrounded or self.hasDouble) then 
-        print(self.xVel)
-        if self.xVel > 0 then 
-            self.body:applyLinearImpulse(0, -2000)
-            self.body:applyTorque(1000)
-        elseif self.xVel < 0 then 
-            print("Negative xVel")
-            self.body:applyLinearImpulse(0, -2000)
-            self.body:applyTorque(1000)
+    if love.keyboard.isDown("up") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
 
-        end
-        -- self.body:applyLinearImpulse(0, -200, 1, 0)
+        -- self.body:applyLinearImpulse(0, -2000)
+
+        self.body:applyLinearImpulse(0, -200, 32, 0)
+
         if (self.isGrounded) then
             self.isGrounded = false
+            self.upKeyBuffer = false
+
         else
             self.hasDouble = false 
         end
+    end
+    if not love.keyboard.isDown("up") then
+        self.upKeyBuffer = true
     end
 end
 

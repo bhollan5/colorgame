@@ -12,7 +12,7 @@ world.gravity = {
 
 function world:load()
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
-    world.spr = love.graphics.newImage("/assets/blue.png")
+    self.spr = love.graphics.newImage("/assets/blue.png")
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
 
@@ -20,7 +20,7 @@ function world:load()
     world:newArenaStructure(1, 2, 1, 1)
     world:newArenaStructure(2, 3, 2, 1)
     world:newArenaStructure(4, 15, 1, 1)
-    world:newArenaStructure(4, 16, 10, 1)
+    world:newArenaStructure(0, 16, 32, 1)
 end
 
 function world:newArenaStructure(x, y, w, h)
@@ -79,7 +79,7 @@ end
 function beginContact(a, b, coll)
 
     -- X and Y give a UNIT VECTOR from the first shape to the second
-    -- So if a is cake and b is a block below Cake at normal orientation,
+    -- So if a is piet and b is a block below Cake at normal orientation,
     -- X and Y will be (0, -1)
     x, y = coll:getNormal() 
     local aType = a:getUserData()
@@ -88,13 +88,13 @@ function beginContact(a, b, coll)
     if (aType == "solid" and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
-            piet.hasDouble = true
         end
     end
     
 end
 
 function endContact(a, b, coll)
+
  
 end
  
