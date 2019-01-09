@@ -14,6 +14,7 @@ function world:load()
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.spr = love.graphics.newImage("/assets/blue.png")
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
+    
 
 
     -- platform
@@ -34,6 +35,7 @@ function world:newArenaStructure(x, y, w, h)
     structure.body = love.physics.newBody(self.world, xPos, yPos)
     structure.shape = love.physics.newRectangleShape(width, height)
     structure.fixture = love.physics.newFixture(structure.body, structure.shape)
+    structure.fixture:setFriction(1)
     structure.x = xPos
     structure.y = yPos
     structure.w = width
