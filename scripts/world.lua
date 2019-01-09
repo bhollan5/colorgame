@@ -88,6 +88,7 @@ function beginContact(a, b, coll)
     if (aType == "solid" and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
+            piet.hasDouble = true
         end
     end
     
