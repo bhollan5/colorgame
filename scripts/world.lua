@@ -46,10 +46,15 @@ function world:newArenaStructure(x, y, w, h)
 end
 
 function world:update(dt)
-    self.world:update(dt)
+    self.world:update(dt);
+    
 end
 
 function world:draw()
+    local w = love.graphics.getWidth( )
+    local h = love.graphics.getHeight()
+    love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
+
     -- Tiling solid blocks: 
     for i in ipairs(self.arena) do
         -- *Start calculates the top right corner of the box
