@@ -30,14 +30,14 @@ function piet:update(dt)
 
     if love.keyboard.isDown("up") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
 
-        -- self.body:applyLinearImpulse(0, -2000)
+        self.body:applyLinearImpulse(0, -2000)
 
-        self.body:applyLinearImpulse(0, -200, 32, 0)
+        --self.body:applyLinearImpulse(0, -200, 32, 0)
 
         if (self.isGrounded) then
             self.isGrounded = false
             self.upKeyBuffer = false
-
+            
         else
             self.hasDouble = false 
         end
