@@ -24,6 +24,7 @@ end
 
 function piet:update(dt)
     self.xVel, self.yVel = self.body:getLinearVelocity()
+    self.x, self.y = self.body:getPosition( )
     if love.keyboard.isDown("left") then
         self.body:setLinearVelocity(-self.spd, self.yVel)
     elseif love.keyboard.isDown("right") then
