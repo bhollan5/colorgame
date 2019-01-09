@@ -51,7 +51,7 @@ function world:update(dt)
 end
 
 function world:draw()
-    local w = love.graphics.getWidth( )
+    local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
     love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
 

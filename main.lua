@@ -1,5 +1,5 @@
-require "scripts/world"
-require "scripts/piet"
+require "scripts.world"
+require "scripts.piet"
 
 function love.load() -- Runs at the start of our program
 

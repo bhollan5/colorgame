@@ -13,6 +13,17 @@ piet.spd = 300
 piet.jumpHeight = -3000
 
 function piet:load()
+    local img = love.graphics.newImage("/assets/red.png")
+
+    psystem = love.graphics.newParticleSystem(img, 10)
+    psystem:setParticleLifetime(2, 5)
+    psystem:setEmissionRate(5)
+    psystem:setSizeVariation(1)
+    psystem:setLinearAcceleration(-20, -20, 20, 0)
+    psystem:setSpeed(5, 10)
+    psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
+    psystem:moveTo(self.x, self.y)
+
     self.body = love.physics.newBody(world.world, self.x * 32, self.y * 32, "dynamic", 0, 100)
     self.body:setLinearDamping(.5);
 
@@ -23,6 +34,8 @@ function piet:load()
 end
 
 function piet:update(dt)
+    psystem:update(dt)
+
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition( )
     if love.keyboard.isDown("left") then
@@ -55,5 +68,6 @@ function piet:update(dt)
 end
 
 function piet:draw()
+    love.graphics.draw(psystem, self.x, self.y)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 end
