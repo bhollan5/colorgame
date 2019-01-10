@@ -69,8 +69,9 @@ function piet:update(dt)
 end
 
 function piet:draw()
-    love.graphics.setColor(0,0,0, 1)
+    
     love.graphics.draw(psystem, self.x, self.y)
+    love.graphics.setColor(0,0,0, 1)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
 end

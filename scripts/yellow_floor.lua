@@ -3,7 +3,7 @@ yellow = {}
 yellow.blocks = {}
 
 function yellow:load()
-    
+    yellowTile = love.graphics.newImage("/assets/yellow.png")
 end
 
 function yellow:newBlock(x, y, w, h)

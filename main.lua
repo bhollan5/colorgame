@@ -4,8 +4,7 @@ require "scripts.piet"
 function love.load() -- Runs at the start of our program
 
     love.graphics.setDefaultFilter("nearest") -- Graphic settings
-    love.graphics.setBackgroundColor(255,255,255)
-
+    love.graphics.setBackgroundColor(240, 240, 240)
     -- Calling the loading functions in each of these files
     world:load()
     piet:load()
