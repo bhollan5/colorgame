@@ -19,8 +19,8 @@ function world:load()
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
-    blue:newBlock(2, 3, 2, 1)
-    black:newBlock(0, 16, 32, 1)
+    blue:newBlock(8, 16, 8, 1)
+    black:newBlock(0, 16, 8, 1)
     red:newBlock(10, 6, 4, 1)
     yellow:newBlock(6, 8, 8, 1)
     
@@ -64,7 +64,7 @@ function beginContact(a, b, coll)
     local aType = a:getUserData()
     local bType = b:getUserData()
     -- text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..    
-    if (aType == "black" and bType == "piet") then
+    if ((aType == "black" or aType == "blue") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true

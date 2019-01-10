@@ -3,7 +3,7 @@ blue = {}
 blue.blocks = {}
 
 function blue:load()
-    
+
 end
 
 function blue:newBlock(x, y, w, h)
@@ -24,6 +24,7 @@ function blue:newBlock(x, y, w, h)
     blueStructure.w = width
     blueStructure.h = height
     blueStructure.fixture:setUserData("blue")
+    blueStructure.fixture:setRestitution(0.9)
 
     table.insert(self.blocks, blueStructure)
 end

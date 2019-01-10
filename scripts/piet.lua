@@ -32,6 +32,7 @@ function piet:load()
     self.fixture = love.physics.newFixture(self.body, self.shape, 5)
     self.fixture:setFriction(0.75)
     self.fixture:setUserData("piet")
+    --self.fixture:setRestitution(0.9)
 end
 
 function piet:update(dt)
