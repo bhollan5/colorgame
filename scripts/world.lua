@@ -1,4 +1,5 @@
 require "scripts/piet"
+require "scripts/yellow_floor"
 
 world = {}
 
@@ -22,16 +23,19 @@ function world:load()
     psystem2:setSpeed(5, 10)
     psystem2:setColors(255, 255, 255, 255, 255, 255, 255, 0)
 
+    
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
+
+    yellow:newBlock(2, 3, 2, 1)
     
 
 
     -- platform
-    blueFloor = world:newArenaStructure(1, 2, 1, 1)
-    world:newArenaStructure(2, 3, 2, 1)
-    world:newArenaStructure(4, 15, 1, 1)
-    world:newArenaStructure(0, 16, 32, 1)
+    -- blueFloor = world:newArenaStructure(1, 2, 1, 1)
+    -- world:newArenaStructure(2, 3, 2, 1)
+    -- world:newArenaStructure(4, 15, 1, 1)
+    -- world:newArenaStructure(0, 16, 32, 1)
 end
 
 function world:newArenaStructure(x, y, w, h)
@@ -67,7 +71,6 @@ function world:newArenaStructure(x, y, w, h)
 
     table.insert(self.arena, blueFloor)
     table.insert(self.arena, yellowFloor)
-    table.sort(self.arena, yellowFloor, blueFloor)
 end
 
 function world:update(dt)
@@ -77,6 +80,8 @@ function world:update(dt)
 end
 
 function world:draw()
+    yellow:draw()
+
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
     --love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
@@ -97,7 +102,7 @@ function world:draw()
 
             while heightRemaining > 0 do
                 local yVal = yStart + self.arena[i].h - heightRemaining
-                love.graphics.draw(yellowTile, xVal, yVal, 0, 1, 1)
+                love.graphics.setColor(83,100,229, 1)
                 love.graphics.draw(blueTile, xVal, yVal, 0, 1, 1)
                 heightRemaining = heightRemaining - 32
             end
