@@ -11,6 +11,7 @@ world.gravity = {
 }
 
 function world:load()
+    
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.spr = love.graphics.newImage("/assets/blue.png")
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
@@ -71,6 +72,7 @@ function world:draw()
 
             while heightRemaining > 0 do
                 local yVal = yStart + self.arena[i].h - heightRemaining
+                love.graphics.setColor(83,100,229, 1)
                 love.graphics.draw(self.spr, xVal, yVal, 0, 1, 1)
                 heightRemaining = heightRemaining - 32
             end

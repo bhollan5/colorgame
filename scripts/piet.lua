@@ -15,6 +15,7 @@ piet.jumpHeight = -3000
 function piet:load()
     local img = love.graphics.newImage("/assets/red.png")
 
+    
     psystem = love.graphics.newParticleSystem(img, 10)
     psystem:setParticleLifetime(2, 5) --used to denote time on screen from minimum time alive to maximum
     psystem:setEmissionRate(5) --speed at which particles get produced
@@ -68,6 +69,7 @@ function piet:update(dt)
 end
 
 function piet:draw()
+    love.graphics.setColor(0,0,0, 1)
     love.graphics.draw(psystem, self.x, self.y)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 end
