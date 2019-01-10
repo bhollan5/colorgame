@@ -73,6 +73,4 @@ function piet:draw()
     love.graphics.draw(psystem, self.x, self.y)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
-    print("PIET:")
-    print(self.body:getWorldPoints(self.shape:getPoints()))
 end

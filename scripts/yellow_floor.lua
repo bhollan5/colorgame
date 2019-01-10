@@ -36,7 +36,5 @@ function yellow:draw()
         love.graphics.setColor(r, g, b, 1)
         love.graphics.polygon("fill", self.blocks[i].body:getWorldPoints(self.blocks[i].shape:getPoints()))
 
-        print("YELLOW:")
-        print(self.blocks[i].body:getWorldPoints(self.blocks[i].shape:getPoints()))
     end
 end 
