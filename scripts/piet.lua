@@ -68,6 +68,6 @@ function piet:update(dt)
 end
 
 function piet:draw()
-    love.graphics.draw(psystem, self.x, self.y)
+    --love.graphics.draw(psystem, self.x, self.y)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 end
