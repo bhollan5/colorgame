@@ -1,15 +1,31 @@
 title = {}
 
 title.selection = "start"
+title.keyBuffer = true
 
 function title:load(dt) 
     self.logo = love.graphics.newImage( 'assets/title/logo.png' ) -- Dimensions: 640x250px
+    love.graphics.setFont(titleFont) -- This *is* the title screen, after all
+
 end
 
 function title:update(dt)
-    love.graphics.setFont(titleFont) -- This *is* the title screen, after all
-    
-
+    -- Selecting with keyboard
+    if (love.keyboard.isDown("up") or love.keyboard.isDown("down")) and title.keyBuffer then
+        if title.selection == 'start' then
+            title.selection = 'levels'
+        else 
+            title.selection = 'start'
+        end
+        title.keyBuffer = false
+    elseif not love.keyboard.isDown("up") and not love.keyboard.isDown("down") then
+        title.keyBuffer = true
+    end
+    if love.keyboard.isDown("return") then 
+        if title.selection == 'start' then
+            gamestate = 'lvl1' 
+        end
+    end
 end
 
 function title:draw() 
