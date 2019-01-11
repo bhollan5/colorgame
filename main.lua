@@ -1,27 +1,73 @@
 require "scripts.world"
 require "scripts.piet"
 
+require "scripts.globalFunctions"
+
+require "scripts/GUIs/title"
+
+local show_message = false
+gamestate = 'title' -- Keeps track of what context we're in!
+                    -- Gamestate options:
+                        -- 'title'
+                        -- 'lvl1'
+
 function love.load() -- Runs at the start of our program
+
+    -- ###################################
+    -- ##       GLOBAL VARIABLES:       ##
+    -- ###################################
+
+    -- Fonts:
+
+    titleFontSize = 48
+    titleFont = love.graphics.newFont("assets/fonts/Square.ttf", titleFontSize)
+    dialogueFont = love.graphics.newFont("assets/fonts/Square.ttf", 16)
+
+    -- Colors:
+
+    blueRGB = { 83 / 255, 100 / 255, 229 / 255 }
+    redRGB = { 203 / 255, 52 / 255, 52 / 255 }
+    yellowRGB = { 229 / 255, 222 / 255, 83 / 255 }
+
+
+    -- ###################################
+    -- ##        GLOBAL SETTINGS:       ##
+    -- ###################################
 
     love.graphics.setDefaultFilter("nearest") -- Graphic settings
     love.graphics.setBackgroundColor(240, 240, 240)
 
-    -- Calling the loading functions in each of these files
+
+    -- ###################################
+    -- ##          LOAD FUNCS:          ##
+    -- ###################################
     world:load()
     piet:load()
+
+    title:load()
 end
 
 function love.update(dt)
     -- Calling the update functions in both of these files
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
-    world:update(dt)
-    piet:update(dt)
+    if (gamestate == 'lvl1') then
+        world:update(dt)
+        piet:update(dt)
+    elseif(gamestate == 'title') then
+        title:update(dt)
+    end
 end
 
 function love.draw()
-    -- Calling the draw functions in both of these files
-    world:draw()
-    piet:draw()
+    if gamestate == 'title' then
+        title:draw()
+    elseif gamestate == 'lvl1' then
+        -- Calling the draw functions in both of these files
+        world:draw()
+        piet:draw()
+    end
+
+  
 end
 
 function love.keypressed(key)
