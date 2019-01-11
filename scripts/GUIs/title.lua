@@ -5,7 +5,6 @@ title.keyBuffer = true
 
 function title:load(dt) 
     self.logo = love.graphics.newImage( 'assets/title/logo.png' ) -- Dimensions: 640x250px
-    love.graphics.setFont(titleFont) -- This *is* the title screen, after all
 
 end
 
@@ -45,6 +44,8 @@ function title:draw()
     -- MENU OPTIONS: 
     --
 
+    love.graphics.setFont(titleFont) -- This *is* the title screen, after all
+
     local startYPos = 350
     love.graphics.setColor(0,0,0, 1)
     love.graphics.print("Start", midX - ((titleFontSize / 4) * 5), startYPos) 
@@ -73,5 +74,14 @@ function title:draw()
         drawColor(selectColors[i])
         love.graphics.rectangle( 'fill', selectXPos, selectYPos, 16, 16 )
     end
+
+    --
+    -- CONTROL DESCRIPTIONS:
+    --
+    
+    love.graphics.setFont(dialogueFont)
+
+    love.graphics.setColor(0,0,0, 1)
+    love.graphics.print("(use arrow keys & enter to select)", midX - ((dialogueFontSize / 4) * 34), 500) 
 
 end

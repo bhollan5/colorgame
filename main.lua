@@ -21,7 +21,8 @@ function love.load() -- Runs at the start of our program
 
     titleFontSize = 48
     titleFont = love.graphics.newFont("assets/fonts/Square.ttf", titleFontSize)
-    dialogueFont = love.graphics.newFont("assets/fonts/Square.ttf", 16)
+    dialogueFontSize = 16
+    dialogueFont = love.graphics.newFont("assets/fonts/Square.ttf", dialogueFontSize)
 
     -- Colors:
 
