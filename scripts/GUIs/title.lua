@@ -43,6 +43,7 @@ function title:draw()
     -- OPTION SELECT INDICATOR:
     --
     local selectPositions = {-200, -168, -136, 136, 168, 200} -- Lets us loop through the square positions
+    local selectColors = {'blue', 'yellow', 'red', 'red', 'yellow', 'blue'}
 
     for i in ipairs(selectPositions) do 
         local selectYPos = 0
@@ -53,7 +54,7 @@ function title:draw()
         end
         local selectXPos = midX - selectPositions[i]
 
-        drawRed()
+        drawColor(selectColors[i])
         love.graphics.rectangle( 'fill', selectXPos, selectYPos, 16, 16 )
     end
 
