@@ -7,11 +7,11 @@ function red:load()
 end
 
 function red:newBlock(x, y, w, h)
-    width = w * 32
-    height = h * 32
+    width = w * 16
+    height = h * 16
 
-    xPos = (x * 32) + (width / 2)
-    yPos = (y * 32) - (height / 2)
+    xPos = (x * 16) + (width / 2)
+    yPos = (y * 16) - (height / 2)
 
     local redStructure = {} -- defining a new structure, which we'll later be able to pass into our table
     redStructure.body = love.physics.newBody(world.world, xPos, yPos)

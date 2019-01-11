@@ -5,6 +5,7 @@ function love.load() -- Runs at the start of our program
 
     love.graphics.setDefaultFilter("nearest") -- Graphic settings
     love.graphics.setBackgroundColor(240, 240, 240)
+
     -- Calling the loading functions in each of these files
     world:load()
     piet:load()
@@ -26,5 +27,8 @@ end
 function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
+    end
+    if key == "f" then
+        love.window.setFullscreen(true)
     end
 end

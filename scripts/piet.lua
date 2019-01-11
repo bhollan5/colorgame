@@ -8,9 +8,10 @@ piet.xVel = 0
 piet.isGrounded = true
 piet.hasDouble = true
 piet.upKeyBuffer = true
+piet.hasStick = false
 
-piet.spd = 300
-piet.jumpHeight = -3000
+piet.spd = 150
+piet.jumpHeight = -500
 
 function piet:load()
     local img = love.graphics.newImage("/assets/red.png")
@@ -25,10 +26,10 @@ function piet:load()
     psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
     psystem:moveTo(self.x, self.y) --defines where the emission should move to when updated. this is tied to the position of the player at all times
 
-    self.body = love.physics.newBody(world.world, self.x * 32, self.y * 32, "dynamic", 0, 100)
+    self.body = love.physics.newBody(world.world, self.x * 16, self.y * 16, "dynamic", 0, 100)
     self.body:setLinearDamping(.5);
 
-    self.shape = love.physics.newRectangleShape(32, 32)
+    self.shape = love.physics.newRectangleShape(16, 16)
     self.fixture = love.physics.newFixture(self.body, self.shape, 5)
     self.fixture:setFriction(0.75)
     self.fixture:setUserData("piet")
@@ -71,7 +72,7 @@ end
 
 function piet:draw()
     
-    love.graphics.draw(psystem, self.x, self.y)
+    love.graphics.draw(psystem, self.x, self.y, 0, 0.5, 0.5)
     love.graphics.setColor(0,0,0, 1)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
