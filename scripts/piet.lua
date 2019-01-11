@@ -1,14 +1,14 @@
 piet = {}
 
 piet.x = 5
-piet.y = 3
+piet.y = 17
 piet.yVel = 0
 piet.xVel = 0
 
 piet.isGrounded = true
 piet.hasDouble = true
 piet.upKeyBuffer = true
-piet.hasStick = false
+piet.isSticky = false
 
 piet.spd = 150
 piet.jumpHeight = -500
@@ -60,10 +60,16 @@ function piet:update(dt)
         if (self.isGrounded) then
             self.isGrounded = false
             self.upKeyBuffer = false
-
         else
             self.hasDouble = false 
         end
+    end
+    if love.keyboard.isDown("up") and (self.isSticky) then
+        self.body:setLinearVelocity(self.xVel, -self.spd)
+    elseif love.keyboard.isDown("left") and (self.isSticky) then
+        self.body:setLinearVelocity(-self.spd, self.yVel)
+    elseif love.keyboard.isDown("right") and (self.isSticky) then
+        self.body:setLinearVelocity(self.spd, self.yVel)
     end
     if not love.keyboard.isDown("up") then
         self.upKeyBuffer = true

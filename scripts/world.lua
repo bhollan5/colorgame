@@ -20,6 +20,7 @@ function world:load()
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     --the platforms below are ordered as follows: left to right, top to bottom
+
     black:newBlock(0, 18, 8, 1)
     
     blue:newBlock(10, 30, 8, 3)
@@ -47,6 +48,9 @@ function world:load()
     red:newBlock(58, 18, 18, 1)
     yellow:newBlock(58, 22, 18, 3)
     blue:newBlock(59, 33, 2, 2)
+
+    text = ""
+    persisting = 0
     
 end
 
@@ -84,10 +88,10 @@ function beginContact(a, b, coll)
     -- X and Y give a UNIT VECTOR from the first shape to the second
     -- So if a is piet and b is a block below him at normal orientation,
     -- X and Y will be (0, -1)
-    local x, y = coll:getNormal() 
-    local aType = a:getUserData()
-    local bType = b:getUserData()
-    -- text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..    
+    x, y = coll:getNormal() 
+    aType = a:getUserData()
+    bType = b:getUserData()
+    --text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..y    
     if ((aType == "black" or aType == "blue" or aType == "yellow") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
@@ -95,15 +99,26 @@ function beginContact(a, b, coll)
         end
     end
     
+    
 end
 
 function endContact(a, b, coll)
-
- 
+    persisting = 0
 end
  
 function preSolve(a, b, coll)
- 
+    if persisting == 0 then
+        piet.isSticky = false
+    elseif persisting < 1 then
+        if (aType == "yellow" and bType == "piet") then
+            if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+                piet.isGrounded = false
+                piet.isSticky = true
+                print("hit"..persisting)
+            end
+        end
+    end
+    persisting = persisting + 0.1
 end
  
 function postSolve(a, b, coll, normalimpulse, tangentimpulse)
