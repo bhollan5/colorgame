@@ -4,6 +4,7 @@ piet = {}
 
 piet.startPos = {5, 17}
 piet.deathHeight = 30 -- in 32 px units
+piet.deathHeight = piet.deathHeight * 32
 
 piet.x = 5
 piet.y = 17
@@ -17,8 +18,13 @@ piet.isSticky = false
 piet.isBouncy = false
 piet.isNormal = false
 
+piet.contactType = "none"
+
+piet.dead = false
+
 piet.spd = 150
 piet.jumpHeight = -500
+
 
 function piet:load(args)
     particles.color = {}
@@ -28,6 +34,7 @@ function piet:load(args)
 
     self.body = love.physics.newBody(world.world, self.x * 16, self.y * 16, "dynamic", 0, 100)
     self.body:setLinearDamping(.5);
+    
 
     self.shape = love.physics.newRectangleShape(16, 16)
     self.fixture = love.physics.newFixture(self.body, self.shape, 5)
@@ -87,14 +94,23 @@ function piet:update(dt)
     end
 
     -- Handling death
-    if self.dead then
+    if (self.dead) then
         self.body:setPosition( self.startPos[1], self.startPos[2] )
         self.body:setLinearVelocity(0, 0)
+        redPart:setParticleLifetime(2, 3)
+        redPart:setEmissionRate(5)
+        bluePart:setParticleLifetime(0, 0)
+        bluePart:setEmissionRate(5)
+        blackPart:setParticleLifetime(0, 0)
+        blackPart:setEmissionRate(5)
+        yellowPart:setParticleLifetime(0, 0)
+        yellowPart:setEmissionRate(5)
         self.dead = false
+
     end
 
     -- Fall damage
-    if self.y > (self.deathHeight * 32) then
+    if self.y > (self.deathHeight) then
         self.dead = true
     end
 end
@@ -103,19 +119,40 @@ function piet:draw()
     
     if (self.isSticky) then
         drawColor(yellow)
-        love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
-    elseif not (self.isSticky) then
-        if (self.isNormal) then
-            drawColor(black)
-            love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
-        elseif not ((self.isNormal) or (self.isSticky)) then
-            if (self.isBouncy) then
-                drawColor(blue)
-                love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
-            end
-        end  
+        redPart:setParticleLifetime(0, 0)
+        redPart:setEmissionRate(5)
+        bluePart:setParticleLifetime(0, 0)
+        bluePart:setEmissionRate(5)
+        blackPart:setParticleLifetime(0, 0)
+        blackPart:setEmissionRate(5)
+        yellowPart:setParticleLifetime(2, 3)
+        yellowPart:setEmissionRate(5)
+    elseif (self.isBouncy) then
+        redPart:setParticleLifetime(0, 0)
+        redPart:setEmissionRate(5)
+        bluePart:setParticleLifetime(2, 3)
+        bluePart:setEmissionRate(5)
+        blackPart:setParticleLifetime(0, 0)
+        blackPart:setEmissionRate(5)
+        yellowPart:setParticleLifetime(0, 0)
+        yellowPart:setEmissionRate(5)
+    elseif (self.isNormal) then
+        redPart:setParticleLifetime(0, 0)
+        redPart:setEmissionRate(5)
+        bluePart:setParticleLifetime(0, 0)
+        bluePart:setEmissionRate(5)
+        blackPart:setParticleLifetime(2, 3)
+        blackPart:setEmissionRate(5)
+        yellowPart:setParticleLifetime(0, 0)
+        yellowPart:setEmissionRate(5)
     end 
 
+    love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
+    love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
+    love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
+    love.graphics.draw(redPart, self.x, self.y, 0, 0.5, 0.5)
+
+    
 
     
     love.graphics.setColor(0,0,0, 1)
@@ -123,6 +160,6 @@ function piet:draw()
 
 end
 
-function piet:death() 
+function piet:death()
     self.dead = true
 end

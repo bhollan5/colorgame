@@ -78,8 +78,12 @@ function cameraFollow()
     -- Camera logic
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
-    love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
-    if (piet.y + (h/2)) < piet.deathHeight then
+    local screenLock = (piet.y + (h/2));
+    print(screenLock)
+    if screenLock < (piet.deathHeight) then
+        love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
+    else
+        love.graphics.translate(-piet.x + w / 2, -(piet.deathHeight - h))
     end
 end
 

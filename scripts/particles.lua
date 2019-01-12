@@ -59,7 +59,8 @@ function particles:update(dt)
 end
 
 function particles:draw()
-    
+    drawColor(red)
+    love.graphics.draw(redPart, piet.x, piet.y, 0, 0.5, 0.5)
 end
          
 

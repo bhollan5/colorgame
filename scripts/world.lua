@@ -3,6 +3,7 @@ require "scripts/yellow_floor"
 require "scripts/blue_floor"
 require "scripts/red_floor"
 require "scripts/black_floor"
+require "scripts/particles"
 
 world = {}
 
@@ -104,6 +105,7 @@ function endContact(a, b, coll)
     piet.isNormal = false
     piet.isBouncy = false
     piet.isSticky = false
+
 end
  
 function preSolve(a, b, coll)
@@ -114,6 +116,7 @@ function preSolve(a, b, coll)
     elseif persisting < 1 then
         if (aType == "yellow" and bType == "piet") then
             if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+                --world.world:setGravity(0, -1000)
                 piet.isGrounded = false
                 piet.isSticky = true
             elseif not ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
@@ -128,18 +131,21 @@ function preSolve(a, b, coll)
                     piet.isGrounded = true
                     piet.isNormal = true
                 end
+            elseif not (aType == "black" and bType == "piet") then
+                if (aType == "red" and bType == "piet") then
+                    if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+                        piet.dead = true
+                    end
+                end
             end
         
+        
         end
-        if (aType == "red" and bType == "piet") then
-            if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
-                piet:death()
-            end
-        end
+        
     end
     persisting = persisting + 0.1
 end
  
 function postSolve(a, b, coll, normalimpulse, tangentimpulse)
- 
+    
 end
