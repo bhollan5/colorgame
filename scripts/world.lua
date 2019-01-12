@@ -20,7 +20,7 @@ function world:load()
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
     --the platforms below are ordered as follows: left to right, top to bottom
-
+    --yellow:newBlock(0, 14, 8, 1)
     black:newBlock(0, 18, 8, 1)
     
     blue:newBlock(10, 30, 8, 3)

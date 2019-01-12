@@ -1,3 +1,5 @@
+require "scripts/particles"
+
 piet = {}
 
 piet.x = 5
@@ -13,18 +15,10 @@ piet.isSticky = false
 piet.spd = 150
 piet.jumpHeight = -500
 
-function piet:load()
-    local img = love.graphics.newImage("/assets/red.png")
+function piet:load(args)
+    particles.color = {}
 
-    
-    psystem = love.graphics.newParticleSystem(img, 10)
-    psystem:setParticleLifetime(2, 5) --used to denote time on screen from minimum time alive to maximum
-    psystem:setEmissionRate(5) --speed at which particles get produced
-    psystem:setSizeVariation(1)
-    psystem:setLinearAcceleration(-20, -20, 20, 0) --used to set boundaries for particle movement. (x min, x max, y min, y max)
-    psystem:setSpeed(5, 10) --sets speed at which particles travel per unit of time. ranges from slowest to fastest
-    psystem:setColors(255, 255, 255, 255, 255, 255, 255, 0)
-    psystem:moveTo(self.x, self.y) --defines where the emission should move to when updated. this is tied to the position of the player at all times
+    particles:load(bluePart)
 
     self.body = love.physics.newBody(world.world, self.x * 16, self.y * 16, "dynamic", 0, 100)
     self.body:setLinearDamping(.5);
@@ -37,7 +31,8 @@ function piet:load()
 end
 
 function piet:update(dt)
-    psystem:update(dt)
+    redPart:update(dt)
+    particles:update(dt)
 
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition( )
@@ -78,7 +73,8 @@ end
 
 function piet:draw()
     
-    love.graphics.draw(psystem, self.x, self.y, 0, 0.5, 0.5)
+    drawColor(yellow)
+    love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
     love.graphics.setColor(0,0,0, 1)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
