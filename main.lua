@@ -29,6 +29,7 @@ function love.load() -- Runs at the start of our program
     blueRGB = { 83 / 255, 100 / 255, 229 / 255 }
     redRGB = { 203 / 255, 52 / 255, 52 / 255 }
     yellowRGB = { 229 / 255, 222 / 255, 83 / 255 }
+    blackRGB = {0, 0, 0}
 
 
     -- ###################################
