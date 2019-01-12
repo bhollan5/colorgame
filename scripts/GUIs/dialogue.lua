@@ -12,15 +12,18 @@ function dialogue:update(dt)
 end
 
 function dialogue:insert(text) 
-    table.insert(dialogue.text, text)
+    table.insert(dialogue.text, 1, text)
     dialogue.showText = true
+    print(dialogue.text[1])
 end
 function dialogue:next() 
-    if (next(dialogue.text) == nil) then
-
+    if not (next(dialogue.text) == nil) then
         dialogue.showText = false
+        local text = table.remove(dialogue.text)
+        
     else
-        print("I guess not!")
+        dialogue.showText = false
+        local text = table.remove(dialogue.text)
     end
 end
 
@@ -39,7 +42,7 @@ function dialogue:draw()
 
         -- Writing text
         love.graphics.setFont(dialogueFont)
-        love.graphics.printf( 'Hi, Edward! Nice color choice! You’re not going to be that color, though. \n\nSee that little black square there? THAT’S you. ', xPos + 24, yPos + 24, 500 - 32, 'left' )
+        love.graphics.printf( dialogue.text[1], xPos + 24, yPos + 24, 500 - 32, 'left' )
 
         -- Writing directions
         love.graphics.setFont(smallFont)
