@@ -61,15 +61,26 @@ function love.update(dt)
 end
 
 function love.draw()
+
     if gamestate == 'title' then
         title:draw()
     elseif gamestate == 'lvl1' then
         -- Calling the draw functions in both of these files
+        cameraFollow() 
         world:draw()
         piet:draw()
     end
 
   
+end
+
+function cameraFollow() 
+    -- Camera logic
+    local w = love.graphics.getWidth()
+    local h = love.graphics.getHeight()
+    -- if (piet.y + (h/2)) < piet.deathHeight then
+        love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
+    -- end
 end
 
 function love.keypressed(key)

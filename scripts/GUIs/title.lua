@@ -82,6 +82,6 @@ function title:draw()
     love.graphics.setFont(dialogueFont)
 
     love.graphics.setColor(0,0,0, 1)
-    love.graphics.print("(use arrow keys & enter to select)", midX - ((dialogueFontSize / 4) * 34), 500) 
+    love.graphics.print("(use arrow keys and enter to select)", midX - ((dialogueFontSize / 4) * 36), 500) 
 
 end
