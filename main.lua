@@ -1,6 +1,8 @@
 require "scripts.world"
 require "scripts.piet"
 
+require "scripts/GUIs/dialogue"
+
 require "scripts.globalFunctions"
 
 require "scripts/GUIs/title"
@@ -21,8 +23,10 @@ function love.load() -- Runs at the start of our program
 
     titleFontSize = 48
     titleFont = love.graphics.newFont("assets/fonts/Square.ttf", titleFontSize)
-    dialogueFontSize = 16
+    dialogueFontSize = 20
     dialogueFont = love.graphics.newFont("assets/fonts/Square.ttf", dialogueFontSize)
+    smallFontSize = 14
+    smallFont = love.graphics.newFont("assets/fonts/Square.ttf", smallFontSize)
 
     -- Colors:
 
@@ -30,6 +34,7 @@ function love.load() -- Runs at the start of our program
     redRGB = { 203 / 255, 52 / 255, 52 / 255 }
     yellowRGB = { 229 / 255, 222 / 255, 83 / 255 }
     blackRGB = {0, 0, 0}
+    whiteRGB = {250/256,250/256,250/256}
 
 
     -- ###################################
@@ -37,7 +42,7 @@ function love.load() -- Runs at the start of our program
     -- ###################################
 
     love.graphics.setDefaultFilter("nearest") -- Graphic settings
-    love.graphics.setBackgroundColor(240, 240, 240)
+    love.graphics.setBackgroundColor(whiteRGB[1], whiteRGB[2], whiteRGB[3])
 
 
     -- ###################################
@@ -70,7 +75,7 @@ function love.draw()
         world:draw()
         piet:draw()
     end
-
+    dialogue:draw()
   
 end
 
@@ -79,7 +84,6 @@ function cameraFollow()
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
     local screenLock = (piet.y + (h/2));
-    print(screenLock)
     if screenLock < (piet.deathHeight) then
         love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
     else
