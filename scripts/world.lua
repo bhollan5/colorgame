@@ -71,10 +71,6 @@ end
 
 function world:draw()
 
-    local w = love.graphics.getWidth()
-    local h = love.graphics.getHeight()
-    love.graphics.translate(-piet.x + w / 2, -piet.y + h / 2)
-
     black:draw()
     red:draw()
     blue:draw()
@@ -115,6 +111,11 @@ function preSolve(a, b, coll)
                 piet.isGrounded = false
                 piet.isSticky = true
                 print("hit"..persisting)
+            end
+        end
+        if (aType == "red" and bType == "piet") then
+            if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+                piet:death()
             end
         end
     end
