@@ -11,6 +11,8 @@ piet.isGrounded = true
 piet.hasDouble = true
 piet.upKeyBuffer = true
 piet.isSticky = false
+piet.isBouncy = false
+piet.isNormal = false
 
 piet.spd = 150
 piet.jumpHeight = -500
@@ -31,8 +33,9 @@ function piet:load(args)
 end
 
 function piet:update(dt)
-    redPart:update(dt)
+    --redPart:update(dt)
     particles:update(dt)
+    local halfJump = (self.jumpHeight / 2)
 
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition( )
@@ -47,10 +50,7 @@ function piet:update(dt)
     end
 
     if love.keyboard.isDown("up") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
-
         self.body:applyLinearImpulse(0, self.jumpHeight) -- Normal jump
-
-        -- self.body:applyLinearImpulse(0, -200, 32, 0) -- Weird rotating jomp
 
         if (self.isGrounded) then
             self.isGrounded = false
@@ -59,12 +59,20 @@ function piet:update(dt)
             self.hasDouble = false 
         end
     end
-    if love.keyboard.isDown("up") and (self.isSticky) then
-        self.body:setLinearVelocity(self.xVel, -self.spd)
-    elseif love.keyboard.isDown("left") and (self.isSticky) then
-        self.body:setLinearVelocity(-self.spd, self.yVel)
-    elseif love.keyboard.isDown("right") and (self.isSticky) then
-        self.body:setLinearVelocity(self.spd, self.yVel)
+    if love.keyboard.isDown("up") and ((self.isSticky) and (self.isGrounded)) then
+        self.body:applyLinearImpulse(0, halfJump)
+    elseif not (love.keyboard.isDown("up") and ((self.isSticky) and (self.isGrounded))) then
+        if love.keyboard.isDown("up") and (self.isSticky) then
+            self.body:setLinearVelocity(self.xVel, -self.spd)
+        elseif not (love.keyboard.isDown("up") and (self.isSticky)) then
+            if love.keyboard.isDown("left") and (self.isSticky) then
+                self.body:setLinearVelocity(-self.spd, self.yVel)
+            elseif not (love.keyboard.isDown("left") and (self.isSticky)) then
+                if love.keyboard.isDown("right") and (self.isSticky) then
+                    self.body:setLinearVelocity(self.spd, self.yVel)
+                end
+            end
+        end
     end
     if not love.keyboard.isDown("up") then
         self.upKeyBuffer = true
@@ -73,8 +81,23 @@ end
 
 function piet:draw()
     
-    drawColor(yellow)
-    love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
+    if (self.isSticky) then
+        drawColor(yellow)
+        love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
+    elseif not (self.isSticky) then
+        if (self.isNormal) then
+            drawColor(black)
+            love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
+        elseif not ((self.isNormal) or (self.isSticky)) then
+            if (self.isBouncy) then
+                drawColor(blue)
+                love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
+            end
+        end  
+    end 
+
+
+    
     love.graphics.setColor(0,0,0, 1)
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 

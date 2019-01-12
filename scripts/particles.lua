@@ -34,15 +34,28 @@ function particles:load(args)
     yellowPart:setSpeed(5, 10) --sets speed at which particles travel per unit of time. ranges from slowest to fastest
     yellowPart:setColors(255, 255, 255, 255, 255, 255, 255, 0)
 
+    local blackParticles = {}
+    local img = love.graphics.newImage("/assets/black.png")
+    blackPart = love.graphics.newParticleSystem(img, 10)
+    blackPart:setParticleLifetime(2, 5) --used to denote time on screen from minimum time alive to maximum
+    blackPart:setEmissionRate(5) --speed at which particles get produced
+    blackPart:setSizeVariation(1)
+    blackPart:setLinearAcceleration(-20, -20, 20, 0) --used to set boundaries for particle movement. (x min, x max, y min, y max)
+    blackPart:setSpeed(5, 10) --sets speed at which particles travel per unit of time. ranges from slowest to fastest
+    blackPart:setColors(255, 255, 255, 255, 255, 255, 255, 0)
+
+    
     table.insert(self.color, redParticles)
     table.insert(self.color, blueParticles)
     table.insert(self.color, yellowParticles)
+    table.insert(self.color, blackParticles)
 end
 
 function particles:update(dt)
     redPart:update(dt)
     bluePart:update(dt)
     yellowPart:update(dt)
+    blackPart:update(dt)
 end
 
 function particles:draw()

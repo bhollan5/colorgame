@@ -66,6 +66,7 @@ end
 function world:update(dt)
 
     self.world:update(dt);
+    particles:update(dt)
     
 end
 
@@ -104,18 +105,35 @@ end
 
 function endContact(a, b, coll)
     persisting = 0
+    piet.isNormal = false
+    piet.isBouncy = false
+    piet.isSticky = false
 end
  
 function preSolve(a, b, coll)
     if persisting == 0 then
+        piet.isNormal = false
+        piet.isBouncy = false
         piet.isSticky = false
     elseif persisting < 1 then
         if (aType == "yellow" and bType == "piet") then
             if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
                 piet.isGrounded = false
                 piet.isSticky = true
-                print("hit"..persisting)
+            elseif not ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+                if (x == 0 and y == -1) then
+                    piet.isGrounded = true
+                    piet.isSticky = true
+                end
             end
+        elseif not (aType == "yellow" and bType == "piet") then
+            if (aType == "black" and bType == "piet") then
+                if (x == 0 and y == -1) then
+                    piet.isGrounded = true
+                    piet.isNormal = true
+                end
+            end
+        
         end
     end
     persisting = persisting + 0.1
