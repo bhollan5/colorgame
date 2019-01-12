@@ -41,13 +41,25 @@ function piet:load(args)
 end
 
 function piet:update(dt)
+
     --redPart:update(dt)
     particles:update(dt)
     local halfJump = (self.jumpHeight / 2)
 
+
+    -- Reassigning updated velocity and x and y position
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition( )
 
+    -- Pausing controls for dialogue
+    if love.keyboard.isDown("space") then
+        dialogue.next()
+    end
+    if dialogue.showText then
+        return
+    end
+
+    -- Left and right motion controls
     if love.keyboard.isDown("left") then
         self.body:setLinearVelocity(-self.spd, self.yVel)
     elseif love.keyboard.isDown("right") then
@@ -58,6 +70,7 @@ function piet:update(dt)
         self.body:setLinearVelocity(self.xVel, self.yVel)
     end
 
+    -- Jump motion controls 
     if love.keyboard.isDown("up") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
         self.body:applyLinearImpulse(0, self.jumpHeight) -- Normal jump
 

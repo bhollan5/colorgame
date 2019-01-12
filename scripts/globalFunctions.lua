@@ -14,6 +14,10 @@ function drawBlack()
     love.graphics.setColor(blackRGB[1], blackRGB[2], blackRGB[3], 1)
 end
 
+function drawWhite()
+    love.graphics.setColor(whiteRGB[1], whiteRGB[2], whiteRGB[3], 1)
+end
+
 function drawColor(color)   -- Takes a string, changes the draw color based on that string.
                             -- Useful if you want to iterate through a table of multiple colors, like in title:draw()
     if color == 'blue' then
@@ -24,5 +28,7 @@ function drawColor(color)   -- Takes a string, changes the draw color based on t
         drawRed()
     elseif color == 'black' then
         drawBlack()
+    elseif color == 'white' then
+        drawWhite()
     end
 end
