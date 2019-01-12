@@ -4,6 +4,7 @@ piet = {}
 
 piet.startPos = {5, 17}
 piet.deathHeight = 30 -- in 32 px units
+piet.deathHeight = piet.deathHeight * 32
 
 piet.x = 5
 piet.y = 17
@@ -86,7 +87,7 @@ function piet:update(dt)
     end
 
     -- Fall damage
-    if self.y > (self.deathHeight * 32) then
+    if self.y > (self.deathHeight) then
         self.dead = true
     end
 end
