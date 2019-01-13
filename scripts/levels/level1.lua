@@ -1,4 +1,6 @@
-function loadLevel1()
+level1 = {}
+
+function level1:load()
 
     dialogue:insert('Hi, Edward! Nice color choice! You’re not going to be that color, though. \n\nSee that little black square there? THAT’S you.')
     dialogue:insert('… I think that’s you, right? \n\n(You can move around with the arrow keys and press space to jump!)')
