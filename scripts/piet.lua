@@ -52,8 +52,11 @@ function piet:update(dt)
     self.x, self.y = self.body:getPosition( )
 
     -- Pausing controls for dialogue
-    if love.keyboard.isDown("space") then
-        dialogue.next()
+    if love.keyboard.isDown("space") and dialogue.skipBuffer then
+        dialogue:next()
+        dialogue.skipBuffer = false
+    elseif not love.keyboard.isDown("space") then
+        dialogue.skipBuffer = true
     end
     if dialogue.showText then
         return

@@ -23,6 +23,7 @@ function title:update(dt)
     if love.keyboard.isDown("return") then 
         if title.selection == 'start' then
             dialogue:insert('Hi, Edward! Nice color choice! You’re not going to be that color, though. \n\nSee that little black square there? THAT’S you.')
+            dialogue:insert('… I think that’s you, right? (You can move around with the arrow keys and press space to jump!)')
             gamestate = 'lvl1' 
         end
     end

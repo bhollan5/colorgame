@@ -3,6 +3,8 @@ dialogue = {}
 dialogue.showText = false
 dialogue.text = {}
 
+dialogue.skipBuffer = true
+
 function dialogue:load() 
 
 end
@@ -12,18 +14,15 @@ function dialogue:update(dt)
 end
 
 function dialogue:insert(text) 
-    table.insert(dialogue.text, 1, text)
+    table.insert(dialogue.text, text)
     dialogue.showText = true
-    print(dialogue.text[1])
 end
 function dialogue:next() 
-    if not (next(dialogue.text) == nil) then
-        dialogue.showText = false
-        local text = table.remove(dialogue.text)
+    if not (dialogue.text[2] == nil) then
+        table.remove(dialogue.text, 1)
         
     else
         dialogue.showText = false
-        local text = table.remove(dialogue.text)
     end
 end
 
@@ -42,7 +41,9 @@ function dialogue:draw()
 
         -- Writing text
         love.graphics.setFont(dialogueFont)
-        love.graphics.printf( dialogue.text[1], xPos + 24, yPos + 24, 500 - 32, 'left' )
+        if (dialogue.text[1] == nil) == false then 
+            love.graphics.printf( dialogue.text[1], xPos + 24, yPos + 24, 500 - 32, 'left' )
+        end
 
         -- Writing directions
         love.graphics.setFont(smallFont)
