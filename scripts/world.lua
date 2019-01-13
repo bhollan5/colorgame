@@ -102,9 +102,11 @@ end
 
 function endContact(a, b, coll)
     persisting = 0
+    
     piet.isNormal = false
     piet.isBouncy = false
     piet.isSticky = false
+    --piet.fixture:setRestitution(0)
 
 end
  
@@ -113,6 +115,7 @@ function preSolve(a, b, coll)
         piet.isNormal = false
         piet.isBouncy = false
         piet.isSticky = false
+
     elseif persisting < 1 then
         if (aType == "yellow" and bType == "piet") then
             if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
@@ -132,14 +135,13 @@ function preSolve(a, b, coll)
                     piet.isNormal = true
                 end
             elseif not (aType == "black" and bType == "piet") then
-                if (aType == "red" and bType == "piet") then
-                    if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
-                        piet.dead = true
-                    end
-                end
+                
             end
         
         
+        end
+        if (aType == "red" and bType == "piet") then
+            piet.dead = true
         end
         
     end
