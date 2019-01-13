@@ -63,23 +63,23 @@ function beginContact(a, b, coll)
     -- X and Y will be (0, -1)
     local x, y = coll:getNormal() 
     local aType = a:getUserData()
+    debug_lastCollisionA = aType
     local bType = b:getUserData()
+    debug_lastCollisionB = bType
+    debug_lastCollisionTime = time
     --text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..y    
+    beginContactCollisionChecks(aType, bType, x, y)
+    beginContactCollisionChecks(bType, aType, x, y)
+end
+function beginContactCollisionChecks(aType, bType, x, y)
     if ((aType == "black" or aType == "blue" or aType == "yellow") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
         end
     end
-    if ((bType == "black" or bType == "blue" or bType == "yellow") and aType == "piet") then
-        if (x == 0 and y == 1) then
-            piet.isGrounded = true
-            piet.hasDouble = true
-        end
-    end
-    
-    
 end
+
 
 function endContact(a, b, coll)
     persisting = 0
@@ -132,6 +132,13 @@ function postSolve(a, b, coll, normalimpulse, tangentimpulse)
  
 end
 
+
+-- DEBUG AND DEBUG VARIABLES
+
+debug_lastCollisionA = ''
+debug_lastCollisionB = ''
+debug_lastCollisionTime = 0
+
 function drawDebug() -- Used to output some debug values on screen
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
@@ -152,8 +159,13 @@ function drawDebug() -- Used to output some debug values on screen
     local debugPrintouts = { -- This should hold a series of strings, to be printed out
         "piet.isGrounded:  " .. isGroundedString,
         "piet.hasDouble:  " .. hasDoubleString,
+        "Collision A type: " .. debug_lastCollisionA,
+        "Collision B type: " .. debug_lastCollisionB,
+        "Collision refresh time: " .. debug_lastCollisionTime,
     }
+    local printoutColors = { 'red', 'blue', 'yellow', 'black'}
     for i in ipairs(debugPrintouts) do
+        drawColor(printoutColors[(i % 4) + 1]) -- just for prettiness!!
         love.graphics.print(debugPrintouts[i], piet.x - (w / 2) + 10, piet.y - (h / 2) + (i * 20))
     end
 end

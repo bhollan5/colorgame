@@ -13,6 +13,8 @@ gamestate = 'title' -- Keeps track of what context we're in!
                         -- 'title'
                         -- 'lvl1'
 
+time = 0
+
 debug = true
 
 function love.load() -- Runs at the start of our program
@@ -65,6 +67,7 @@ function love.update(dt)
     elseif(gamestate == 'title') then
         title:update(dt)
     end
+    time = time + 1
 end
 
 function love.draw()
