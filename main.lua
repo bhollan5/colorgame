@@ -13,6 +13,8 @@ gamestate = 'title' -- Keeps track of what context we're in!
                         -- 'title'
                         -- 'lvl1'
 
+debug = true
+
 function love.load() -- Runs at the start of our program
 
     -- ###################################

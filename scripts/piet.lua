@@ -18,7 +18,7 @@ piet.isSticky = false
 piet.isBouncy = false
 piet.isNormal = false
 
-piet.spd = 150
+piet.spd = 175
 piet.jumpHeight = -500
 
 function piet:load(args)
@@ -35,7 +35,7 @@ function piet:load(args)
     self.fixture:setFriction(0.75)
     self.fixture:setUserData("piet")
 
-    self.body:setFixedRotation( true )
+    -- self.body:setFixedRotation( true )
 
     --self.fixture:setRestitution(0.9)
 end
@@ -75,12 +75,15 @@ function piet:update(dt)
 
     -- Jump motion controls 
     if love.keyboard.isDown("up") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
-        self.body:applyLinearImpulse(0, self.jumpHeight) -- Normal jump
 
         if (self.isGrounded) then
+             -- Normal jump
+            self.body:applyLinearImpulse(0, self.jumpHeight)
+
             self.isGrounded = false
             self.upKeyBuffer = false
         else
+            self.body:setLinearVelocity(self.xVel, self.jumpHeight)
             self.hasDouble = false 
         end
     end
@@ -119,15 +122,15 @@ end
 function piet:draw()
     
     if (self.isSticky) then
-        drawColor(yellow)
+        drawColor('yellow')
         love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
     elseif not (self.isSticky) then
         if (self.isNormal) then
-            drawColor(black)
+            drawColor('black')
             love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
         elseif not ((self.isNormal) or (self.isSticky)) then
             if (self.isBouncy) then
-                drawColor(blue)
+                drawColor('blue')
                 love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
             end
         end  
