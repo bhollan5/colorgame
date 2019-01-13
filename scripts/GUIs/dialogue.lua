@@ -3,6 +3,8 @@ dialogue = {}
 dialogue.showText = false
 dialogue.text = {}
 
+dialogue.skipBuffer = true
+
 function dialogue:load() 
 
 end
@@ -16,11 +18,11 @@ function dialogue:insert(text)
     dialogue.showText = true
 end
 function dialogue:next() 
-    if (next(dialogue.text) == nil) then
-
-        dialogue.showText = false
+    if not (dialogue.text[2] == nil) then
+        table.remove(dialogue.text, 1)
+        
     else
-        print("I guess not!")
+        dialogue.showText = false
     end
 end
 
@@ -39,7 +41,9 @@ function dialogue:draw()
 
         -- Writing text
         love.graphics.setFont(dialogueFont)
-        love.graphics.printf( 'Hi, Edward! Nice color choice! You’re not going to be that color, though. \n\nSee that little black square there? THAT’S you. ', xPos + 24, yPos + 24, 500 - 32, 'left' )
+        if (dialogue.text[1] == nil) == false then 
+            love.graphics.printf( dialogue.text[1], xPos + 24, yPos + 24, 500 - 32, 'left' )
+        end
 
         -- Writing directions
         love.graphics.setFont(smallFont)

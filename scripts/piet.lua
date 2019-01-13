@@ -2,12 +2,12 @@ require "scripts/particles"
 
 piet = {}
 
-piet.startPos = {5, 17}
+piet.startPos = {3.5, 12}
 piet.deathHeight = 30 -- in 32 px units
 piet.deathHeight = piet.deathHeight * 32
 
-piet.x = 5
-piet.y = 17
+piet.x = piet.startPos[1]
+piet.y = piet.startPos[2]
 piet.yVel = 0
 piet.xVel = 0
 
@@ -18,11 +18,15 @@ piet.isSticky = false
 piet.isBouncy = false
 piet.isNormal = false
 
+<<<<<<< HEAD
 piet.contactType = "none"
 
 piet.dead = false
 
 piet.spd = 150
+=======
+piet.spd = 175
+>>>>>>> 626f7b67d9bda3160d38ffa1d869702e67e3a197
 piet.jumpHeight = -500
 
 
@@ -41,7 +45,7 @@ function piet:load(args)
     self.fixture:setFriction(0.75)
     self.fixture:setUserData("piet")
 
-    self.body:setFixedRotation( true )
+    -- self.body:setFixedRotation( true )
 
     --self.fixture:setRestitution(0.9)
 end
@@ -54,6 +58,10 @@ function piet:update(dt)
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition()
 
+<<<<<<< HEAD
+=======
+    -- Pausing controls for dialogue
+>>>>>>> 626f7b67d9bda3160d38ffa1d869702e67e3a197
     if love.keyboard.isDown("space") and dialogue.skipBuffer then
         dialogue:next()
         dialogue.skipBuffer = false
@@ -75,12 +83,15 @@ function piet:update(dt)
     end
 
     if love.keyboard.isDown("up") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
-        self.body:applyLinearImpulse(0, self.jumpHeight) -- Normal jump
 
         if (self.isGrounded) then
+             -- Normal jump
+            self.body:applyLinearImpulse(0, self.jumpHeight)
+
             self.isGrounded = false
             self.upKeyBuffer = false
         else
+            self.body:setLinearVelocity(self.xVel, self.jumpHeight)
             self.hasDouble = false 
         end
     end
@@ -104,8 +115,10 @@ function piet:update(dt)
     end
 
     -- Handling death
-    if (self.dead) then
-        self.body:setPosition( self.startPos[1], self.startPos[2] )
+    --if (self.dead) then
+    --self.body:setPosition( self.startPos[1], self.startPos[2] )
+    if self.dead then
+        self.body:setPosition( self.startPos[1] * 16, self.startPos[2] * 16 )
         self.body:setLinearVelocity(0, 0)
         piet:draw()
         self.dead = false
@@ -124,29 +137,18 @@ function piet:draw()
     love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
     
     if (self.isSticky) then
+        drawColor('yellow')
         love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-    elseif (self.isBouncy) then
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(1, 2) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(15)
-        bluePart:setSpeed(20, 25)
-    elseif (self.isNormal) then
-        love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-    elseif (self.dead) then
-        redPart:setParticleLifetime(1, 2) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(15)
-        redPart:setSpeed(20, 25)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
+    elseif not (self.isSticky) then
+        if (self.isNormal) then
+            drawColor('black')
+            love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
+        elseif not ((self.isNormal) or (self.isSticky)) then
+            if (self.isBouncy) then
+                drawColor('blue')
+                love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
+            end
+        end  
     end 
 
         

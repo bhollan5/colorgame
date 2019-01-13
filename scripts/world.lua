@@ -5,6 +5,8 @@ require "scripts/red_floor"
 require "scripts/black_floor"
 require "scripts/particles"
 
+require "scripts/levels/level1"
+
 world = {}
 
 -- table for love.physics objects
@@ -19,36 +21,6 @@ function world:load()
     
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
-
-    --the platforms below are ordered as follows: left to right, top to bottom
-    --yellow:newBlock(0, 14, 8, 1)
-    black:newBlock(0, 18, 8, 1)
-    
-    blue:newBlock(10, 30, 8, 3)
-    yellow:newBlock(10, 33, 8, 2)
-    red:newBlock(10, 35, 8, 1)
-
-    black:newBlock(21, 28, 7, 1)
-
-    --red square with black square inside
-    red:newBlock(34, 16, 8, 2)
-    red:newBlock(42, 22, 2, 8)
-    red:newBlock(36, 24, 8, 2)
-    red:newBlock(34, 24, 2, 8)
-    black:newBlock(38, 20, 2, 2)
-
-    --yellow angle platform
-    yellow:newBlock(31, 30, 19, 3)
-    yellow:newBlock(47, 27, 3, 16)
-
-    red:newBlock(31, 33, 8, 2)
-    blue:newBlock(31, 35, 8, 1)
-
-    blue:newBlock(51, 33, 2, 2)
-    blue:newBlock(55, 33, 2, 2)
-    red:newBlock(58, 18, 18, 1)
-    yellow:newBlock(58, 22, 18, 3)
-    blue:newBlock(59, 33, 2, 2)
 
     text = ""
     persisting = 0
@@ -78,6 +50,10 @@ function world:draw()
     blue:draw()
     yellow:draw()
 
+    if (debug) then
+        drawDebug()
+    end
+
 end
 
 -- contact behavior
@@ -86,19 +62,25 @@ function beginContact(a, b, coll)
     -- X and Y give a UNIT VECTOR from the first shape to the second
     -- So if a is piet and b is a block below him at normal orientation,
     -- X and Y will be (0, -1)
-    x, y = coll:getNormal() 
-    aType = a:getUserData()
-    bType = b:getUserData()
+    local x, y = coll:getNormal() 
+    local aType = a:getUserData()
+    debug_lastCollisionA = aType
+    local bType = b:getUserData()
+    debug_lastCollisionB = bType
+    debug_lastCollisionTime = time
     --text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..y    
+    beginContactCollisionChecks(aType, bType, x, y)
+    beginContactCollisionChecks(bType, aType, x, y)
+end
+function beginContactCollisionChecks(aType, bType, x, y)
     if ((aType == "black" or aType == "blue" or aType == "yellow") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
         end
     end
-    
-    
 end
+
 
 function endContact(a, b, coll)
     persisting = 0
@@ -111,43 +93,84 @@ function endContact(a, b, coll)
 end
  
 function preSolve(a, b, coll)
+    local x, y = coll:getNormal() 
+    local aType = a:getUserData()
+    local bType = b:getUserData()
     if persisting == 0 then
         piet.isNormal = false
         piet.isBouncy = false
         piet.isSticky = false
 
     elseif persisting < 1 then
-        if (aType == "yellow" and bType == "piet") then
-            if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
-                --world.world:setGravity(0, -1000)
-                piet.isGrounded = false
-                piet.isSticky = true
-            elseif not ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
-                if (x == 0 and y == -1) then
-                    piet.isGrounded = true
-                    piet.isSticky = true
-                end
-            end
-        elseif not (aType == "yellow" and bType == "piet") then
-            if (aType == "black" and bType == "piet") then
-                if (x == 0 and y == -1) then
-                    piet.isGrounded = true
-                    piet.isNormal = true
-                end
-            elseif not (aType == "black" and bType == "piet") then
-                
-            end
-        
-        
-        end
-        if (aType == "red" and bType == "piet") then
-            piet.dead = true
-        end
-        
+        preSolveCollisionChecks(aType, bType, x, y)
+        preSolveCollisionChecks(bType, aType, x, y)
     end
     persisting = persisting + 0.1
 end
+
+function preSolveCollisionChecks(aType, bType, x, y) 
+    if (aType == "yellow" and bType == "piet") then
+        if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+            piet.isGrounded = false
+            piet.isSticky = true
+        elseif not ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+            if (x == 0 and y == -1) then
+                piet.isGrounded = true
+                piet.isSticky = true
+            end
+        end
+    elseif not (aType == "yellow" and bType == "piet") then
+        if (aType == "black" and bType == "piet") then
+            if (x == 0 and y == -1) then
+                piet.isGrounded = true
+                piet.isNormal = true
+            end
+        end
+    
+    end
+    if (aType == "red" and bType == "piet") then
+            piet:death()
+    end
+end
  
 function postSolve(a, b, coll, normalimpulse, tangentimpulse)
-    
+ 
+end
+
+
+-- DEBUG AND DEBUG VARIABLES
+
+debug_lastCollisionA = ''
+debug_lastCollisionB = ''
+debug_lastCollisionTime = 0
+
+function drawDebug() -- Used to output some debug values on screen
+    local w = love.graphics.getWidth()
+    local h = love.graphics.getHeight()
+
+    love.graphics.setFont(smallFont) 
+    love.graphics.setColor(0,0,0, 1)
+
+    local isGroundedString = 'false'
+    if piet.isGrounded then
+        isGroundedString = 'true'
+    end
+    local hasDoubleString = 'false'
+    if piet.hasDouble then
+        hasDoubleString = 'true'
+    end
+
+
+    local debugPrintouts = { -- This should hold a series of strings, to be printed out
+        "piet.isGrounded:  " .. isGroundedString,
+        "piet.hasDouble:  " .. hasDoubleString,
+        "Collision A type: " .. debug_lastCollisionA,
+        "Collision B type: " .. debug_lastCollisionB,
+        "Collision refresh time: " .. debug_lastCollisionTime,
+    }
+    local printoutColors = { 'red', 'blue', 'yellow', 'black'}
+    for i in ipairs(debugPrintouts) do
+        drawColor(printoutColors[(i % 4) + 1]) -- just for prettiness!!
+        love.graphics.print(debugPrintouts[i], piet.x - (w / 2) + 10, piet.y - (h / 2) + (i * 20))
+    end
 end
