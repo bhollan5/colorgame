@@ -1,10 +1,6 @@
-level1 = {}
+debugLevel = {}
 
-function level1:load()
-
-    dialogue:insert('Hi, Edward! Nice color choice! You’re not going to be that color, though. \n\nSee that little black square there? THAT’S you.')
-    dialogue:insert('… I think that’s you, right? \n\n(You can move around with the arrow keys and press space to jump!)')
-    gamestate = 'lvl1' 
+function debugLevel:load()
 
     --the platforms below are ordered as follows: left to right, top to bottom
     --yellow:newBlock(0, 14, 8, 1)
@@ -31,8 +27,8 @@ function level1:load()
     yellow:newBlock(31, 28, 19, 3)
     yellow:newBlock(47, 15, 3, 16)
 
-    black:newBlock(31, 32, 8, 2)
-    black:newBlock(31, 35, 8, 1)
+    red:newBlock(31, 32, 8, 2)
+    blue:newBlock(31, 35, 8, 1)
 
     blue:newBlock(51, 33, 2, 2)
     blue:newBlock(55, 33, 2, 2)

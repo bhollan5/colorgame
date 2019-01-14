@@ -26,6 +26,8 @@ function world:load()
 
     text = ""
     persisting = 0
+
+    
     
 end
 
@@ -42,6 +44,8 @@ function world:update(dt)
 
     self.world:update(dt);
     particles:update(dt)
+
+    
     
 end
 
@@ -52,7 +56,9 @@ function world:draw()
     blue:draw()
     yellow:draw()
 
-    
+    if (debug) then
+        drawDebug()
+    end
 
 end
 
@@ -64,7 +70,9 @@ function beginContact(a, b, coll)
     -- X and Y will be (0, -1)
     x, y = coll:getNormal() 
     aType = a:getUserData()
+    debug_lastCollisionA = aType
     bType = b:getUserData()
+    debug_lastCollisionB = bType
     
     if ((aType == "black" or aType == "blue" or aType == "yellow") and bType == "piet") then
         if (x == 0 and y == -1) then
@@ -112,9 +120,10 @@ function preSolve(a, b, coll)
             end
         
         end
-        if (aType == "red" and bType == "piet") then
-                piet.dead = true
-        end
+        
+    end
+    if (aType == "red" and bType == "piet") then
+        piet.dead = true
     end
     persisting = persisting + 0.1
 end
@@ -126,3 +135,37 @@ function postSolve(a, b, coll, normalimpulse, tangentimpulse)
 end
 
 
+-- DEBUG AND DEBUG VARIABLES
+
+debug_lastCollisionA = ''
+debug_lastCollisionB = ''
+
+function drawDebug() -- Used to output some debug values on screen
+    local w = love.graphics.getWidth()
+    local h = love.graphics.getHeight()
+
+    love.graphics.setFont(smallFont) 
+    love.graphics.setColor(0,0,0, 1)
+
+    local isGroundedString = 'false'
+    if piet.isGrounded then
+        isGroundedString = 'true'
+    end
+    local hasDoubleString = 'false'
+    if piet.hasDouble then
+        hasDoubleString = 'true'
+    end
+
+
+    local debugPrintouts = { -- This should hold a series of strings, to be printed out
+        "piet.isGrounded:  " .. isGroundedString,
+        "piet.hasDouble:  " .. hasDoubleString,
+        "Collision A type: " .. debug_lastCollisionA,
+        "Collision B type: " .. debug_lastCollisionB,
+    }
+    local printoutColors = { 'red', 'blue', 'yellow', 'black'}
+    for i in ipairs(debugPrintouts) do
+        drawColor(printoutColors[(i % 4) + 1]) -- just for prettiness!!
+        love.graphics.print(debugPrintouts[i], piet.x - (w / 2) + 10, piet.y - (h / 2) + (i * 20))
+    end
+end 

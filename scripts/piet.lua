@@ -19,7 +19,7 @@ piet.isBouncy = false
 piet.isNormal = false
 piet.dead =  false
 
-piet.spd = 175
+piet.spd = 200
 piet.jumpHeight = -500
 
 
@@ -40,7 +40,7 @@ function piet:load(args)
     self.fixture:setFriction(0.75)
     self.fixture:setUserData("piet")
 
-    self.body:setFixedRotation( true )
+    -- self.body:setFixedRotation( true )
 
     --self.fixture:setRestitution(0.9)
 end
