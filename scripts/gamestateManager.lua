@@ -20,4 +20,6 @@ function changeGameState(newState)
         piet:load()
 
     end
+
+    love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])
 end

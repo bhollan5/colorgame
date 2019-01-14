@@ -1,8 +1,8 @@
 require "scripts/piet"
-require "scripts/blockMaterials/yellow_floor"
-require "scripts/blockMaterials/blue_floor"
-require "scripts/blockMaterials/red_floor"
-require "scripts/blockMaterials/black_floor"
+require "scripts/blockMaterials/sticky_floor"
+require "scripts/blockMaterials/bouncy_floor"
+require "scripts/blockMaterials/death_floor"
+require "scripts/blockMaterials/solid_floor"
 require "scripts/particles"
 
 require "scripts/levels/level1"
@@ -49,10 +49,10 @@ end
 
 function world:draw()
 
-    black:draw()
-    red:draw()
-    blue:draw()
-    yellow:draw()
+    solid:draw()
+    death:draw()
+    bouncy:draw()
+    sticky:draw()
 
     if (debug) then
         drawDebug()
@@ -72,7 +72,7 @@ function beginContact(a, b, coll)
     bType = b:getUserData()
     debug_lastCollisionB = bType
     
-    if ((aType == "black" or aType == "blue" or aType == "yellow") and bType == "piet") then
+    if ((aType == "solid" or aType == "bouncy" or aType == "sticky") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
@@ -99,7 +99,7 @@ function preSolve(a, b, coll)
         piet.isSticky = false
 
     elseif persisting > 0.5 then
-        if (aType == "yellow" and bType == "piet") then
+        if (aType == "sticky" and bType == "piet") then
             if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
                 piet.isGrounded = false
                 piet.isSticky = true
@@ -109,8 +109,8 @@ function preSolve(a, b, coll)
                     piet.isSticky = true
                 end
             end
-        elseif not (aType == "yellow" and bType == "piet") then
-            if (aType == "black" and bType == "piet") then
+        elseif not (aType == "sticky" and bType == "piet") then
+            if (aType == "solid" and bType == "piet") then
                 if (x == 0 and y == -1) then
                     piet.isGrounded = true
                     piet.isNormal = true
@@ -120,7 +120,7 @@ function preSolve(a, b, coll)
         end
         
     end
-    if (aType == "red" and bType == "piet") then
+    if (aType == "death" and bType == "piet") then
         piet.dead = true
     end
     persisting = persisting + 0.1
@@ -161,7 +161,7 @@ function drawDebug() -- Used to output some debug values on screen
         "Collision A type: " .. debug_lastCollisionA,
         "Collision B type: " .. debug_lastCollisionB,
     }
-    local printoutColors = { 'red', 'blue', 'yellow', 'black'}
+    local printoutColors = { 'death', 'bouncy', 'sticky', 'solid'}
     for i in ipairs(debugPrintouts) do
         drawColor(printoutColors[(i % 4) + 1]) -- just for prettiness!!
         love.graphics.print(debugPrintouts[i], piet.x - (w / 2) + 10, piet.y - (h / 2) + (i * 20))

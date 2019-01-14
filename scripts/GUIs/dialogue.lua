@@ -34,9 +34,9 @@ function dialogue:draw()
         local xPos = piet.x - 250
         local yPos = piet.y + (h / 2) - 232
         love.graphics.setLineWidth( 16 )
-        drawWhite()
+        drawColor('background')
         love.graphics.rectangle( 'fill', xPos, yPos, 500, 200 )
-        drawBlack()
+        drawColor('solid')
         love.graphics.rectangle( 'line', xPos, yPos, 500, 200 )
 
         -- Writing text

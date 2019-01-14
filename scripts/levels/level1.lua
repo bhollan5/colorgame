@@ -7,40 +7,40 @@ function level1:load()
     gamestate = 'lvl1' 
 
     --the platforms below are ordered as follows: left to right, top to bottom
-    --yellow:newBlock(0, 14, 8, 1)
-    black:newBlock(0, 20, 7, 1)
-    black:newBlock(0, 22, 7, 2)
-    black:newBlock(0, 25, 7, 11)
+    --sticky:newBlock(0, 14, 8, 1)
+    solid:newBlock(0, 20, 7, 1)
+    solid:newBlock(0, 22, 7, 2)
+    solid:newBlock(0, 25, 7, 11)
     
-    blue:newBlock(10, 28, 8, 3)
-    yellow:newBlock(10, 32, 8, 2)
-    red:newBlock(10, 35, 8, 1)
+    bouncy:newBlock(10, 28, 8, 3)
+    sticky:newBlock(10, 32, 8, 2)
+    death:newBlock(10, 35, 8, 1)
 
-    black:newBlock(21, 20, 7, 1)
-    black:newBlock(21, 22, 7, 2)
-    black:newBlock(21, 25, 7, 11)
+    solid:newBlock(21, 20, 7, 1)
+    solid:newBlock(21, 22, 7, 2)
+    solid:newBlock(21, 25, 7, 11)
 
-    --red square with black square inside
-    red:newBlock(34, 15, 8, 2)
-    red:newBlock(42, 17, 2, 8)
-    red:newBlock(36, 23, 8, 2)
-    red:newBlock(34, 17, 2, 8)
-    black:newBlock(38, 19, 2, 2)
+    --red square with solid square inside
+    death:newBlock(34, 15, 8, 2)
+    death:newBlock(42, 17, 2, 8)
+    death:newBlock(36, 23, 8, 2)
+    death:newBlock(34, 17, 2, 8)
+    solid:newBlock(38, 19, 2, 2)
 
-    --yellow angle platform
-    yellow:newBlock(31, 28, 19, 3)
-    yellow:newBlock(47, 15, 3, 16)
+    --sticky angle platform
+    sticky:newBlock(31, 28, 19, 3)
+    sticky:newBlock(47, 15, 3, 16)
 
-    -- lower black decorative blocks
-    black:newBlock(31, 32, 8, 2)
-    black:newBlock(31, 35, 8, 1)
+    -- lower solid decorative blocks
+    solid:newBlock(31, 32, 8, 2)
+    solid:newBlock(31, 35, 8, 1)
 
-    black:newBlock(51, 15, 1, 8)
-    black:newBlock(53, 15, 2, 8)
+    solid:newBlock(51, 15, 1, 8)
+    solid:newBlock(53, 15, 2, 8)
 
-    black:newBlock(51, 32, 4, 4)
+    solid:newBlock(51, 32, 4, 4)
 
-    -- uppzer black zig zag
-    black:newBlock(34, 10, 8, 2)
-    black:newBlock(34, 2, 2, 8)
+    -- uppzer solid zig zag
+    solid:newBlock(34, 10, 8, 2)
+    solid:newBlock(34, 2, 2, 8)
 end

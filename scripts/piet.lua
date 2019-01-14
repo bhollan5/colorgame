@@ -2,7 +2,7 @@ require "scripts/particles"
 
 piet = {}
 
-piet.startPos = {3.5, 12}
+piet.startPos = {100, 100}
 piet.deathHeight = 30 -- in 32 px units
 piet.deathHeight = piet.deathHeight * 32
 
@@ -178,7 +178,7 @@ function piet:draw()
 
 
     
-    love.graphics.setColor(0,0,0, 1)
+    drawColor('solid')
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
 end

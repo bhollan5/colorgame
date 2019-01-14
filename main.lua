@@ -13,6 +13,8 @@ gamestate = 'debugLevel' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
+                        --
+                        -- 'debugLevel'
 
 time = 0
 
@@ -35,11 +37,26 @@ function love.load() -- Runs at the start of our program
 
     -- Colors:
 
+    -- MONDRIAN COLOR SCHEME:
     blueRGB = { 83 / 255, 100 / 255, 229 / 255 }
     redRGB = { 203 / 255, 52 / 255, 52 / 255 }
     yellowRGB = { 229 / 255, 222 / 255, 83 / 255 }
     blackRGB = {0, 0, 0}
     whiteRGB = {250/256,250/256,250/256}
+
+    -- DARK, CHILLY COLOR SCHEME:
+    chillyGrayRGB = {63/255,63/255,63/255}
+    chillyBlueRGB = { 129 / 255, 127 / 255, 236 / 255 }
+    chillyPurpleRGB = { 207 / 255, 125 / 255, 221 / 255 }
+    chillyGreenRGB = { 167 / 255, 228 / 255, 188 / 255 }
+
+    -- Initializing these colors with the Mondrian scheme:
+    backgroundColor = whiteRGB
+    solidColor = blackRGB
+    bouncyColor = blueRGB
+    stickyColor = yellowRGB
+    deathColor = redRGB
+
 
 
     -- ###################################
@@ -47,7 +64,6 @@ function love.load() -- Runs at the start of our program
     -- ###################################
 
     love.graphics.setDefaultFilter("nearest") -- Graphic settings
-    love.graphics.setBackgroundColor(whiteRGB[1], whiteRGB[2], whiteRGB[3])
 
     -- ###################################
     -- ##          LOAD FUNCS:          ##
