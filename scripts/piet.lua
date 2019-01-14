@@ -23,7 +23,7 @@ piet.spd = 200
 piet.jumpHeight = -500
 
 
-function piet:load(args)
+function piet:load()
     particles.color = {}
 
     particles:load()
@@ -68,8 +68,8 @@ function piet:update(dt)
         self.body:setLinearVelocity(-self.spd, self.yVel)
     elseif love.keyboard.isDown("right") then
         self.body:setLinearVelocity(self.spd, self.yVel)
-    elseif self.isGrounded == true then 
-        self.body:setLinearVelocity(self.xVel, self.yVel)
+    elseif self.isGrounded == false then 
+        self.body:setLinearVelocity(0, self.yVel)
     else
         self.body:setLinearVelocity(self.xVel, self.yVel)
     end
@@ -86,6 +86,8 @@ function piet:update(dt)
             self.hasDouble = false 
         end
     end
+
+    -- Handling sticky contact physics
     if love.keyboard.isDown("up") and ((self.isSticky) and (self.isGrounded)) then
         self.body:applyLinearImpulse(0, halfJump)
     elseif not (love.keyboard.isDown("up") and ((self.isSticky) and (self.isGrounded))) then

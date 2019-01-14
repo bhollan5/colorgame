@@ -23,7 +23,7 @@ function title:update(dt)
     if love.keyboard.isDown("return") then 
         if title.selection == 'start' then
 
-            loadLevel1()
+            changeGameState('lvl1')
             
         end
     end

@@ -1,11 +1,12 @@
 require "scripts/piet"
-require "scripts/yellow_floor"
-require "scripts/blue_floor"
-require "scripts/red_floor"
-require "scripts/black_floor"
+require "scripts/blockMaterials/yellow_floor"
+require "scripts/blockMaterials/blue_floor"
+require "scripts/blockMaterials/red_floor"
+require "scripts/blockMaterials/black_floor"
 require "scripts/particles"
 
 require "scripts/levels/level1"
+require "scripts/levels/debugLevel"
 
 world = {}
 
@@ -22,12 +23,9 @@ function world:load()
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
-    level1:load()
-
     text = ""
     persisting = 0
 
-    
     
 end
 

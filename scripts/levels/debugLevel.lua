@@ -2,37 +2,13 @@ debugLevel = {}
 
 function debugLevel:load()
 
+    dialogue:insert('Welcome to the debug level lol 🐛')
     --the platforms below are ordered as follows: left to right, top to bottom
     --yellow:newBlock(0, 14, 8, 1)
-    black:newBlock(0, 20, 7, 1)
-    black:newBlock(0, 22, 7, 2)
-    black:newBlock(0, 25, 7, 11)
-    
-    blue:newBlock(10, 28, 8, 3)
-    yellow:newBlock(10, 32, 8, 2)
-    red:newBlock(10, 35, 8, 1)
+    yellow:newBlock(-40, 20, 30, 1)
+    black:newBlock(-10, 20, 30, 1)
+    yellow:newBlock(0, -10, 3, 20)
+    yellow:newBlock(0, -10, 10, 2)
+    blue:newBlock(20, 20, 30, 1)
 
-    black:newBlock(21, 20, 7, 1)
-    black:newBlock(21, 22, 7, 2)
-    black:newBlock(21, 25, 7, 11)
-
-    --red square with black square inside
-    red:newBlock(34, 15, 8, 2)
-    red:newBlock(42, 17, 2, 8)
-    red:newBlock(36, 23, 8, 2)
-    red:newBlock(34, 17, 2, 8)
-    black:newBlock(38, 19, 2, 2)
-
-    --yellow angle platform
-    yellow:newBlock(31, 28, 19, 3)
-    yellow:newBlock(47, 15, 3, 16)
-
-    red:newBlock(31, 32, 8, 2)
-    blue:newBlock(31, 35, 8, 1)
-
-    blue:newBlock(51, 33, 2, 2)
-    blue:newBlock(55, 33, 2, 2)
-    red:newBlock(58, 18, 18, 1)
-    yellow:newBlock(58, 22, 18, 3)
-    blue:newBlock(59, 33, 2, 2)
 end

@@ -31,12 +31,16 @@ function level1:load()
     yellow:newBlock(31, 28, 19, 3)
     yellow:newBlock(47, 15, 3, 16)
 
+    -- lower black decorative blocks
     black:newBlock(31, 32, 8, 2)
     black:newBlock(31, 35, 8, 1)
 
-    blue:newBlock(51, 33, 2, 2)
-    blue:newBlock(55, 33, 2, 2)
-    red:newBlock(58, 18, 18, 1)
-    yellow:newBlock(58, 22, 18, 3)
-    blue:newBlock(59, 33, 2, 2)
+    black:newBlock(51, 15, 1, 8)
+    black:newBlock(53, 15, 2, 8)
+
+    black:newBlock(51, 32, 4, 4)
+
+    -- uppzer black zig zag
+    black:newBlock(34, 10, 8, 2)
+    black:newBlock(34, 2, 2, 8)
 end

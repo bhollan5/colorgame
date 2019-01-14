@@ -4,11 +4,12 @@ require "scripts.piet"
 require "scripts/GUIs/dialogue"
 
 require "scripts.globalFunctions"
+require "scripts/gamestateManager"
 
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'title' -- Keeps track of what context we're in!
+gamestate = 'debugLevel' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
@@ -48,20 +49,17 @@ function love.load() -- Runs at the start of our program
     love.graphics.setDefaultFilter("nearest") -- Graphic settings
     love.graphics.setBackgroundColor(whiteRGB[1], whiteRGB[2], whiteRGB[3])
 
-
     -- ###################################
     -- ##          LOAD FUNCS:          ##
     -- ###################################
-    world:load()
-    piet:load()
 
-    title:load()
+    changeGameState(gamestate) -- Looking for this function? Check scripts/gamestateManager.lua
 end
 
 function love.update(dt)
     -- Calling the update functions in both of these files
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
-    if (gamestate == 'lvl1') then
+    if (gamestate == 'lvl1') or (gamestate == 'debugLevel') then
         world:update(dt)
         piet:update(dt)
     elseif(gamestate == 'title') then
@@ -74,7 +72,7 @@ function love.draw()
 
     if gamestate == 'title' then
         title:draw()
-    elseif gamestate == 'lvl1' then
+    elseif gamestate == 'lvl1' or gamestate == 'debugLevel' then
         -- Calling the draw functions in both of these files
         cameraFollow() 
         world:draw()
