@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'title' -- Keeps track of what context we're in!
+gamestate = 'debugLevel' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
