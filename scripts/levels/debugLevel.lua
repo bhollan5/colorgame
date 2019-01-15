@@ -23,4 +23,7 @@ function debugLevel:load()
 
     solid:newMovingBlock(7, 15, 4, 1, 10, 10, 3)
 
+    bouncy:newMovingBlock(25, 15, 4, 1, 25, 10, .2)
+    bouncy:newMovingBlock(30, 15, 4, 1, 30, 10, .1)
+
 end
