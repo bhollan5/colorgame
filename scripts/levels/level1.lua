@@ -2,8 +2,9 @@ level1 = {}
 
 function level1:load()
 
-    dialogue:insert('Hi, Edward! Nice color choice! You’re not going to be that color, though. \n\nSee that little black square there? THAT’S you.')
-    dialogue:insert('… I think that’s you, right? \n\n(You can move around with the arrow keys and press space to jump!)')
+    dialogue:insert('Hi!')
+    dialogue:insert('Piet Mondrian made pictures out of colors, and then said they didn’t represent anything - they were meant to be purely abstract! ')
+    dialogue:insert('What a wacky guy!!')
     gamestate = 'lvl1' 
 
     --the platforms below are ordered as follows: left to right, top to bottom

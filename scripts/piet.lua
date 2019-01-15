@@ -2,9 +2,9 @@ require "scripts/particles"
 
 piet = {}
 
-piet.startPos = {10, 10}
-piet.deathHeight = 30 -- in 32 px units
-piet.deathHeight = piet.deathHeight * 32
+piet.startPos = {3 * 16, 8 * 16 }
+piet.deathHeight = 60 -- in 16 px units
+piet.deathHeight = piet.deathHeight * 16
 
 piet.x = piet.startPos[1]
 piet.y = piet.startPos[2]
@@ -18,6 +18,7 @@ piet.isSticky = false
 piet.isBouncy = false
 piet.isNormal = false
 piet.dead =  false
+piet.hasDied = false
 
 piet.spd = 200
 piet.jumpHeight = -500
@@ -31,7 +32,7 @@ function piet:load()
     piet.isFresh = true
 
 
-    self.body = love.physics.newBody(world.world, self.x * 16, self.y * 16, "dynamic", 0, 100)
+    self.body = love.physics.newBody(world.world, self.startPos[1], self.startPos[2], "dynamic", 0, 100)
     self.body:setLinearDamping(.5);
     
 
@@ -52,6 +53,24 @@ function piet:update(dt)
 
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition()
+
+    -- Handling death
+    if (self.dead) then
+        self.body:setPosition(self.startPos[1], self.startPos[2])
+        self.body:setLinearVelocity(0, 0)
+        piet:draw()
+        self.dead = false
+        
+        -- dialogue:
+        if (not self.hasDied) then 
+            dialogue:insert('Don’t worry about dying - you’re a sturdy square, and you’ll recover quickly.\n\n Just see how far you can get!')
+        end
+    end
+
+    -- Fall damage
+    if self.y > (self.deathHeight) then
+        self.dead = true
+    end
 
     -- Pausing controls for dialogue
     if love.keyboard.isDown("space") and dialogue.skipBuffer then
@@ -105,21 +124,6 @@ function piet:update(dt)
     end
     if not love.keyboard.isDown("up") then
         self.upKeyBuffer = true
-    end
-
-    -- Handling death
-    --if (self.dead) then
-    --self.body:setPosition( self.startPos[1], self.startPos[2] )
-    if (self.dead) then
-        self.body:setPosition(self.startPos[1], self.startPos[2])
-        self.body:setLinearVelocity(0, 0)
-        piet:draw()
-        self.dead = false
-    end
-
-    -- Fall damage
-    if self.y > (self.deathHeight) then
-        self.dead = true
     end
 end
 

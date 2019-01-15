@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'debugLevel' -- Keeps track of what context we're in!
+gamestate = 'title' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
@@ -57,6 +57,9 @@ function love.load() -- Runs at the start of our program
     stickyColor = yellowRGB
     deathColor = redRGB
 
+    -- General:
+
+    gridSize = 16 -- referring to pixels
 
 
     -- ###################################

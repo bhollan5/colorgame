@@ -7,11 +7,11 @@ function death:load()
 end
 
 function death:newBlock(x, y, w, h)
-    width = w * 16
-    height = h * 16
+    width = w * gridSize
+    height = h * gridSize
 
-    xPos = (x * 16) + (width / 2)
-    yPos = (y * 16) + (height / 2)
+    xPos = (x * gridSize) + (width / 2)
+    yPos = (y * gridSize) + (height / 2)
 
     local deathStructure = {} -- defining a new structure, which we'll later be able to pass into our table
     deathStructure.body = love.physics.newBody(world.world, xPos, yPos)

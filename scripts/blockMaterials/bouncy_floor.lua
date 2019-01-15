@@ -8,11 +8,11 @@ function bouncy:load()
 end
 
 function bouncy:newBlock(x, y, w, h)
-    width = w * 16
-    height = h * 16
+    width = w * gridSize
+    height = h * gridSize
 
-    xPos = (x * 16) + (width / 2)
-    yPos = (y * 16) + (height / 2)
+    xPos = (x * gridSize) + (width / 2)
+    yPos = (y * gridSize) + (height / 2)
 
     local bouncyStructure = {} -- defining a new structure, which we'll later be able to pass into our table
     bouncyStructure.body = love.physics.newBody(world.world, xPos, yPos)
@@ -32,13 +32,13 @@ end
 
 function bouncy:newMovingBlock(xStart, yStart, w, h, xEnd, yEnd, oneWayTripTime)
     -- NOTE: oneWayTripTime is just how many seconds it will take to move the distance once!
-    width = w * 16
-    height = h * 16
+    width = w * gridSize
+    height = h * gridSize
 
-    xPos = (xStart * 16) + (width / 2)
-    yPos = (yStart * 16) + (height / 2)
-    xEndPos = (xEnd * 16) + (width / 2)
-    yEndPos = (yEnd * 16) + (height / 2)
+    xPos = (xStart * gridSize) + (width / 2)
+    yPos = (yStart * gridSize) + (height / 2)
+    xEndPos = (xEnd * gridSize) + (width / 2)
+    yEndPos = (yEnd * gridSize) + (height / 2)
 
     local bouncyStructure = {} -- defining a new structure, which we'll later be able to pass into our table
     

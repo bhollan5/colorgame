@@ -22,6 +22,7 @@ function dialogue:next()
         table.remove(dialogue.text, 1)
         
     else
+        table.remove(dialogue.text, 1)
         dialogue.showText = false
     end
 end
