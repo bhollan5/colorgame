@@ -28,7 +28,7 @@ function dialogue:next()
 end
 
 function dialogue:draw()
-    if dialogue.showText then 
+    if dialogue.showText and not world.isTransitioningDown then 
         -- Drawing dialogue box
         local w = love.graphics.getWidth()
         local h = love.graphics.getHeight()

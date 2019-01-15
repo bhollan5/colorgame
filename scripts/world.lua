@@ -18,6 +18,9 @@ world.gravity = {
     y = 1000
 }
 
+world.isTransitioningDown = false   -- Marks whether the game is transitioning in or out, a process for which the game pauses
+world.transitionHeight = 0      -- Marks the height of the camera as it descends on a level,
+
 function world:load()
     
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
@@ -47,6 +50,13 @@ function world:update(dt)
     sticky:update(dt)
 
     self.world:update(dt);
+    if self.isTransitioningDown then
+        if (self.transitionHeight < 3) then
+            self.transitionHeight = 0 
+            self.isTransitioningDown = false
+        end
+        self.transitionHeight = ((self.transitionHeight) * (.95))
+    end
     
 end
 
@@ -61,6 +71,12 @@ function world:draw()
         drawDebug()
     end
 
+end
+
+function world:fadeIn()
+    print("Fade in called")
+    self.isTransitioningDown = true 
+    self.transitionHeight = 500
 end
 
 -- contact behavior
