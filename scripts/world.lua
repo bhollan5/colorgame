@@ -38,12 +38,15 @@ function world:newArenaStructure(x, y, w, h)
 
 end
 
-function world:update(dt)
-
-    self.world:update(dt);
+function world:update(dt)    
     particles:update(dt)
 
-    
+    solid:update(dt)
+    death:update(dt)
+    bouncy:update(dt)
+    sticky:update(dt)
+
+    self.world:update(dt);
     
 end
 
@@ -156,6 +159,7 @@ function drawDebug() -- Used to output some debug values on screen
 
 
     local debugPrintouts = { -- This should hold a series of strings, to be printed out
+        "Total time: " .. time,
         "piet.isGrounded:  " .. isGroundedString,
         "piet.hasDouble:  " .. hasDoubleString,
         "Collision A type: " .. debug_lastCollisionA,

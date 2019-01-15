@@ -2,7 +2,7 @@ require "scripts/particles"
 
 piet = {}
 
-piet.startPos = {100, 100}
+piet.startPos = {10, 10}
 piet.deathHeight = 30 -- in 32 px units
 piet.deathHeight = piet.deathHeight * 32
 

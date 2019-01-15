@@ -28,6 +28,10 @@ function death:newBlock(x, y, w, h)
     table.insert(self.blocks, deathStructure)
 end
 
+function death:update(dt) 
+
+end
+
 function death:draw()
     for i in ipairs(self.blocks) do
         drawColor('death')

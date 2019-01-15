@@ -29,6 +29,10 @@ function bouncy:newBlock(x, y, w, h)
     table.insert(self.blocks, bouncyStructure)
 end
 
+function bouncy:update(dt) 
+
+end
+
 function bouncy:draw()
     for i in ipairs(self.blocks) do
         drawColor('bouncy')

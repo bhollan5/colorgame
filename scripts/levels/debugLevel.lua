@@ -21,4 +21,6 @@ function debugLevel:load()
 
     death:newBlock(5, 15, 2, 2)
 
+    solid:newMovingBlock(7, 15, 4, 1, 10, 10, 3)
+
 end

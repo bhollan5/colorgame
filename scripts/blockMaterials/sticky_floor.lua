@@ -28,6 +28,10 @@ function sticky:newBlock(x, y, w, h)
     table.insert(self.blocks, stickyStructure)
 end
 
+function sticky:update(dt) 
+
+end
+
 function sticky:draw()
     for i in ipairs(self.blocks) do
         drawColor('sticky')
