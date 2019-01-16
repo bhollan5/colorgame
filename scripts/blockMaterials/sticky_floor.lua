@@ -6,6 +6,10 @@ function sticky:load()
     
 end
 
+function sticky:clear() 
+    sticky.blocks = {}
+end
+
 function sticky:newBlock(x, y, w, h)
     width = w * gridSize
     height = h * gridSize

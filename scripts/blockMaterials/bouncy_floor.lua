@@ -7,6 +7,17 @@ function bouncy:load()
 
 end
 
+function bouncy:clear()
+    for i in ipairs(self.blocks) do
+        self.blocks[i].fixture:destroy()
+    end
+    self.blocks = {}
+    for i in ipairs(self.movingBlocks) do
+        self.movingBlocks[i].fixture:destroy()
+    end
+    self.movingBlocks = {}
+end
+
 function bouncy:newBlock(x, y, w, h)
     width = w * gridSize
     height = h * gridSize
@@ -25,7 +36,7 @@ function bouncy:newBlock(x, y, w, h)
     bouncyStructure.w = width
     bouncyStructure.h = height
     bouncyStructure.fixture:setUserData("bouncy")
-    bouncyStructure.fixture:setRestitution(0.9)
+    bouncyStructure.fixture:setRestitution(1.5)
 
     table.insert(self.blocks, bouncyStructure)
 end

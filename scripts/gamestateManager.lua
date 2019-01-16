@@ -6,13 +6,18 @@
 -- Update and draw functions are still changed in main.lua
 function changeGameState(newState) 
     -- local oldGamestate = gamestate -- Uncomment if you need to use the prev. gamestate
+
     gamestate = newState
+    world:unloadLevel()
     if gamestate == 'title' then
         title:load()
     elseif gamestate == 'lvl1' then 
-        world:load() 
+        if (not world.isInitialized) then
+            world:load() 
+            piet:load()
+        end
         level1:load()
-        piet:load()
+        
 
     elseif gamestate == 'debugLevel' then 
         world:load() 

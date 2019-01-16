@@ -4,6 +4,12 @@ function level1:load()
 
     world:fadeIn()
 
+    backgroundColor = whiteRGB
+    solidColor = blackRGB
+    bouncyColor = blueRGB
+    stickyColor = yellowRGB
+    deathColor = redRGB
+
     dialogue:insert('Hi!')
     dialogue:insert('Piet Mondrian made pictures out of colors, and then said they didn’t represent anything - they were meant to be purely abstract! ')
     dialogue:insert('What a wacky guy!!')

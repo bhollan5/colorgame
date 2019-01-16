@@ -18,6 +18,7 @@ piet.isSticky = false
 piet.isBouncy = false
 piet.isNormal = false
 piet.dead =  false
+piet.won = false                -- Triggered when piet wins a level
 piet.hasDied = false
 
 piet.spd = 200
@@ -81,6 +82,12 @@ function piet:update(dt)
     end
     if dialogue.showText then
         return
+    end
+
+    if self.won then 
+        changeGameState(world.nextLevel)
+        self.won = false
+        return 
     end
 
     if love.keyboard.isDown("left") then

@@ -3,6 +3,7 @@ require "scripts/blockMaterials/sticky_floor"
 require "scripts/blockMaterials/bouncy_floor"
 require "scripts/blockMaterials/death_floor"
 require "scripts/blockMaterials/solid_floor"
+require "scripts/blockMaterials/goal"
 require "scripts/particles"
 
 require "scripts/levels/level1"
@@ -12,16 +13,21 @@ world = {}
 
 -- table for love.physics objects
 world.arena = {}
+world.isInitialized = false -- keeps us from initializing world twice
 
 world.gravity = {
     x = 0,
     y = 1000
 }
 
+world.nextLevel = "lvl2"                -- This gets loaded when you hit the goal
+
 world.isTransitioningDown = false   -- Marks whether the game is transitioning in or out, a process for which the game pauses
 world.transitionHeight = 0      -- Marks the height of the camera as it descends on a level,
 
 function world:load()
+
+    self.isInitialized = true
     
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
@@ -60,12 +66,21 @@ function world:update(dt)
     
 end
 
+function world:unloadLevel() 
+    solid:clear()
+    death:clear()
+    bouncy:clear()
+    sticky:clear()
+    goal:clear()
+end
+
 function world:draw()
 
     solid:draw()
     death:draw()
     bouncy:draw()
     sticky:draw()
+    goal:draw()
 
     if (debug) then
         drawDebug()
@@ -74,7 +89,6 @@ function world:draw()
 end
 
 function world:fadeIn()
-    print("Fade in called")
     self.isTransitioningDown = true 
     self.transitionHeight = 500
 end
@@ -85,12 +99,18 @@ function beginContact(a, b, coll)
     -- X and Y give a UNIT VECTOR from the first shape to the second
     -- So if a is piet and b is a block below him at normal orientation,
     -- X and Y will be (0, -1)
-    x, y = coll:getNormal() 
-    aType = a:getUserData()
+    local x, y = coll:getNormal() 
+    local aType = a:getUserData()
     debug_lastCollisionA = aType
-    bType = b:getUserData()
+    local bType = b:getUserData()
     debug_lastCollisionB = bType
-    
+
+    beginContactCollisionCheck(aType, bType, x, y) 
+    beginContactCollisionCheck(bType, aType, x, -y) 
+end
+
+function beginContactCollisionCheck(aType, bType, x, y) 
+
     if ((aType == "solid" or aType == "bouncy" or aType == "sticky") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
@@ -112,11 +132,19 @@ function endContact(a, b, coll)
 end
  
 function preSolve(a, b, coll)
+    local x, y = coll:getNormal() 
+    local aType = a:getUserData()
+    local bType = b:getUserData()
+    preSolveCollisionCheck(aType, bType, x, y)
+    preSolveCollisionCheck(bType, aType, x, -y)
+    
+end
+
+function preSolveCollisionCheck(aType, bType, x, y)
     if persisting == 0 then
         piet.isNormal = false
         piet.isBouncy = false
         piet.isSticky = false
-
     elseif persisting > 0.5 then
         if (aType == "sticky" and bType == "piet") then
             if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
@@ -141,6 +169,11 @@ function preSolve(a, b, coll)
     end
     if (aType == "death" and bType == "piet") then
         piet.dead = true
+    end
+
+    if (aType == "goal" and bType == "piet") then
+        piet.won = true
+        
     end
     persisting = persisting + 0.1
 end
@@ -172,6 +205,10 @@ function drawDebug() -- Used to output some debug values on screen
     if piet.hasDouble then
         hasDoubleString = 'true'
     end
+    local hasWonString = "false"
+    if piet.won then 
+        hasWonString = "true"
+    end
 
 
     local debugPrintouts = { -- This should hold a series of strings, to be printed out
@@ -180,6 +217,8 @@ function drawDebug() -- Used to output some debug values on screen
         "piet.hasDouble:  " .. hasDoubleString,
         "Collision A type: " .. debug_lastCollisionA,
         "Collision B type: " .. debug_lastCollisionB,
+        "piet.won: " .. hasWonString,
+        "gamestate:  " .. gamestate
     }
     local printoutColors = { 'death', 'bouncy', 'sticky', 'solid'}
     for i in ipairs(debugPrintouts) do
