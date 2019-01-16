@@ -48,7 +48,6 @@ function piet:load()
 end
 
 function piet:update(dt)
-    --redPart:update(dt)
     particles:update(dt)
     local halfJump = (self.jumpHeight / 2)
 
@@ -59,11 +58,13 @@ function piet:update(dt)
     if (self.dead) then
         self.body:setPosition(self.startPos[1], self.startPos[2])
         self.body:setLinearVelocity(0, 0)
+        self.xVel, self.yVel = self.body:getLinearVelocity()
         piet:draw()
         self.dead = false
         
         -- dialogue:
         if (not self.hasDied) then 
+            self.hasDied = true
             dialogue:insert('Don’t worry about dying - you’re a sturdy square, and you’ll recover quickly.\n\n Just see how far you can get!')
         end
     end

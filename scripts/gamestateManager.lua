@@ -24,6 +24,10 @@ function changeGameState(newState)
         debugLevel:load()
         piet:load()
 
+    elseif gamestate == 'lvl2' then
+        world:load()
+        level2:load()
+        piet:load()
     end
 
     love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])

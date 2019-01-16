@@ -7,7 +7,10 @@ function sticky:load()
 end
 
 function sticky:clear() 
-    sticky.blocks = {}
+    for i in ipairs(self.blocks) do
+        self.blocks[i].fixture:destroy()
+    end
+    self.blocks = {}
 end
 
 function sticky:newBlock(x, y, w, h)
