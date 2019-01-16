@@ -38,7 +38,7 @@ function world:newArenaStructure(x, y, w, h)
     height = h * 16
 
     xPos = (x * 16) + (width / 2)
-    yPos = (y * 16) - (height / 2)
+    yPos = (y * 16) + (height / 2)
 
 end
 

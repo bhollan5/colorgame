@@ -27,7 +27,7 @@ function level1:load()
 
     --red square with solid square inside
     death:newBlock(34, 15, 8, 2)
-    death:newBlock(42, 17, 2, 8)
+    death:newBlock(42, 15, 2, 8)
     death:newBlock(36, 23, 8, 2)
     death:newBlock(34, 17, 2, 8)
     solid:newBlock(38, 19, 2, 2)
@@ -39,13 +39,29 @@ function level1:load()
     -- lower solid decorative blocks
     solid:newBlock(31, 32, 8, 2)
     solid:newBlock(31, 35, 8, 1)
-
-    solid:newBlock(51, 15, 1, 8)
-    solid:newBlock(53, 15, 2, 8)
+    
+    solid:newBlock(51, 15, 2, 8)
+    solid:newBlock(54, 15, 1, 8)
+    solid:newBlock(56, 15, 8, 8)
 
     solid:newBlock(51, 32, 4, 4)
 
-    -- uppzer solid zig zag
-    solid:newBlock(34, 10, 8, 2)
-    solid:newBlock(34, 2, 2, 8)
+    --start of the "blue bounds" that holds the exit
+    bouncy:newBlock(65, 15, 1, 22)
+    
+    bouncy:newBlock(67, 19, 8, 1)
+    sticky:newBlock(76, 19, 1, 1)
+
+    death:newBlock(80, 27, 1, 1)
+    bouncy:newBlock(82, 27, 8, 1)
+    
+    --exit block
+    solid:newBlock(69, 31, 3, 3)
+
+    bouncy:newBlock(67, 36, 8, 1)
+    solid:newBlock(76, 36, 1, 1)
+
+    bouncy:newBlock(91, 15, 1, 22)
+    --end of the bounds
+
 end
