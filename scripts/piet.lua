@@ -47,7 +47,6 @@ function piet:load()
 end
 
 function piet:update(dt)
-    --redPart:update(dt)
     particles:update(dt)
     local halfJump = (self.jumpHeight / 2)
 

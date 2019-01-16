@@ -1,6 +1,7 @@
 level1 = {}
 
 function level1:load()
+    piet.startPos = {3 * 16, 8 * 16}
 
     world:fadeIn()
 

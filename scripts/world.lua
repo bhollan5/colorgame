@@ -7,6 +7,7 @@ require "scripts/particles"
 
 require "scripts/levels/level1"
 require "scripts/levels/debugLevel"
+require "scripts/levels/level2"
 
 world = {}
 
@@ -22,7 +23,7 @@ world.isTransitioningDown = false   -- Marks whether the game is transitioning i
 world.transitionHeight = 0      -- Marks the height of the camera as it descends on a level,
 
 function world:load()
-    
+]
     self.world = love.physics.newWorld(self.gravity.x, self.gravity.y)
     self.world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 
