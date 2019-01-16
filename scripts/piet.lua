@@ -2,7 +2,7 @@ require "scripts/particles"
 
 piet = {}
 
-piet.startPos = {0 * 16, 8 * 16 }
+piet.startPos = {3 * 16, 8 * 16 }
 piet.deathHeight = 60 -- in 16 px units
 piet.deathHeight = piet.deathHeight * 16
 
@@ -55,7 +55,7 @@ function piet:update(dt)
 
     -- Handling death
     if (self.dead) then
-        self.body:setPosition(self.startPos[1] * 16, self.startPos[2] * 16)
+        self.body:setPosition(self.startPos[1], self.startPos[2])
         print(self.startPos[1])
         print(self.startPos[2])
         self.body:setLinearVelocity(0, 0)

@@ -9,11 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-<<<<<<< Updated upstream
-gamestate = 'title' -- Keeps track of what context we're in!
-=======
 gamestate = 'lvl1' -- Keeps track of what context we're in!
->>>>>>> Stashed changes
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
@@ -97,11 +93,7 @@ function love.draw()
 
     if gamestate == 'title' then
         title:draw()
-<<<<<<< Updated upstream
-    elseif (gamestate == 'lvl1' or gamestate == 'debugLevel' or gamestate == 'lvl2') then
-=======
     elseif gamestate == 'lvl1' or gamestate == 'debugLevel' or gamestate == 'lvl2' then
->>>>>>> Stashed changes
         -- Calling the draw functions in both of these files
         cameraFollow() 
         world:draw()

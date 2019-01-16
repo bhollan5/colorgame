@@ -2,7 +2,7 @@ level2 = {}
 
 function level2:load()
 
-    piet.startPos = {0 * 16, -0.5 * 16}
+    --piet.startPos = {0 * 16, -0.5 * 16}
 
     dialogue:insert('Ben holland is a smelly boy')
     gamestate = "lvl2"
