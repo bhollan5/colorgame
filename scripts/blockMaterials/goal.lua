@@ -1,41 +1,53 @@
 goal = {}
 
-sticky.blocks = {}
+goal.blocks = {}
 
-function sticky:load()
+function goal:load()
     
 end
 
-function sticky:newBlock(x, y, w, h)
-    width = w * gridSize
-    height = h * gridSize
+function goal:clear()   
+    goal.blocks = {}
+end
+
+function goal:newBlock(x, y)
+    width = 2 * gridSize
+    height = 4 * gridSize
 
     xPos = (x * gridSize) + (width / 2)
     yPos = (y * gridSize) + (height / 2)
 
-    local stickyStructure = {} -- defining a new structure, which we'll later be able to pass into our table
-    stickyStructure.body = love.physics.newBody(world.world, xPos, yPos)
-    stickyStructure.body:setPosition(xPos, yPos)
-    stickyStructure.shape = love.physics.newRectangleShape(width, height)
-    stickyStructure.fixture = love.physics.newFixture(stickyStructure.body, stickyStructure.shape)
-    stickyStructure.fixture:setFriction(1)
-    stickyStructure.x = xPos
-    stickyStructure.y = yPos
-    stickyStructure.w = width
-    stickyStructure.h = height
-    stickyStructure.fixture:setUserData("sticky")
+    local goalStructure = {} -- defining a new structure, which we'll later be able to pass into our table
+    goalStructure.body = love.physics.newBody(world.world, xPos, yPos)
+    goalStructure.body:setPosition(xPos, yPos)
+    goalStructure.shape = love.physics.newRectangleShape(width, height)
+    goalStructure.fixture = love.physics.newFixture(goalStructure.body, goalStructure.shape)
+    goalStructure.fixture:setFriction(1)
+    goalStructure.x = xPos
+    goalStructure.y = yPos
+    goalStructure.w = width
+    goalStructure.h = height
+    goalStructure.fixture:setUserData("goal")
 
-    table.insert(self.blocks, stickyStructure)
+    table.insert(self.blocks, goalStructure)
 end
 
-function sticky:update(dt) 
+function goal:update(dt) 
 
 end
 
-function sticky:draw()
+function goal:draw()
     for i in ipairs(self.blocks) do
-        drawColor('sticky')
+        drawColor('solid')
         love.graphics.polygon("fill", self.blocks[i].body:getWorldPoints(self.blocks[i].shape:getPoints()))
+        drawColor('bouncy')
+        love.graphics.rectangle("fill", self.blocks[i].x - ((self.blocks[i].w / 2) - 5), 
+                                        self.blocks[i].y - ((self.blocks[i].h / 2) - 5),
+                                self.blocks[i].w - 10, 30)
+        drawColor('sticky')
+        love.graphics.rectangle("fill", self.blocks[i].x - ((self.blocks[i].w / 2) - 5), 
+                                        self.blocks[i].y - ((self.blocks[i].h / 2) - 40),
+                                self.blocks[i].w - 10, 20)
 
     end
 end 

@@ -18,6 +18,7 @@ piet.isSticky = false
 piet.isBouncy = false
 piet.isNormal = false
 piet.dead =  false
+piet.won = false                -- Triggered when piet wins a level
 piet.hasDied = false
 
 piet.spd = 200
@@ -56,9 +57,8 @@ function piet:update(dt)
     -- Handling death
     if (self.dead) then
         self.body:setPosition(self.startPos[1], self.startPos[2])
-        print(self.startPos[1])
-        print(self.startPos[2])
         self.body:setLinearVelocity(0, 0)
+        self.xVel, self.yVel = self.body:getLinearVelocity()
         piet:draw()
         self.dead = false
         
@@ -83,6 +83,12 @@ function piet:update(dt)
     end
     if dialogue.showText then
         return
+    end
+
+    if self.won then 
+        changeGameState(world.nextLevel)
+        self.won = false
+        return 
     end
 
     if love.keyboard.isDown("left") then

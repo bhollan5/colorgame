@@ -7,6 +7,17 @@ function solid:load()
     
 end
 
+function solid:clear()
+    for i in ipairs(self.blocks) do
+        self.blocks[i].fixture:destroy()
+    end
+    self.blocks = {}
+    for i in ipairs(self.movingBlocks) do
+        self.movingBlocks[i].fixture:destroy()
+    end
+    self.movingBlocks = {}
+end
+
 function solid:newBlock(x, y, w, h)
     width = w * gridSize
     height = h * gridSize

@@ -6,6 +6,13 @@ function death:load()
     
 end
 
+function death:clear()
+    for i in ipairs(self.blocks) do
+        self.blocks[i].fixture:destroy()
+    end
+    self.blocks = {}
+end
+
 function death:newBlock(x, y, w, h)
     width = w * gridSize
     height = h * gridSize

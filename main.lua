@@ -18,7 +18,7 @@ gamestate = 'lvl2' -- Keeps track of what context we're in!
 
 time = 0
 
-debug = false
+debug = true
 
 function love.load() -- Runs at the start of our program
 

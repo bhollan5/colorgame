@@ -14,8 +14,10 @@ function dialogue:update(dt)
 end
 
 function dialogue:insert(text) 
-    table.insert(dialogue.text, text)
-    dialogue.showText = true
+    if not debug then
+        table.insert(dialogue.text, text)
+        dialogue.showText = true
+    end
 end
 function dialogue:next() 
     if not (dialogue.text[2] == nil) then
