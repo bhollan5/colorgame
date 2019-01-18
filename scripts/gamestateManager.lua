@@ -43,8 +43,8 @@ function changeColorScheme(newState)
         backgroundColor = chillyGrayRGB
         solidColor = whiteRGB
         bouncyColor = chillyBlueRGB
-        stickyColor = chillyPurpleRGB
-        deathColor = chillyGreenRGB
+        stickyColor = chillyGreenRGB
+        deathColor = chillyPurpleRGB
     end
     love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])
 
