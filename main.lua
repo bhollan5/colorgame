@@ -115,7 +115,7 @@ function cameraFollow()
     if screenLock < (piet.deathHeight) then
         love.graphics.translate(-piet.x + w / 2, (-piet.y + h / 2) + (world.transitionHeight))
     else
-        love.graphics.translate(-piet.x + w / 2, -(piet.deathHeight - h))
+        love.graphics.translate(-piet.x + w / 2, -(piet.deathHeight - h) + (world.transitionHeight))
     end
 end
 

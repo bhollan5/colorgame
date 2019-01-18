@@ -86,7 +86,10 @@ function piet:update(dt)
     end
 
     if self.won then 
-        changeGameState(world.nextLevel)
+        world.isTransitioningUp = true
+        world.transitionBuffer = 1.5 -- In seconds
+        changeColorScheme(world.nextLevel) -- Found in gamestateManager
+        
         self.won = false
         return 
     end

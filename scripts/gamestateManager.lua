@@ -29,6 +29,23 @@ function changeGameState(newState)
         level2:load()
         piet:load()
     end
-
     love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])
+end
+
+function changeColorScheme(newState) 
+    if newState == 'lvl1' then 
+        backgroundColor = whiteRGB
+        solidColor = blackRGB
+        bouncyColor = blueRGB
+        stickyColor = yellowRGB
+        deathColor = redRGB
+    elseif newState == 'lvl2' or newState == 'debugLevel' then 
+        backgroundColor = chillyGrayRGB
+        solidColor = whiteRGB
+        bouncyColor = chillyBlueRGB
+        stickyColor = chillyPurpleRGB
+        deathColor = chillyGreenRGB
+    end
+    love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])
+
 end

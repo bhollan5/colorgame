@@ -2,16 +2,12 @@ level2 = {}
 
 function level2:load()
 
+    world:fadeIn()
+
     --piet.startPos = {0 * 16, -0.5 * 16}
 
     dialogue:insert('Ben holland is a smelly boy')
-    gamestate = "lvl2"
-
-    backgroundColor = chillyGrayRGB
-    solidColor = whiteRGB
-    bouncyColor = chillyBlueRGB
-    stickyColor = chillyPurpleRGB
-    deathColor = chillyGreenRGB
+    world.nextLevel = "lvl3"
 
     --starting platform beginning
     bouncy:newBlock(-1, 0, 8, 1)

@@ -23,7 +23,10 @@ world.gravity = {
 
 world.nextLevel = "lvl2"                -- This gets loaded when you hit the goal
 
-world.isTransitioningDown = false   -- Marks whether the game is transitioning in or out, a process for which the game pauses
+world.isTransitioningDown = false   -- Marks whether the game is transitioning in, a process for which the game pauses
+world.isTransitioningUp = false     -- Marks whether the game is transitioning out, a process for which the game pauses
+world.transitionBuffer = 0          -- keeps track of time before transition
+
 world.transitionHeight = 0      -- Marks the height of the camera as it descends on a level,
 
 function world:load()
@@ -63,6 +66,17 @@ function world:update(dt)
             self.isTransitioningDown = false
         end
         self.transitionHeight = ((self.transitionHeight) * (.95))
+    elseif self.isTransitioningUp then
+        if (self.transitionHeight < -50000) then
+            self.isTransitioningUp = false
+            self.transitionHeight = 0
+            changeGameState(world.nextLevel)
+        end
+        if self.transitionBuffer > 0 then 
+            self.transitionBuffer = self.transitionBuffer - (1 * dt)
+        else
+            self.transitionHeight = -math.abs((math.abs(self.transitionHeight) + 1) * (1.1)) -- makes a kind of quadratic curve, an ease in 
+        end
     end
     
 end
@@ -172,7 +186,7 @@ function preSolveCollisionCheck(aType, bType, x, y)
         piet.dead = true
     end
 
-    if (aType == "goal" and bType == "piet") then
+    if (aType == "goal" and bType == "piet") and not piet.won then
         piet.won = true
         
     end
@@ -219,8 +233,10 @@ function drawDebug() -- Used to output some debug values on screen
         "Collision A type: " .. debug_lastCollisionA,
         "Collision B type: " .. debug_lastCollisionB,
         "piet.won: " .. hasWonString,
-        "gamestate:  " .. gamestate
+        "gamestate:  " .. gamestate,
+        "transitionBuffer" .. world.transitionBuffer
     }
+    
     local printoutColors = { 'death', 'bouncy', 'sticky', 'solid'}
     for i in ipairs(debugPrintouts) do
         drawColor(printoutColors[(i % 4) + 1]) -- just for prettiness!!
