@@ -3,6 +3,8 @@ require "scripts/particles"
 
 piet = {}
 
+piet.movement = {}
+
 piet.startPos = {3 * 16, 8 * 16 }
 piet.deathHeight = 60 -- in 16 px units
 piet.deathHeight = piet.deathHeight * 16
@@ -15,14 +17,15 @@ piet.xVel = 0
 piet.isGrounded = true
 piet.hasDouble = true
 piet.upKeyBuffer = true
-piet.isSticky = false
-piet.isBouncy = false
-piet.isNormal = false
+piet.isSticky = false   
+piet.isBouncy = false -- the only purpose for this is for particle effects
+piet.isNormal = false   -- ^^ same with this
 piet.dead =  false
 piet.won = false                -- Triggered when piet wins a level
+piet.wallJump = false
+piet.wallJumpR = false
+piet.wallJumpL = false
 piet.hasDied = false
-piet.wallJumpLeft = false
-piet.wallJumpRight = false
 
 piet.spd = 200
 piet.jumpHeight = -400
@@ -134,6 +137,13 @@ function piet:update(dt)
         self.upKeyBuffer = true
     end
 
+    if (self.wallJump) then
+        if (love.keyboard.isDown("space") and (self.wallJumpR)) then
+            self.body:applyLinearImpulse(250, self.jumpHeight)
+        elseif (love.keyboard.isDown("space") and (self.wallJumpL)) then
+            self.body:applyLinearImpulse(-250, self.jumpHeight)
+        end
+    end
     
 
 end
@@ -198,19 +208,7 @@ function piet:draw()
 
 end
 
-function piet:collisions()
-    self.isGrounded = true
-    for i, coll in ipairs(collisions) do 
-        if coll.normal.x == 1 then
-            self.isGrounded = false
-            self.wallJumpLeft = true
-        elseif coll.normal.x == -1 then
-            self.isGrounded = false
-            self.wallJumpRight = true
-        end
-    end
-end
-
 function piet:death() 
     self.dead = true
 end
+
