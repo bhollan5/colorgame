@@ -57,13 +57,15 @@ function level2:load()
     --sideways "T" piece
     sticky:newBlock(5, -15, 2, 1)
     death:newBlock(7, -15, 1, 1)
-    sticky:newBlock(8, -15, 12, 1)
+    sticky:newBlock(8, -15, 8, 1)
+    bouncy:newBlock(16, -15, 3, 1)
+    sticky:newBlock(19, -15, 1, 1)
     solid:newBlock(20, -15, 1, 1)
 
     --upwards piece in the "T", listed bottom to top
-    sticky:newBlock(20, -18, 1, 3)
-    bouncy:newBlock(20, -19, 1, 1)
-    death:newBlock(20, -20, 1, 1)
+    sticky:newBlock(20, -16, 1, 1)
+    bouncy:newBlock(20, -17, 1, 1)
+    death:newBlock(20, -18, 1, 1)
     --end
 
     --downwards piece in the "T", listed top to bottom
@@ -76,8 +78,8 @@ function level2:load()
     bouncy:newBlock(37, -19, 3, 1)
     solid:newBlock(36, -19, 1, 1)
     sticky:newBlock(35, -19, 1, 1)
-    bouncy:newBlock(28, -19, 7, 1)
-    death:newBlock(27, -19, 1, 1)
+    bouncy:newBlock(29, -19, 6, 1)
+    sticky:newBlock(28, -19, 1, 1)
 
     --vertical branch
     bouncy:newBlock(35, -22, 1, 3)
@@ -94,7 +96,8 @@ function level2:load()
     --end "T" piece
 
     --2nd large sticky angle shape
-    sticky:newBlock(0, -34, 4, 9)
+    bouncy:newBlock(0, -34, 1, 9)
+    sticky:newBlock(1, -34, 3, 9)
     solid:newBlock(5, -29, 4, 4)
     sticky:newBlock(4, -34, 5, 4)
     --end 
@@ -104,11 +107,11 @@ function level2:load()
     --end platform
 
     --top platform 
-    bouncy:newBlock(0, -36, 14, 1)
+    bouncy:newBlock(0, -38, 14, 1)
     --end
 
     --exit
-    solid:newBlock(6, -41, 3, 3)
+    solid:newBlock(6, -43, 3, 3)
     --end
 
 end

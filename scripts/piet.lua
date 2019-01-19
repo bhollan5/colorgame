@@ -1,5 +1,6 @@
 require "scripts/particles"
 
+
 piet = {}
 
 piet.startPos = {3 * 16, 8 * 16 }
@@ -20,9 +21,13 @@ piet.isNormal = false
 piet.dead =  false
 piet.won = false                -- Triggered when piet wins a level
 piet.hasDied = false
+piet.wallJumpLeft = false
+piet.wallJumpRight = false
 
 piet.spd = 200
-piet.jumpHeight = -500
+piet.jumpHeight = -400
+piet.wallJumpHeight = -10
+
 
 
 function piet:load()
@@ -91,9 +96,9 @@ function piet:update(dt)
         return 
     end
 
-    if love.keyboard.isDown("left") then
+    if love.keyboard.isDown("a") then
         self.body:setLinearVelocity(-self.spd, self.yVel)
-    elseif love.keyboard.isDown("right") then
+    elseif love.keyboard.isDown("d") then
         self.body:setLinearVelocity(self.spd, self.yVel)
     elseif self.isGrounded == false then 
         self.body:setLinearVelocity(0, self.yVel)
@@ -101,7 +106,7 @@ function piet:update(dt)
         self.body:setLinearVelocity(self.xVel, self.yVel)
     end
 
-    if love.keyboard.isDown("up") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
+    if love.keyboard.isDown("w") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
 
         if (self.isGrounded) then
             self.body:applyLinearImpulse(0, self.jumpHeight)
@@ -115,24 +120,22 @@ function piet:update(dt)
     end
 
     -- Handling sticky contact physics
-    if love.keyboard.isDown("up") and ((self.isSticky) and (self.isGrounded)) then
+    if love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded)) then
         self.body:applyLinearImpulse(0, halfJump)
-    elseif not (love.keyboard.isDown("up") and ((self.isSticky) and (self.isGrounded))) then
-        if love.keyboard.isDown("up") and (self.isSticky) then
+    elseif not (love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded))) then
+        if (love.keyboard.isDown("d") and love.keyboard.isDown("left")) and (self.isSticky) then 
+            self.body:applyLinearImpulse(-500, halfJump)
+        elseif love.keyboard.isDown("w") and (self.isSticky) then
             self.body:setLinearVelocity(self.xVel, -self.spd)
-        elseif not (love.keyboard.isDown("up") and (self.isSticky)) then
-            if love.keyboard.isDown("left") and (self.isSticky) then
-                self.body:setLinearVelocity(-self.spd, self.yVel)
-            elseif not (love.keyboard.isDown("left") and (self.isSticky)) then
-                if love.keyboard.isDown("right") and (self.isSticky) then
-                    self.body:setLinearVelocity(self.spd, self.yVel)
-                end
-            end
         end
+    
     end
-    if not love.keyboard.isDown("up") then
+    if not love.keyboard.isDown("w") then
         self.upKeyBuffer = true
     end
+
+    
+
 end
 
 function piet:draw()
@@ -193,6 +196,19 @@ function piet:draw()
     drawColor('solid')
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
+end
+
+function piet:collisions()
+    self.isGrounded = true
+    for i, coll in ipairs(collisions) do 
+        if coll.normal.x == 1 then
+            self.isGrounded = false
+            self.wallJumpLeft = true
+        elseif coll.normal.x == -1 then
+            self.isGrounded = false
+            self.wallJumpRight = true
+        end
+    end
 end
 
 function piet:death() 
