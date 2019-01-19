@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'title' -- Keeps track of what context we're in!
+gamestate = 'lvl2' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
@@ -46,6 +46,14 @@ function love.load() -- Runs at the start of our program
     blackRGB = {0, 0, 0}
     whiteRGB = {250/256,250/256,250/256}
 
+    -- POPPY, CANDY SCHEME:
+
+    candyBackground = { 186 / 255, 183 / 255, 215 / 255 }
+    candyRedRGB = { 220 / 255, 121 / 255, 154 / 255 }
+    candyYellowRGB = { 239 / 255, 215 / 255, 59 / 255 }
+    candyBlueRGB = { 129 / 255, 127 / 255, 236 / 255 }
+    candyBlackRGB = { 0,0,0 }
+
     -- DARK, CHILLY COLOR SCHEME:
     chillyGrayRGB = {63/255,63/255,63/255}
     chillyBlueRGB = { 129 / 255, 127 / 255, 236 / 255 }
@@ -78,6 +86,7 @@ function love.load() -- Runs at the start of our program
     -- ##          LOAD FUNCS:          ##
     -- ###################################
 
+    changeColorScheme(gamestate)
     changeGameState(gamestate) -- Looking for this function? Check scripts/gamestateManager.lua
 end
 

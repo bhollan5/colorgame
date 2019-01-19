@@ -40,11 +40,11 @@ function changeColorScheme(newState)
         stickyColor = yellowRGB
         deathColor = redRGB
     elseif newState == 'lvl2' or newState == 'debugLevel' then 
-        backgroundColor = chillyGrayRGB
-        solidColor = whiteRGB
-        bouncyColor = chillyBlueRGB
-        stickyColor = chillyYellowRGB
-        deathColor = chillyRedRGB
+        backgroundColor = candyBackground
+        solidColor = candyBlackRGB
+        bouncyColor = candyBlueRGB
+        stickyColor = candyYellowRGB
+        deathColor = candyRedRGB
     end
     love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])
 

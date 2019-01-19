@@ -6,6 +6,7 @@ require "scripts/blockMaterials/solid_floor"
 require "scripts/blockMaterials/goal"
 require "scripts/particles"
 
+
 require "scripts/levels/level1"
 require "scripts/levels/debugLevel"
 require "scripts/levels/level2"
@@ -224,6 +225,10 @@ function drawDebug() -- Used to output some debug values on screen
     if piet.won then 
         hasWonString = "true"
     end
+    local hasWallJumpLeft = "false"
+    if piet.wallJumpLeft then
+        hasWallJumpLeft = "true"
+    end
 
 
     local debugPrintouts = { -- This should hold a series of strings, to be printed out
@@ -232,6 +237,7 @@ function drawDebug() -- Used to output some debug values on screen
         "piet.hasDouble:  " .. hasDoubleString,
         "Collision A type: " .. debug_lastCollisionA,
         "Collision B type: " .. debug_lastCollisionB,
+        "piet.wallJumpLeft: " .. hasWallJumpLeft,
         "piet.won: " .. hasWonString,
         "gamestate:  " .. gamestate,
         "transitionBuffer" .. world.transitionBuffer

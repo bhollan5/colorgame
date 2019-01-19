@@ -36,7 +36,6 @@ function bouncy:newBlock(x, y, w, h)
     bouncyStructure.w = width
     bouncyStructure.h = height
     bouncyStructure.fixture:setUserData("bouncy")
-
     bouncyStructure.fixture:setRestitution(0.6)
 
     table.insert(self.blocks, bouncyStructure)
