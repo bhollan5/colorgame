@@ -104,7 +104,7 @@ function level2:load()
     --end
 
     --exit
-    solid:newBlock(6, -41, 3, 3)
+    goal:newBlock(6, -40)
     --end
 
 end

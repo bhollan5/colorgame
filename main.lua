@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'lvl1' -- Keeps track of what context we're in!
+gamestate = 'title' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
@@ -51,6 +51,10 @@ function love.load() -- Runs at the start of our program
     chillyBlueRGB = { 129 / 255, 127 / 255, 236 / 255 }
     chillyPurpleRGB = { 207 / 255, 125 / 255, 221 / 255 }
     chillyGreenRGB = { 167 / 255, 228 / 255, 188 / 255 }
+
+    chillyRedRGB = { 160 / 255, 41 /255, 63 / 255}
+    chillyPinkRGB = { 228 / 255, 167/255, 222/255}
+    chillyYellowRGB = { 228 / 255, 222 /255, 167 / 255 }
 
     -- Initializing these colors with the Mondrian scheme:
     backgroundColor = whiteRGB

@@ -55,8 +55,8 @@ function level1:load()
     death:newBlock(80, 27, 1, 1)
     bouncy:newBlock(82, 27, 8, 1)
     
-    --exit block
-    goal:newBlock(69, 32, 3, 3)
+    --exit block 
+    goal:newBlock(69, 32)
 
     solid:newBlock(67, 36, 8, 1)
     bouncy:newBlock(76, 36, 1, 1)
