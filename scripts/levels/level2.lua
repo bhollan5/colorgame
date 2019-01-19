@@ -6,7 +6,7 @@ function level2:load()
 
     piet.startPos = {1 * 16, -3 * 16}
 
-    dialogue:insert('Ben holland is a smelly boy')
+    dialogue:insert('Mondrian tried to use pure red, yellow and blue colors! \n\n But what fun is that?')
     world.nextLevel = "lvl3"
 
     --black snakey platforms
@@ -30,7 +30,7 @@ function level2:load()
     solid:newBlock(35, 11, 15, 13) -- THIS SHOuLD BE DEATH, when sticky above is programmed
     bouncy:newBlock(52, 4, 9, 20)
 
-    -- second snakey black platforms
+    -- second snakey black platform things
     solid:newBlock(63, 6, 4, 14)
     death:newBlock(63, 22, 4, 4)
     solid:newBlock(63, 28, 4, 2)
@@ -46,8 +46,22 @@ function level2:load()
     death:newBlock(101, 14, 4, 4)
     solid:newBlock(101, 20, 4, 10)
 
-    -- big blue block
+    -- big blue block + movables
     bouncy:newBlock(75, 4, 24, 20)
+    solid:newMovableBlock(78, 0, 2, 2)
+
+    -- UPPER LEVEL, from RIGHT TO LEFT
+    bouncy:newBlock(67, -12, 7, 7)
+    death:newBlock(63, -6, 2, 2)
+    sticky:newBlock(26, -18, 37, 12)
+    death:newBlock(24, -20, 2, 2)
+    death:newBlock(22, -22, 2, 2)
+    bouncy:newBlock(15, -20, 7, 7)
+    death:newBlock(13, -13, 2, 2)
+    solid:newBlock(8, -27, 7, 7)
+
+    goal:newBlock(9, -31)
+
 
     
 

@@ -2,9 +2,18 @@ solid = {}
 
 solid.blocks = {}
 solid.movingBlocks = {}
+solid.movableBlocks = {}
 
 function solid:load()
     
+end
+
+function solid:reset()
+    -- In case the player messed up the movable blocks, this resets them
+    for i in ipairs(self.movableBlocks) do
+        self.movableBlocks[i].body:setPosition(self.movableBlocks[i].x, self.movableBlocks[i].y)
+        self.movableBlocks[i].body:setAngle(0)
+    end
 end
 
 function solid:clear()
@@ -38,6 +47,28 @@ function solid:newBlock(x, y, w, h)
     solidStructure.fixture:setUserData("solid")
 
     table.insert(self.blocks, solidStructure)
+end
+
+function solid:newMovableBlock(x, y, w, h)
+    width = w * gridSize
+    height = h * gridSize
+
+    xPos = (x * gridSize) + (width / 2)
+    yPos = (y * gridSize) + (height / 2)
+
+    local solidStructure = {} -- defining a new structure, which we'll later be able to pass into our table
+    solidStructure.body = love.physics.newBody(world.world, xPos, yPos, "dynamic", 0, 100)
+    solidStructure.body:setPosition(xPos, yPos)
+    solidStructure.shape = love.physics.newRectangleShape(width, height)
+    solidStructure.fixture = love.physics.newFixture(solidStructure.body, solidStructure.shape)
+    solidStructure.fixture:setFriction(1)
+    solidStructure.x = xPos
+    solidStructure.y = yPos
+    solidStructure.w = width
+    solidStructure.h = height
+    solidStructure.fixture:setUserData("solid")
+
+    table.insert(self.movableBlocks, solidStructure)
 end
 
 function solid:newMovingBlock(xStart, yStart, w, h, xEnd, yEnd, oneWayTripTime)
@@ -75,6 +106,7 @@ end
 
 function solid:update(dt) 
     
+    --MOVING BLOCKS LOGIC:
     -- Iterating through our moving blocks, to move each one: 
     for i in ipairs(solid.movingBlocks) do
 
@@ -124,5 +156,9 @@ function solid:draw()
     for i in ipairs(self.movingBlocks) do
         drawColor('solid')
         love.graphics.polygon("fill", self.movingBlocks[i].body:getWorldPoints(self.movingBlocks[i].shape:getPoints()))
+    end
+    for i in ipairs(self.movableBlocks) do
+        drawColor('solid')
+        love.graphics.polygon("fill", self.movableBlocks[i].body:getWorldPoints(self.movableBlocks[i].shape:getPoints()))
     end
 end
