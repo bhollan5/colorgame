@@ -2,116 +2,67 @@ level2 = {}
 
 function level2:load()
 
-    piet.startPos = {0 * 16, -3 * 16}
+    world:fadeIn()
 
-    dialogue:insert('Ben holland is a smelly boy')
-    gamestate = "lvl2"
+    piet.startPos = {1 * 16, -3 * 16}
 
-    backgroundColor = chillyGrayRGB
-    solidColor = whiteRGB
-    bouncyColor = chillyBlueRGB
-    stickyColor = chillyPurpleRGB
-    deathColor = chillyGreenRGB
+    dialogue:insert('Mondrian tried to use pure red, yellow and blue colors! \n\n But what fun is that?')
+    world.nextLevel = "lvl3"
 
-    --starting platform beginning
-    solid:newBlock(-1, 0, 3, 1)
-    bouncy:newBlock(2, 0, 5, 1)
-    solid:newBlock(7, 0, 1, 1)
-    bouncy:newBlock(8, 0, 12, 1)
-    death:newBlock(20, 0, 1, 1)
-    sticky:newBlock(21, 0, 1, 1)
-    bouncy:newBlock(22, 0, 3, 1)
-    solid:newBlock(25, 0, 1, 1)
+    --black snakey platforms
+    solid:newBlock(0, 0, 8, 2)
+    death:newBlock(10, 0, 2, 2)
+    solid:newBlock(10, 4, 2, 20)
+    sticky:newBlock(10, 26, 2, 2)
+    solid:newBlock(14, 26, 11, 2)
+    death:newBlock(27, 26, 2, 2)
 
-    --this is the vertical piece directly below the second white block
-    bouncy:newBlock(25, 1, 1, 3)
-    sticky:newBlock(25, 4, 1, 1)
-    bouncy:newBlock(25, 5, 1, 2)
-    death:newBlock(25, 7, 1, 1)
-    --end
+    solid:newBlock(31, 7, 2, 21)
+    sticky:newBlock(31, 3, 2, 2)
 
-    bouncy:newBlock(26, 0, 2, 1)
-    death:newBlock(28, 0, 1, 1)
-    --end starting platform
+    bouncy:newBlock(35, 26, 2, 2)
+    solid:newBlock(39, 26, 11, 2)
+    sticky:newBlock(52, 26, 2, 2)
+    solid:newBlock(56, 26, 5, 2)
 
-    --large sticky angle shape
-    sticky:newBlock(31, -3, 9, 4)
-    solid:newBlock(31, -8, 4, 4)
-    sticky:newBlock(36, -8, 4, 5)
-    --end angle shape
+    -- big platforms surrounded by snakey platforms
+    bouncy:newBlock(14, 0, 15, 24)
+    solid:newBlock(35, 11, 15, 13) -- THIS SHOuLD BE DEATH, when sticky above is programmed
+    bouncy:newBlock(52, 4, 9, 20)
 
-    --first platform directly above the starting platform
-    death:newBlock(4, -8, 1, 1)
-    bouncy:newBlock(5, -8, 4, 1)
-    solid:newBlock(9, -8, 1, 1)
-    bouncy:newBlock(10, -8, 1, 1)
-    death:newBlock(11, -8, 1, 1)
-    --end platform
+    -- second snakey black platform things
+    solid:newBlock(63, 6, 4, 14)
+    death:newBlock(63, 22, 4, 4)
+    solid:newBlock(63, 28, 4, 2)
 
-    --small right angle piece on very left of the map
-    bouncy:newBlock(-3, -16, 1, 1)
-    sticky:newBlock(-2, -16, 2, 1)
-    sticky:newBlock(0, -16, 1, 4)
-    --end angle
+    solid:newBlock(69, 6, 4, 2)
+    sticky:newBlock(69, 10, 4, 4)
+    solid:newBlock(69, 16, 4, 14)
 
-    --sideways "T" piece
-    sticky:newBlock(5, -15, 2, 1)
-    death:newBlock(7, -15, 1, 1)
-    sticky:newBlock(8, -15, 8, 1)
-    bouncy:newBlock(16, -15, 3, 1)
-    sticky:newBlock(19, -15, 1, 1)
-    solid:newBlock(20, -15, 1, 1)
+    solid:newBlock(75, 26, 18, 4)
+    sticky:newBlock(95, 26, 4, 4)
 
-    --upwards piece in the "T", listed bottom to top
-    sticky:newBlock(20, -16, 1, 1)
-    bouncy:newBlock(20, -17, 1, 1)
-    death:newBlock(20, -18, 1, 1)
-    --end
+    solid:newBlock(101, 6, 4, 6)
+    death:newBlock(101, 14, 4, 4)
+    solid:newBlock(101, 20, 4, 10)
 
-    --downwards piece in the "T", listed top to bottom
-    sticky:newBlock(20, -14, 1, 5)
-    bouncy:newBlock(20, -9, 1, 1)
-    --end
+    -- big blue block + movables
+    bouncy:newBlock(75, 4, 24, 20)
+    solid:newMovableBlock(78, 0, 2, 2)
 
-    --the "backwards 1" piece. i have no clue what to call this. 
-    --this is the base of the piece
-    bouncy:newBlock(37, -19, 3, 1)
-    solid:newBlock(36, -19, 1, 1)
-    sticky:newBlock(35, -19, 1, 1)
-    bouncy:newBlock(29, -19, 6, 1)
-    sticky:newBlock(28, -19, 1, 1)
+    -- UPPER LEVEL, from RIGHT TO LEFT
+    bouncy:newBlock(67, -12, 7, 7)
+    death:newBlock(63, -6, 2, 2)
+    sticky:newBlock(26, -18, 37, 12)
+    death:newBlock(24, -20, 2, 2)
+    death:newBlock(22, -22, 2, 2)
+    bouncy:newBlock(15, -20, 7, 7)
+    death:newBlock(13, -13, 2, 2)
+    solid:newBlock(8, -27, 7, 7)
 
-    --vertical branch
-    bouncy:newBlock(35, -22, 1, 3)
-    death:newBlock(35, -23, 1, 1)
-    bouncy:newBlock(35, -25, 1, 2)
-    solid:newBlock(35, -26, 1, 1)
-    bouncy:newBlock(35, -28, 1, 2)
-    sticky:newBlock(35, -29, 1, 1)
+    goal:newBlock(9, -31)
 
-    --horizontal branch
-    bouncy:newBlock(36, -26, 5, 1)
-    death:newBlock(41, -26, 1, 1)
-    bouncy:newBlock(42, -26, 3, 1)
-    --end "T" piece
 
-    --2nd large sticky angle shape
-    bouncy:newBlock(0, -34, 1, 9)
-    sticky:newBlock(1, -34, 3, 9)
-    solid:newBlock(5, -29, 4, 4)
-    sticky:newBlock(4, -34, 5, 4)
-    --end 
-
-    --moving platform
-    solid:newMovingBlock(24, -25, 3, 1, 24, -37, 2)
-    --end platform
-
-    --top platform 
-    bouncy:newBlock(0, -38, 14, 1)
-    --end
-
-    --exit
-    solid:newBlock(6, -43, 3, 3)
-    --end
+    
 
 end

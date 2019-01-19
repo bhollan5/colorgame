@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'title' -- Keeps track of what context we're in!
+gamestate = 'lvl2' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
@@ -46,11 +46,23 @@ function love.load() -- Runs at the start of our program
     blackRGB = {0, 0, 0}
     whiteRGB = {250/256,250/256,250/256}
 
+    -- POPPY, CANDY SCHEME:
+
+    candyBackground = { 186 / 255, 183 / 255, 215 / 255 }
+    candyRedRGB = { 220 / 255, 121 / 255, 154 / 255 }
+    candyYellowRGB = { 239 / 255, 215 / 255, 59 / 255 }
+    candyBlueRGB = { 129 / 255, 127 / 255, 236 / 255 }
+    candyBlackRGB = { 0,0,0 }
+
     -- DARK, CHILLY COLOR SCHEME:
     chillyGrayRGB = {63/255,63/255,63/255}
     chillyBlueRGB = { 129 / 255, 127 / 255, 236 / 255 }
     chillyPurpleRGB = { 207 / 255, 125 / 255, 221 / 255 }
     chillyGreenRGB = { 167 / 255, 228 / 255, 188 / 255 }
+
+    chillyRedRGB = { 160 / 255, 41 /255, 63 / 255}
+    chillyPinkRGB = { 228 / 255, 167/255, 222/255}
+    chillyYellowRGB = { 228 / 255, 222 /255, 167 / 255 }
 
     -- Initializing these colors with the Mondrian scheme:
     backgroundColor = whiteRGB
@@ -74,6 +86,7 @@ function love.load() -- Runs at the start of our program
     -- ##          LOAD FUNCS:          ##
     -- ###################################
 
+    changeColorScheme(gamestate)
     changeGameState(gamestate) -- Looking for this function? Check scripts/gamestateManager.lua
 end
 
@@ -115,7 +128,7 @@ function cameraFollow()
     if screenLock < (piet.deathHeight) then
         love.graphics.translate(-piet.x + w / 2, (-piet.y + h / 2) + (world.transitionHeight))
     else
-        love.graphics.translate(-piet.x + w / 2, -(piet.deathHeight - h))
+        love.graphics.translate(-piet.x + w / 2, -(piet.deathHeight - h) + (world.transitionHeight))
     end
 end
 

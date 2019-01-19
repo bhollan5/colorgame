@@ -68,6 +68,7 @@ function piet:update(dt)
         self.body:setLinearVelocity(0, 0)
         self.xVel, self.yVel = self.body:getLinearVelocity()
         piet:draw()
+        solid:reset()
         self.dead = false
         
         -- dialogue:
@@ -94,7 +95,10 @@ function piet:update(dt)
     end
 
     if self.won then 
-        changeGameState(world.nextLevel)
+        world.isTransitioningUp = true
+        world.transitionBuffer = 1.5 -- In seconds
+        changeColorScheme(world.nextLevel) -- Found in gamestateManager
+        
         self.won = false
         return 
     end
