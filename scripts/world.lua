@@ -67,10 +67,9 @@ function world:update(dt)
             self.isTransitioningDown = false
         end
         self.transitionHeight = ((self.transitionHeight) * (.95))
-    elseif self.isTransitioningUp then
-        if (self.transitionHeight < -50000) then
+    elseif self.isTransitioningUp and not self.isTransitioningDown then
+        if (self.transitionHeight < -30000) then
             self.isTransitioningUp = false
-            self.transitionHeight = 0
             changeGameState(world.nextLevel)
         end
         if self.transitionBuffer > 0 then 
@@ -105,8 +104,9 @@ function world:draw()
 end
 
 function world:fadeIn()
-    self.isTransitioningDown = true 
+    print("what transition height now tho")
     self.transitionHeight = 500
+    self.isTransitioningDown = true 
 end
 
 -- contact behavior
@@ -240,12 +240,12 @@ function drawDebug() -- Used to output some debug values on screen
         "piet.wallJumpLeft: " .. hasWallJumpLeft,
         "piet.won: " .. hasWonString,
         "gamestate:  " .. gamestate,
-        "transitionBuffer" .. world.transitionBuffer
+        "transitionHeight: " .. world.transitionHeight
     }
     
     local printoutColors = { 'death', 'bouncy', 'sticky', 'solid'}
     for i in ipairs(debugPrintouts) do
         drawColor(printoutColors[(i % 4) + 1]) -- just for prettiness!!
-        love.graphics.print(debugPrintouts[i], piet.x - (w / 2) + 10, piet.y - (h / 2) + (i * 20))
+        love.graphics.print(debugPrintouts[i], piet.x - (w / 2) + 10, (piet.y - (h / 2) + (i * 20)) - world.transitionHeight)
     end
 end 
