@@ -127,12 +127,13 @@ end
 
 function beginContactCollisionCheck(aType, bType, x, y) 
 
-    if ((aType == "solid" or aType == "bouncy" or aType == "sticky") and bType == "piet") then
+    if ((aType == "solid" or aType == "bouncy") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
         end
     end
+    
 end
 
 
@@ -143,6 +144,7 @@ function endContact(a, b, coll)
     piet.isNormal = false
     piet.isBouncy = false
     piet.isSticky = false
+    piet.wallJump = false
     --piet.fixture:setRestitution(0)
 
 end
@@ -161,25 +163,25 @@ function preSolveCollisionCheck(aType, bType, x, y)
         piet.isNormal = false
         piet.isBouncy = false
         piet.isSticky = false
-    elseif persisting > 0.5 then
+    elseif persisting > 0 then
         if (aType == "sticky" and bType == "piet") then
-            if ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
+            if (x == 0 and y == -1) then
+                piet.isGrounded = true
+                piet.hasDouble = true
+                piet.isSticky = true
+            elseif (x == -1 and y == 0) then
                 piet.isGrounded = false
                 piet.isSticky = true
-            elseif not ((x == -1 and y == 0) or (x == 1 and y == 0) or (x == 0 and y == 1)) then
-                if (x == 0 and y == -1) then
-                    piet.isGrounded = true
-                    piet.isSticky = true
-                end
+                piet.wallJump = true
+                piet.wallJumpL = true
+                piet.xVel = 0
+            elseif (x == 1 and y == 0) then
+                piet.isGrounded = false
+                piet.isSticky = true
+                piet.wallJump = true
+                piet.wallJumpR = true
+                piet.xVel = 0
             end
-        elseif not (aType == "sticky" and bType == "piet") then
-            if (aType == "solid" and bType == "piet") then
-                if (x == 0 and y == -1) then
-                    piet.isGrounded = true
-                    piet.isNormal = true
-                end
-            end
-        
         end
         
     end
@@ -225,9 +227,9 @@ function drawDebug() -- Used to output some debug values on screen
     if piet.won then 
         hasWonString = "true"
     end
-    local hasWallJumpLeft = "false"
-    if piet.wallJumpLeft then
-        hasWallJumpLeft = "true"
+    local hasWallJump = "false"
+    if piet.wallJump then
+        hasWallJump = "true"
     end
 
 
@@ -237,7 +239,7 @@ function drawDebug() -- Used to output some debug values on screen
         "piet.hasDouble:  " .. hasDoubleString,
         "Collision A type: " .. debug_lastCollisionA,
         "Collision B type: " .. debug_lastCollisionB,
-        "piet.wallJumpLeft: " .. hasWallJumpLeft,
+        "piet.wallJump: " .. hasWallJump,
         "piet.won: " .. hasWonString,
         "gamestate:  " .. gamestate,
         "transitionHeight: " .. world.transitionHeight
