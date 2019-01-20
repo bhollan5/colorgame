@@ -27,6 +27,8 @@ piet.wallJumpR = false
 piet.wallJumpL = false
 piet.hasDied = false
 
+piet.stuckToCeiling = false     -- indicates whether Piet is stuck to the bottom of a sticky blocks
+
 piet.spd = 200
 piet.jumpHeight = -400
 piet.wallJumpHeight = -10
@@ -96,7 +98,7 @@ function piet:update(dt)
 
     if self.won then 
         world.isTransitioningUp = true
-        world.transitionBuffer = 1.5 -- In seconds
+        world.transitionBuffer = .75 -- In seconds
         changeColorScheme(world.nextLevel) -- Found in gamestateManager
         
         self.won = false
@@ -113,14 +115,15 @@ function piet:update(dt)
         self.body:setLinearVelocity(self.xVel, self.yVel)
     end
 
-    if love.keyboard.isDown("w") and (self.isGrounded or (self.hasDouble and self.upKeyBuffer)) then 
+    -- normal jump
+    if love.keyboard.isDown("w") and not self.isSticky then 
 
         if (self.isGrounded) then
             self.body:applyLinearImpulse(0, self.jumpHeight)
 
             self.isGrounded = false
             self.upKeyBuffer = false
-        else
+        elseif (self.hasDouble and self.upKeyBuffer) then
             self.body:setLinearVelocity(self.xVel, self.jumpHeight)
             self.hasDouble = false 
         end
@@ -129,16 +132,24 @@ function piet:update(dt)
     -- Handling sticky contact physics
     if love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded)) then
         self.body:applyLinearImpulse(0, halfJump)
-    elseif not (love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded))) then
-        if (love.keyboard.isDown("d") and love.keyboard.isDown("left")) and (self.isSticky) then 
-            self.body:applyLinearImpulse(-500, halfJump)
-        elseif love.keyboard.isDown("w") and (self.isSticky) then
-            self.body:setLinearVelocity(self.xVel, -self.spd)
-        end
-    
+        -- Handles going up walls
+    elseif love.keyboard.isDown("w") and (self.isSticky) then
+        self.body:setLinearVelocity(self.xVel, -self.spd)
     end
+
+    -- Sticks us to the ceiling 
+    if self.stuckToCeiling and love.keyboard.isDown("d") then
+        self.body:setLinearVelocity(self.spd, -self.spd)
+    elseif self.stuckToCeiling and love.keyboard.isDown("a") then
+        self.body:setLinearVelocity(-self.spd, -self.spd)
+    elseif self.stuckToCeiling then
+        self.body:setLinearVelocity(0, -self.spd)
+    end
+    
+    -- Keeps track of whether we let go of 'w', so we can double jump
     if not love.keyboard.isDown("w") then
         self.upKeyBuffer = true
+        self.stuckToCeiling = false
     end
 
     if (self.wallJump) then

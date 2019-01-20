@@ -104,7 +104,6 @@ function world:draw()
 end
 
 function world:fadeIn()
-    print("what transition height now tho")
     self.transitionHeight = 500
     self.isTransitioningDown = true 
 end
@@ -132,6 +131,10 @@ function beginContactCollisionCheck(aType, bType, x, y)
             piet.isGrounded = true
             piet.hasDouble = true
         end
+    end
+    if (aType == 'sticky' and bType == 'piet') and (x == 0 and y == 1) then
+        piet.isSticky = true
+        piet.stuckToCeiling = true
     end
     
 end

@@ -27,7 +27,7 @@ function level2:load()
 
     -- big platforms surrounded by snakey platforms
     bouncy:newBlock(14, 0, 15, 24)
-    solid:newBlock(35, 11, 15, 13) -- THIS SHOuLD BE DEATH, when sticky above is programmed
+    death:newBlock(35, 11, 15, 13)
     bouncy:newBlock(52, 4, 9, 20)
 
     -- second snakey black platform things
