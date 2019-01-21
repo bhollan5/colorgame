@@ -10,6 +10,7 @@ require "scripts/particles"
 require "scripts/levels/level1"
 require "scripts/levels/debugLevel"
 require "scripts/levels/level2"
+require "scripts/levels/tutorial1"
 
 world = {}
 
