@@ -4,10 +4,7 @@ function tutorial1:load()
 
     world:fadeIn()
 
-    dialogue:insert('Hi!')
-    dialogue:insert('Piet Mondrian made pictures out of colors, and then said they didn’t represent anything - they were meant to be purely abstract! ')
-    dialogue:insert('What a wacky guy!!')
-    dialogue:insert('Anyway, that lil black square there is you!! \n You can move around with the arrow keys, and jump with space!')
+    dialogue:insert('Before embarking on any new journey, it\'s important to establish a background. You gotta make sure you\'re prepared. \n\nYou gotta do your homework, you know?')
 
     world.nextLevel = "lvl2"
 
@@ -25,6 +22,8 @@ function tutorial1:load()
 
     death:newBlock(81, -10, 6, 6)
     solid:newBlock(90, -10, 24, 6)
+
+    goal:newBlock(101, -14)
 
 
 
