@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'lvl1' -- Keeps track of what context we're in!
+gamestate = 'tutorial2' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'lvl1'
@@ -93,11 +93,11 @@ end
 function love.update(dt)
     -- Calling the update functions in both of these files
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
-    if ((gamestate == 'lvl1') or (gamestate == 'debugLevel') or (gamestate == 'lvl2')) then
+    if (gamestate == 'title') then
+        title:update(dt)
+    else
         world:update(dt)
         piet:update(dt)
-    elseif(gamestate == 'title') then
-        title:update(dt)
     end
     time = time + 1
 end
@@ -106,7 +106,7 @@ function love.draw()
 
     if gamestate == 'title' then
         title:draw()
-    elseif gamestate == 'lvl1' or gamestate == 'debugLevel' or gamestate == 'lvl2' then
+    else
         -- Calling the draw functions in both of these files
         cameraFollow() 
         world:draw()

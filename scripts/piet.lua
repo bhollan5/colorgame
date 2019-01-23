@@ -28,7 +28,7 @@ piet.hasDied = false
 
 piet.stuckToCeiling = false     -- indicates whether Piet is stuck to the bottom of a sticky blocks
 
-piet.spd = 200
+piet.spd = 250
 piet.jumpHeight = -400
 piet.wallJumpHeight = -10
 
@@ -99,7 +99,7 @@ function piet:update(dt)
 
     if self.won then 
         world.isTransitioningUp = true
-        world.transitionBuffer = .75 -- In seconds
+        world.transitionBuffer = .5 -- In seconds
         changeColorScheme(world.nextLevel) -- Found in gamestateManager
         
         self.won = false
