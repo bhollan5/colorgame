@@ -126,16 +126,35 @@ end
 
 function beginContactCollisionCheck(aType, bType, x, y) 
 
-    if ((aType == "solid" or aType == "bouncy") and bType == "piet") then
+    if (aType == "sticky" and bType == "piet") then
+        if (x == 0 and y == -1) then
+            piet.isSticky = true
+            piet.isGrounded = true
+            piet.hasDouble = true
+        end
+    elseif (aType == "bouncy" and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
         end
+    elseif (aType == "solid" and bType == "piet") then
+        if (x == 0 and y == -1) then
+            piet.isNormal = true
+            piet.isGrounded = true
+            piet.hasDouble = true
+        elseif (x == -1 and y == 0) then
+            piet.isGrounded = false
+            piet.wallJump = "l"
+            piet.xVel = 0
+        elseif (x == 1 and y == 0) then
+            piet.isGrounded = false
+            piet.wallJump = "r"
+            piet.xVel = 0
+        end
+    
     end
-    if (aType == 'sticky' and bType == 'piet') and (x == 0 and y == 1) then
-        piet.isSticky = true
-        piet.stuckToCeiling = true
-    end
+
+   
     
 end
 
@@ -147,7 +166,8 @@ function endContact(a, b, coll)
     piet.isNormal = false
     piet.isBouncy = false
     piet.isSticky = false
-    piet.wallJump = false
+    piet.wallJump = "f"
+    
     --piet.fixture:setRestitution(0)
 
 end
@@ -167,35 +187,43 @@ function preSolveCollisionCheck(aType, bType, x, y)
         piet.isBouncy = false
         piet.isSticky = false
     elseif persisting > 0 then
+        
         if (aType == "sticky" and bType == "piet") then
             if (x == 0 and y == -1) then
+                piet.isSticky = true
                 piet.isGrounded = true
                 piet.hasDouble = true
-                piet.isSticky = true
-            elseif (x == -1 and y == 0) then
+            elseif ((x == -1 and y == 0) or (x == 1 and y == 0)) then
                 piet.isGrounded = false
                 piet.isSticky = true
-                piet.wallJump = true
-                piet.wallJumpL = true
+            end
+        elseif (aType == "solid" and bType == "piet") then
+            if (x == -1 and y == 0) then
+                piet.isGrounded = false
+                piet.wallJump = "l"
                 piet.xVel = 0
             elseif (x == 1 and y == 0) then
                 piet.isGrounded = false
-                piet.isSticky = true
-                piet.wallJump = true
-                piet.wallJumpR = true
+                piet.wallJump = "r"
                 piet.xVel = 0
+            elseif (x == 0 and y == -1) then
+                piet.isGrounded = true
+                piet.hasDouble = true
+                piet.isNormal = true
             end
         end
-        
-    end
-    if (aType == "death" and bType == "piet") then
-        piet.dead = true
     end
 
-    if (aType == "goal" and bType == "piet") and not piet.won then
-        piet.won = true
-        
+    if (aType == "death" and bType == "piet") then
+            piet.dead = true
     end
+    
+    if (aType == "goal" and bType == "piet") and not piet.won then
+            piet.won = true
+            
+    end
+    
+
     persisting = persisting + 0.1
 end
 
@@ -234,15 +262,20 @@ function drawDebug() -- Used to output some debug values on screen
     if piet.wallJump then
         hasWallJump = "true"
     end
+    local isStickyString = "false"
+    if piet.isSticky then
+        isStickyString = "true"
+    end
 
 
     local debugPrintouts = { -- This should hold a series of strings, to be printed out
         "Total time: " .. time,
         "piet.isGrounded:  " .. isGroundedString,
+        "piet.isSticky: " .. isStickyString,
         "piet.hasDouble:  " .. hasDoubleString,
         "Collision A type: " .. debug_lastCollisionA,
         "Collision B type: " .. debug_lastCollisionB,
-        "piet.wallJump: " .. hasWallJump,
+        "piet.wallJump: " .. piet.wallJump,
         "piet.won: " .. hasWonString,
         "gamestate:  " .. gamestate,
         "transitionHeight: " .. world.transitionHeight

@@ -11,8 +11,8 @@ piet.deathHeight = piet.deathHeight * 16
 
 piet.x = piet.startPos[1]
 piet.y = piet.startPos[2]
-piet.yVel = 0
-piet.xVel = 0
+piet.yVel = 200
+piet.xVel = 200
 
 piet.isGrounded = true
 piet.hasDouble = true
@@ -22,9 +22,8 @@ piet.isBouncy = false -- the only purpose for this is for particle effects
 piet.isNormal = false   -- ^^ same with this
 piet.dead =  false
 piet.won = false                -- Triggered when piet wins a level
-piet.wallJump = false
-piet.wallJumpR = false
-piet.wallJumpL = false
+piet.wallJump = "f"
+
 piet.hasDied = false
 
 piet.stuckToCeiling = false     -- indicates whether Piet is stuck to the bottom of a sticky blocks
@@ -44,12 +43,13 @@ function piet:load()
 
 
     self.body = love.physics.newBody(world.world, self.startPos[1], self.startPos[2], "dynamic", 0, 100)
+    --self.body:setMass(5)
     self.body:setLinearDamping(.5);
     
 
     self.shape = love.physics.newRectangleShape(16, 16)
     self.fixture = love.physics.newFixture(self.body, self.shape, 5)
-    self.fixture:setFriction(0.75)
+    self.fixture:setFriction(0.9)
     self.fixture:setUserData("piet")
 
     -- self.body:setFixedRotation( true )
@@ -60,6 +60,7 @@ end
 function piet:update(dt)
     particles:update(dt)
     local halfJump = (self.jumpHeight / 2)
+    --local nx, ny = self.x + (self.xVel * dt), self.y + (self.yVel * dt)
 
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition()
@@ -107,8 +108,10 @@ function piet:update(dt)
 
     if love.keyboard.isDown("a") then
         self.body:setLinearVelocity(-self.spd, self.yVel)
+        --self.body:applyForce(100, 0, self.x, self.y)
     elseif love.keyboard.isDown("d") then
         self.body:setLinearVelocity(self.spd, self.yVel)
+        --self.body:applyForce(100, 0, self.x, self.y)
     elseif self.isGrounded == false then 
         self.body:setLinearVelocity(0, self.yVel)
     else
@@ -116,13 +119,19 @@ function piet:update(dt)
     end
 
     -- normal jump
-    if love.keyboard.isDown("w") and not self.isSticky then 
+    if love.keyboard.isDown("w")then 
+        --print("self.wallJump")
 
         if (self.isGrounded) then
             self.body:applyLinearImpulse(0, self.jumpHeight)
 
             self.isGrounded = false
             self.upKeyBuffer = false
+        elseif (self.wallJump == "r") then
+            self.body:applyLinearImpulse(250, halfJump)
+            print("this is riiiiiiight")
+        elseif (self.wallJump == "l") then
+            self.body:applyLinearImpulse(-250, halfJump)
         elseif (self.hasDouble and self.upKeyBuffer) then
             self.body:setLinearVelocity(self.xVel, self.jumpHeight)
             self.hasDouble = false 
@@ -152,13 +161,7 @@ function piet:update(dt)
         self.stuckToCeiling = false
     end
 
-    if (self.wallJump) then
-        if (love.keyboard.isDown("space") and (self.wallJumpR)) then
-            self.body:applyLinearImpulse(250, self.jumpHeight)
-        elseif (love.keyboard.isDown("space") and (self.wallJumpL)) then
-            self.body:applyLinearImpulse(-250, self.jumpHeight)
-        end
-    end
+    
     
 
 end
@@ -172,8 +175,10 @@ function piet:draw()
         redPart:setEmissionRate(0)
         bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         bluePart:setEmissionRate(0)
-        yellowPart:setParticleLifetime(2, 5) --used to denote time on screen from minimum time alive to maximum
+        yellowPart:setParticleLifetime(2, 3) --used to denote time on screen from minimum time alive to maximum
         yellowPart:setEmissionRate(10)
+        blackPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
+        blackPart:setEmissionRate(0)
     elseif (self.isBouncy) then
         redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         redPart:setEmissionRate(0)
@@ -182,22 +187,28 @@ function piet:draw()
         bluePart:setSpeed(20, 25)
         yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         yellowPart:setEmissionRate(0)
+        blackPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
+        blackPart:setEmissionRate(0)
     elseif (self.isNormal) then
-        love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
+        
         redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         redPart:setEmissionRate(0)
         bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         bluePart:setEmissionRate(0)
         yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         yellowPart:setEmissionRate(0)
+        blackPart:setParticleLifetime(2, 3) --used to denote time on screen from minimum time alive to maximum
+        blackPart:setEmissionRate(5)
     elseif (self.dead) then
-        redPart:setParticleLifetime(1, 2) --used to denote time on screen from minimum time alive to maximum
+        redPart:setParticleLifetime(2, 3) --used to denote time on screen from minimum time alive to maximum
         redPart:setEmissionRate(15)
         redPart:setSpeed(20, 25)
         bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         bluePart:setEmissionRate(0)
         yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
         yellowPart:setEmissionRate(0)
+        blackPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
+        blackPart:setEmissionRate(0)
     
         
     end 
@@ -205,6 +216,7 @@ function piet:draw()
     love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
     love.graphics.draw(redPart, self.x, self.y, 0, 0.5, 0.5)
     love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
+    love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
     
 
         
