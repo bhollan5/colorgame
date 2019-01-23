@@ -12,6 +12,7 @@ require "scripts/levels/debugLevel"
 require "scripts/levels/level2"
 require "scripts/levels/tutorial1"
 require "scripts/levels/tutorial2"
+require "scripts/levels/tutorial3"
 
 
 world = {}

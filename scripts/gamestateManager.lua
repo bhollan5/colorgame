@@ -23,6 +23,10 @@ function changeGameState(newState)
         world:load() 
         tutorial2:load()
         piet:load()
+    elseif gamestate == 'tutorial3' then 
+        world:load() 
+        tutorial3:load()
+        piet:load()
     elseif gamestate == 'lvl1' then 
         if (not world.isInitialized) then
             world:load() 

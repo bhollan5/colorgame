@@ -9,9 +9,12 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'tutorial2' -- Keeps track of what context we're in!
+gamestate = 'tutorial3' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
+                        -- 'tutorial1'
+                        -- 'tutorial2'
+                        -- 'tutorial3'
                         -- 'lvl1'
                         -- 'lvl2'
                         -- 'debugLevel'
