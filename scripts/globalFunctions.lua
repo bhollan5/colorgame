@@ -20,7 +20,7 @@ end
 
 function drawColor(color)   -- Takes a string, changes the draw color based on that string.
                             -- Useful if you want to iterate through a table of multiple colors, like in title:draw()
-    if color == 'solid' then 
+    if color == 'solid' or color == 'air' then 
         love.graphics.setColor(solidColor[1], solidColor[2], solidColor[3], 1)
     elseif color == 'bouncy' then 
         love.graphics.setColor(bouncyColor[1], bouncyColor[2], bouncyColor[3], 1)

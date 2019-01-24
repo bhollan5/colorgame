@@ -130,6 +130,21 @@ end
 
 function beginContactCollisionCheck(aType, bType, x, y) 
 
+    if bType == 'piet' then
+        if (x == 0 and y == -1) then
+            piet.bottomContact = aType
+        end
+        if (x == 0 and y == 1) then
+            piet.topContact = aType
+        end
+        if (x == -1 and y == 0) then
+            piet.rightContact = aType
+        end
+        if (x == 1 and y == 0) then
+            piet.leftContact = aType
+        end
+    end
+
     if ((aType == "solid" or aType == "bouncy") and bType == "piet") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
@@ -153,6 +168,18 @@ function endContact(a, b, coll)
     piet.isSticky = false
     piet.wallJump = false
     --piet.fixture:setRestitution(0)
+    local x, y = coll:getNormal() 
+    local aType = a:getUserData()
+    local bType = b:getUserData()
+
+    if bType == 'piet' then
+        piet.rightContact = 'air'
+        piet.leftContact = 'air'
+        
+        piet.bottomContact = 'air'
+        piet.topContact = 'air'
+    end
+
 
 end
  
@@ -257,4 +284,17 @@ function drawDebug() -- Used to output some debug values on screen
         drawColor(printoutColors[(i % 4) + 1]) -- just for prettiness!!
         love.graphics.print(debugPrintouts[i], piet.x - (w / 2) + 10, (piet.y - (h / 2) + (i * 20)) - world.transitionHeight)
     end
+
+    -- Contact stuff:
+    drawColor('solid')
+    love.graphics.rectangle( 'fill', piet.x + (w / 2) - 96, piet.y - (h / 2) + 64, 32, 32 )
+    drawColor(piet.topContact)
+    love.graphics.print(piet.topContact, piet.x + (w / 2) - 96, piet.y - (h / 2) + 32)
+    drawColor(piet.rightContact)
+    love.graphics.print(piet.rightContact, piet.x + (w / 2) - 48, piet.y - (h / 2) + 64)
+    drawColor(piet.bottomContact)
+    love.graphics.print(piet.bottomContact, piet.x + (w / 2) - 94, piet.y - (h / 2) + 100)
+    drawColor(piet.leftContact)
+    love.graphics.print(piet.leftContact, piet.x + (w / 2) - 128, piet.y - (h / 2) + 64)
+
 end 

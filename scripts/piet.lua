@@ -14,6 +14,11 @@ piet.y = piet.startPos[2]
 piet.yVel = 0
 piet.xVel = 0
 
+piet.topContact = "air"
+piet.rightContact = "air"
+piet.bottomContact = "air"
+piet.leftContact = "air"
+
 piet.isGrounded = true
 piet.hasDouble = true
 piet.upKeyBuffer = true
@@ -33,7 +38,7 @@ piet.spd = 250
 piet.jumpHeight = -400
 piet.wallJumpHeight = -10
 
-
+piet.particles = {}
 
 function piet:load()
     particles.color = {}
@@ -52,6 +57,15 @@ function piet:load()
     self.fixture:setFriction(0.75)
     self.fixture:setUserData("piet")
 
+    local particleImage = love.graphics.newImage("assets/particles/white.png")
+
+    self.particles = love.graphics.newParticleSystem( particleImage, 10 )
+    self.particles:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
+	self.particles:setEmissionRate(5)
+	self.particles:setSizeVariation(1)
+    self.particles:setLinearAcceleration(20, -20, 20, 20) -- Random movement in all directions.
+	self.particles:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to transparency.
+
     -- self.body:setFixedRotation( true )
 
     --self.fixture:setRestitution(0.9)
@@ -60,6 +74,8 @@ end
 function piet:update(dt)
     particles:update(dt)
     local halfJump = (self.jumpHeight / 2)
+
+    self.particles:update(dt)
 
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition()
@@ -164,60 +180,8 @@ function piet:update(dt)
 end
 
 function piet:draw()
-
-    
-    
-    if (self.isSticky) then
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-        yellowPart:setParticleLifetime(2, 5) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(10)
-    elseif (self.isBouncy) then
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(1, 2) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(15)
-        bluePart:setSpeed(20, 25)
-        yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(0)
-    elseif (self.isNormal) then
-        love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-        yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(0)
-    elseif (self.dead) then
-        redPart:setParticleLifetime(1, 2) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(15)
-        redPart:setSpeed(20, 25)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-        yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(0)
-    
-        
-    end 
-
-    love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
-    love.graphics.draw(redPart, self.x, self.y, 0, 0.5, 0.5)
-    love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
-    
-
-        
-    
-
-    -- if (contactType == "sticky") then
-
-    -- elseif contactType == "normal" then
-
-    -- elseif
-
-
-    
+    drawColor('sticky')
+    love.graphics.draw(self.particles, self.x, self.y)
     drawColor('solid')
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
