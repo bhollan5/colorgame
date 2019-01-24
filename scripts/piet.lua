@@ -14,6 +14,11 @@ piet.y = piet.startPos[2]
 piet.yVel = 200
 piet.xVel = 200
 
+piet.topContact = "air"
+piet.rightContact = "air"
+piet.bottomContact = "air"
+piet.leftContact = "air"
+
 piet.isGrounded = true
 piet.hasDouble = true
 piet.upKeyBuffer = true
@@ -28,11 +33,12 @@ piet.hasDied = false
 
 piet.stuckToCeiling = false     -- indicates whether Piet is stuck to the bottom of a sticky blocks
 
-piet.spd = 250
+piet.spd = 2500
+piet.maxSpd = 250
 piet.jumpHeight = -400
 piet.wallJumpHeight = -10
 
-
+piet.particles = {}
 
 function piet:load()
     particles.color = {}
@@ -52,6 +58,15 @@ function piet:load()
     self.fixture:setFriction(0.9)
     self.fixture:setUserData("piet")
 
+    local particleImage = love.graphics.newImage("assets/particles/white.png")
+
+    self.particles = love.graphics.newParticleSystem( particleImage, 10 )
+    self.particles:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
+	self.particles:setEmissionRate(5)
+	self.particles:setSizeVariation(1)
+    self.particles:setLinearAcceleration(20, -20, 20, 20) -- Random movement in all directions.
+	self.particles:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to transparency.
+
     -- self.body:setFixedRotation( true )
 
     --self.fixture:setRestitution(0.9)
@@ -61,6 +76,8 @@ function piet:update(dt)
     particles:update(dt)
     local halfJump = (self.jumpHeight / 2)
     --local nx, ny = self.x + (self.xVel * dt), self.y + (self.yVel * dt)
+
+    self.particles:update(dt)
 
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition()
@@ -81,7 +98,7 @@ function piet:update(dt)
         end
     end
 
-    -- Fall damage
+    -- dying from falling
     if self.y > (self.deathHeight) then
         self.dead = true
     end
@@ -106,14 +123,13 @@ function piet:update(dt)
         return 
     end
 
-    if love.keyboard.isDown("a") then
-        self.body:setLinearVelocity(-self.spd, self.yVel)
-        --self.body:applyForce(100, 0, self.x, self.y)
-    elseif love.keyboard.isDown("d") then
-        self.body:setLinearVelocity(self.spd, self.yVel)
-        --self.body:applyForce(100, 0, self.x, self.y)
+    -- Moving back and forth
+    if love.keyboard.isDown("a") and -piet.maxSpd < piet.xVel then
+        self.body:applyLinearImpulse(-self.spd * dt, 0)
+    elseif love.keyboard.isDown("d") and piet.maxSpd > piet.xVel then
+        self.body:applyLinearImpulse(self.spd * dt, 0)
     elseif self.isGrounded == false then 
-        self.body:setLinearVelocity(0, self.yVel)
+        self.body:setLinearVelocity(self.xVel * 0.99, self.yVel)
     else
         self.body:setLinearVelocity(self.xVel, self.yVel)
     end
@@ -127,11 +143,11 @@ function piet:update(dt)
 
             self.isGrounded = false
             self.upKeyBuffer = false
-        elseif (self.wallJump == "r") then
-            self.body:applyLinearImpulse(250, halfJump)
+        elseif (self.wallJump == "r") and self.yVel > -100 and love.keyboard.isDown("a") then
+            self.body:applyLinearImpulse(750, self.jumpHeight * 1.6)
             print("this is riiiiiiight")
-        elseif (self.wallJump == "l") then
-            self.body:applyLinearImpulse(-250, halfJump)
+        elseif (self.wallJump == "l") and self.yVel > -100 and love.keyboard.isDown("d") then
+            self.body:applyLinearImpulse(-750, self.jumpHeight * 1.6)
         elseif (self.hasDouble and self.upKeyBuffer) then
             self.body:setLinearVelocity(self.xVel, self.jumpHeight)
             self.hasDouble = false 
@@ -142,7 +158,7 @@ function piet:update(dt)
     if love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded)) then
         self.body:applyLinearImpulse(0, halfJump)
         -- Handles going up walls
-    elseif love.keyboard.isDown("w") and (self.isSticky) then
+    elseif love.keyboard.isDown("w") and (self.leftContact == "sticky") or (self.rightContact == "sticky") then
         self.body:setLinearVelocity(self.xVel, -self.spd)
     end
 
@@ -230,6 +246,8 @@ function piet:draw()
 
 
     
+    drawColor('sticky')
+    love.graphics.draw(self.particles, self.x, self.y)
     drawColor('solid')
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 

@@ -9,9 +9,12 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'tutorial2' -- Keeps track of what context we're in!
+gamestate = 'tutorial1' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
+                        -- 'tutorial1'
+                        -- 'tutorial2'
+                        -- 'tutorial3'
                         -- 'lvl1'
                         -- 'lvl2'
                         -- 'debugLevel'
@@ -48,7 +51,7 @@ function love.load() -- Runs at the start of our program
 
     -- POPPY, CANDY SCHEME:
 
-    candyBackground = { 186 / 255, 183 / 255, 215 / 255 }
+    candyBackground = { 111 / 255, 111 / 255, 111 / 255 }
     candyRedRGB = { 220 / 255, 121 / 255, 154 / 255 }
     candyYellowRGB = { 239 / 255, 215 / 255, 59 / 255 }
     candyBlueRGB = { 129 / 255, 127 / 255, 236 / 255 }
