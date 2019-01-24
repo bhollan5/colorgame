@@ -125,7 +125,7 @@ function beginContact(a, b, coll)
     debug_lastCollisionB = bType
 
     beginContactCollisionCheck(aType, bType, x, y) 
-    beginContactCollisionCheck(bType, aType, x, -y) 
+    beginContactCollisionCheck(bType, aType, -x, -y) 
 end
 
 function beginContactCollisionCheck(aType, bType, x, y) 
@@ -147,7 +147,6 @@ function beginContactCollisionCheck(aType, bType, x, y)
 
     if ((aType == "solid" or aType == "bouncy") and bType == "piet") then
         if (x == 0 and y == -1) then
-            piet.isSticky = true
             piet.isGrounded = true
             piet.hasDouble = true
         end

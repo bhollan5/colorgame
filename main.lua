@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'tutorial1' -- Keeps track of what context we're in!
+gamestate = 'lvl1' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'tutorial1'
@@ -94,6 +94,11 @@ function love.load() -- Runs at the start of our program
 end
 
 function love.update(dt)
+
+    if (piet.yVel < -1000) then
+        return 
+
+    end
     -- Calling the update functions in both of these files
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
     if (gamestate == 'title') then
@@ -106,6 +111,7 @@ function love.update(dt)
 end
 
 function love.draw()
+
 
     if gamestate == 'title' then
         title:draw()

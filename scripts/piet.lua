@@ -159,7 +159,7 @@ function piet:update(dt)
         self.body:applyLinearImpulse(0, halfJump)
         -- Handles going up walls
     elseif love.keyboard.isDown("w") and (self.leftContact == "sticky") or (self.rightContact == "sticky") then
-        self.body:setLinearVelocity(self.xVel, -self.spd)
+        self.body:applyLinearImpulse( , -self.spd * dt)
     end
 
     -- Sticks us to the ceiling 

@@ -6,7 +6,7 @@ function tutorial1:load()
 
     dialogue:insert('Before embarking on any new journey, it\'s important to establish a background. You gotta make sure you\'re prepared. \n\nYou gotta do your homework, you know?')
 
-    world.nextLevel = "lvl2"
+    world.nextLevel = "tutorial2"
 
     --the platforms below are ordered as follows: left to right, top to bottom
     --sticky:newBlock(0, 14, 8, 1)
