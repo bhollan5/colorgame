@@ -123,14 +123,8 @@ function piet:update(dt)
         return 
     end
 
-    -- Moving back and forth while stuck to a sticky thing: 
-    if love.keyboard.isDown("a") and self.topContact == "sticky" then
-        self.body:setLinearVelocity(-self.spd, self.yVel)
-    elseif love.keyboard.isDown("d") and self.topContact == "sticky"  then
-        self.body:setLinearVelocity(self.spd, self.yVel)
-
     -- NORMAL back and forth movement
-    elseif love.keyboard.isDown("a") and piet.xVel > -piet.maxSpd then
+    if love.keyboard.isDown("a") and piet.xVel > -piet.maxSpd then
         self.body:applyLinearImpulse(-self.spd * dt, 0)
     elseif love.keyboard.isDown("d") and piet.xVel < piet.maxSpd then
         self.body:applyLinearImpulse(self.spd * dt, 0)
@@ -169,30 +163,20 @@ function piet:update(dt)
 
         -- Sticking to top of thing
         elseif self.topContact == "sticky" then
-            self.body:setLinearVelocity(self.xVel, self.halfJump)
+            -- Moving back and forth while stuck to a sticky thing: 
+            if love.keyboard.isDown("a") and self.topContact == "sticky" then
+                self.body:setLinearVelocity(-self.spd / 10, -100)
+            elseif love.keyboard.isDown("d") and self.topContact == "sticky"  then
+                self.body:setLinearVelocity(self.spd / 10, -100)
+            else 
+                self.body:setLinearVelocity(self.xVel, -100)
+            end
 
         -- double jump
         elseif (self.hasDouble and self.upKeyBuffer) then
             self.body:setLinearVelocity(self.xVel, self.jumpHeight)
             self.hasDouble = false 
         end
-    end
-
-    -- Handling sticky contact physics
-    if love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded)) then
-        self.body:setLinearVelocity(self.xVel, halfJump)
-        -- Handles going up walls
-    elseif love.keyboard.isDown("w") and (-piet.maxSpd > piet.yVel) and ((self.leftContact == "sticky") or (self.rightContact == "sticky")) then
-        self.body:applyLinearImpulse(0, -self.spd * dt)
-    end
-
-    -- Sticks us to the ceiling 
-    if self.stuckToCeiling and love.keyboard.isDown("d") then
-        self.body:setLinearVelocity(self.spd, -self.spd)
-    elseif self.stuckToCeiling and love.keyboard.isDown("a") then
-        self.body:setLinearVelocity(-self.spd, -self.spd)
-    elseif self.stuckToCeiling then
-        self.body:setLinearVelocity(0, -self.spd)
     end
     
     -- Keeps track of whether we let go of 'w', so we can double jump

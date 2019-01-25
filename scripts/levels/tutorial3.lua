@@ -23,7 +23,7 @@ function tutorial3:load()
 
     sticky:newBlock(66, 0, 24, 6)
     solid:newBlock(96, 0, 6, 6)
-    sticky:newBlock(96, -12, 56, 6)
+    sticky:newBlock(96, -12, 60, 6)
     solid:newBlock(126, 0, 6, 6)
 
     goal:newBlock(128, -4)

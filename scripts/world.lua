@@ -116,46 +116,42 @@ end
 function beginContact(a, b, coll)
 
     -- X and Y give a UNIT VECTOR from the first shape to the second
-    -- So if a is piet and b is a block below him at normal orientation,
+    -- So if a is a platform and b is piet above the block at normal orientation,
     -- X and Y will be (0, -1)
+    -- normal vectors behave as follows: (0, -1) is an object below, (0, 1) is an object above, 
+    --(1, 0) is an object to the left, (-1, 0) is an object to the right.
     local x, y = coll:getNormal() 
-    local aType = a:getUserData()
-    debug_lastCollisionA = aType
-    local bType = b:getUserData()
-    debug_lastCollisionB = bType
+    local char = b:getUserData() -- used to get the data from the FIRST body
+    debug_lastCollisionB = char
+    local platform = a:getUserData() -- used to get the data from the SECOND body
+    debug_lastCollisionA = platform
 
-    beginContactCollisionCheck(aType, bType, x, y) 
-    beginContactCollisionCheck(bType, aType, -x, -y) 
-end
-
-function beginContactCollisionCheck(aType, bType, x, y) 
-
-    if bType == 'piet' then
+    if (char == 'piet') then
         if (x == 0 and y == -1) then
-            piet.bottomContact = aType
+            piet.bottomContact = platform
         end
         if (x == 0 and y == 1) then
-            piet.topContact = aType
+            piet.topContact = platform
         end
         if (x == -1 and y == 0) then
-            piet.rightContact = aType
+            piet.rightContact = platform
         end
         if (x == 1 and y == 0) then
-            piet.leftContact = aType
+            piet.leftContact = platform
         end
     end
 
-    if ((aType == "solid" or aType == "bouncy") and bType == "piet") then
+    if (char == "piet" and (platform == "solid" or platform == "bouncy")) then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
         end
-    elseif (aType == "bouncy" and bType == "piet") then
+    elseif (char == "piet" and platform == "bouncy") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
         end
-    elseif (aType == "solid" and bType == "piet") then
+    elseif (char == "piet" and platform == "solid") then
         if (x == 0 and y == -1) then
             piet.isNormal = true
             piet.isGrounded = true
@@ -170,9 +166,10 @@ function beginContactCollisionCheck(aType, bType, x, y)
     
     end
 
-   
     
 end
+
+
 
 
 
@@ -183,39 +180,29 @@ function endContact(a, b, coll)
     piet.isBouncy = false
     piet.isSticky = false
     
-    --piet.fixture:setRestitution(0)
-    local x, y = coll:getNormal() 
-    local aType = a:getUserData()
-    local bType = b:getUserData()
 
-    if bType == 'piet' or aType == 'piet' then
-        piet.rightContact = 'air'
-        piet.leftContact = 'air'
+    piet.rightContact = 'air'
+    piet.leftContact = 'air'
         
-        piet.bottomContact = 'air'
-        piet.topContact = 'air'
-    end
+    piet.bottomContact = 'air'
+    piet.topContact = 'air'
+
 
 
 end
  
 function preSolve(a, b, coll)
     local x, y = coll:getNormal() 
-    local aType = a:getUserData()
-    local bType = b:getUserData()
-    preSolveCollisionCheck(aType, bType, x, y)
-    preSolveCollisionCheck(bType, aType, x, -y)
-    
-end
+    local char = b:getUserData()
+    local platform = a:getUserData()
 
-function preSolveCollisionCheck(aType, bType, x, y)
     if persisting == 0 then
         piet.isNormal = false
         piet.isBouncy = false
         piet.isSticky = false
     elseif persisting > 0 then
         
-        if (aType == "sticky" and bType == "piet") then
+        if (char == "piet" and platform == "sticky") then
             if (x == 0 and y == -1) then
                 piet.isSticky = true
                 piet.isGrounded = true
@@ -224,7 +211,7 @@ function preSolveCollisionCheck(aType, bType, x, y)
                 piet.isGrounded = false
                 piet.isSticky = true
             end
-        elseif (aType == "solid" and bType == "piet") then
+        elseif (char == "piet" and platform == "solid") then
             if (x == -1 and y == 0) then
                 piet.isGrounded = false
                 piet.xVel = 0
@@ -239,18 +226,23 @@ function preSolveCollisionCheck(aType, bType, x, y)
         end
     end
 
-    if (aType == "death" and bType == "piet") then
+    if (char == "piet" and platform == "death") then
             piet.dead = true
     end
     
-    if (aType == "goal" and bType == "piet") and not piet.won then
+    if (char == "piet" and platform == "goal") and not piet.won then
             piet.won = true
             
     end
     
 
     persisting = persisting + 0.1
+
+    
+    
 end
+
+
 
 
  
