@@ -128,7 +128,7 @@ function piet:update(dt)
         self.body:setLinearVelocity(-self.spd, self.yVel)
     elseif love.keyboard.isDown("d") and self.topContact == "sticky"  then
         self.body:setLinearVelocity(self.spd, self.yVel)
-        
+
     -- NORMAL back and forth movement
     elseif love.keyboard.isDown("a") and piet.xVel > -piet.maxSpd then
         self.body:applyLinearImpulse(-self.spd * dt, 0)
@@ -180,7 +180,7 @@ function piet:update(dt)
 
     -- Handling sticky contact physics
     if love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded)) then
-        self.body:applyLinearImpulse(0, halfJump)
+        self.body:setLinearVelocity(self.xVel, halfJump)
         -- Handles going up walls
     elseif love.keyboard.isDown("w") and (-piet.maxSpd > piet.yVel) and ((self.leftContact == "sticky") or (self.rightContact == "sticky")) then
         self.body:applyLinearImpulse(0, -self.spd * dt)
