@@ -158,8 +158,8 @@ function piet:update(dt)
     if love.keyboard.isDown("w") and ((self.isSticky) and (self.isGrounded)) then
         self.body:applyLinearImpulse(0, halfJump)
         -- Handles going up walls
-    elseif love.keyboard.isDown("w") and (self.leftContact == "sticky") or (self.rightContact == "sticky") then
-        self.body:applyLinearImpulse( 0, -self.spd * dt)
+    elseif love.keyboard.isDown("w") and (-piet.maxSpd > piet.yVel) and ((self.leftContact == "sticky") or (self.rightContact == "sticky")) then
+        self.body:applyLinearImpulse(0, -self.spd * dt)
     end
 
     -- Sticks us to the ceiling 
