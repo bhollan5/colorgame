@@ -10,8 +10,8 @@ function tutorial1:load()
 
     --the platforms below are ordered as follows: left to right, top to bottom
     --sticky:newBlock(0, 14, 8, 1)
-    solid:newBlock(0, 20, 24, 6)
-    death:newBlock(27, 20, 6, 6)
+    solid:newBlock(-6, 20, 24, 6)
+    death:newBlock(24, 20, 6, 6)
 
     solid:newBlock(36, 20, 24, 6)
     solid:newBlock(54, -10, 6, 30) -- Big walking wall structure
@@ -20,8 +20,8 @@ function tutorial1:load()
     solid:newBlock(42, -10, 6, 24) -- Left walljump wall 
     solid:newBlock(66, 0, 6, 24) -- Decorative opposite to walljump wall
 
-    death:newBlock(81, -10, 6, 6)
-    solid:newBlock(90, -10, 24, 6)
+    death:newBlock(84, -10, 6, 6)
+    solid:newBlock(96, -10, 24, 6)
 
     goal:newBlock(101, -14)
 

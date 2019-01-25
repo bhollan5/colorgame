@@ -23,11 +23,10 @@ piet.isGrounded = true
 piet.hasDouble = true
 piet.upKeyBuffer = true
 piet.isSticky = false   
-piet.isBouncy = false -- the only purpose for this is for particle effects
-piet.isNormal = false   -- ^^ same with this
+piet.isBouncy = false           -- the only purpose for this is for particle effects
+piet.isNormal = false           -- ^^ same with this
 piet.dead =  false
 piet.won = false                -- Triggered when piet wins a level
-piet.wallJump = "f"
 
 piet.hasDied = false
 
@@ -36,6 +35,7 @@ piet.stuckToCeiling = false     -- indicates whether Piet is stuck to the bottom
 piet.spd = 2500
 piet.maxSpd = 250
 piet.jumpHeight = -400
+piet.halfJump = (piet.jumpHeight / 2)
 piet.wallJumpHeight = -10
 
 piet.particles = {}
@@ -55,7 +55,7 @@ function piet:load()
 
     self.shape = love.physics.newRectangleShape(16, 16)
     self.fixture = love.physics.newFixture(self.body, self.shape, 5)
-    self.fixture:setFriction(0.9)
+    self.fixture:setFriction(0.3)
     self.fixture:setUserData("piet")
 
     local particleImage = love.graphics.newImage("assets/particles/white.png")
@@ -74,7 +74,6 @@ end
 
 function piet:update(dt)
     particles:update(dt)
-    local halfJump = (self.jumpHeight / 2)
     --local nx, ny = self.x + (self.xVel * dt), self.y + (self.yVel * dt)
 
     self.particles:update(dt)
@@ -115,6 +114,7 @@ function piet:update(dt)
     end
 
     if self.won then 
+        self.body:setLinearVelocity(0,0)
         world.isTransitioningUp = true
         world.transitionBuffer = .5 -- In seconds
         changeColorScheme(world.nextLevel) -- Found in gamestateManager
@@ -123,31 +123,55 @@ function piet:update(dt)
         return 
     end
 
-    -- Moving back and forth
-    if love.keyboard.isDown("a") and -piet.maxSpd < piet.xVel then
+    -- Moving back and forth while stuck to a sticky thing: 
+    if love.keyboard.isDown("a") and self.topContact == "sticky" then
+        self.body:setLinearVelocity(-self.spd, self.yVel)
+    elseif love.keyboard.isDown("d") and self.topContact == "sticky"  then
+        self.body:setLinearVelocity(self.spd, self.yVel)
+        
+    -- NORMAL back and forth movement
+    elseif love.keyboard.isDown("a") and piet.xVel > -piet.maxSpd then
         self.body:applyLinearImpulse(-self.spd * dt, 0)
-    elseif love.keyboard.isDown("d") and piet.maxSpd > piet.xVel then
+    elseif love.keyboard.isDown("d") and piet.xVel < piet.maxSpd then
         self.body:applyLinearImpulse(self.spd * dt, 0)
     elseif self.isGrounded == false then 
         self.body:setLinearVelocity(self.xVel * 0.99, self.yVel)
     else
-        self.body:setLinearVelocity(self.xVel, self.yVel)
+        -- self.body:setLinearVelocity(self.xVel, self.yVel)
     end
 
-    -- normal jump
+    -- ALL JUMP FUNCTIONS:
     if love.keyboard.isDown("w")then 
-        --print("self.wallJump")
 
-        if (self.isGrounded) then
+        -- Normal walljump
+        if self.leftContact == "solid" and self.yVel > -100 and love.keyboard.isDown("a") then
+            self.body:applyLinearImpulse(750, self.jumpHeight * 1.6)
+        elseif self.rightContact == "solid" and self.yVel > -100 and love.keyboard.isDown("d") then
+            self.body:applyLinearImpulse(-750, self.jumpHeight * 1.6)
+
+        -- Sticky wall climb
+        elseif self.leftContact == "sticky" and self.yVel > -100 and love.keyboard.isDown("a") then
+            self.body:setLinearVelocity(0, self.halfJump)
+        elseif self.rightContact == "sticky" and self.yVel > -100 and love.keyboard.isDown("d") then
+            self.body:setLinearVelocity(0, self.halfJump)
+
+        -- Normal, solid jump
+        elseif self.isGrounded and self.bottomContact ~= "sticky" then
             self.body:applyLinearImpulse(0, self.jumpHeight)
-
             self.isGrounded = false
             self.upKeyBuffer = false
-        elseif (self.wallJump == "r") and self.yVel > -100 and love.keyboard.isDown("a") then
-            self.body:applyLinearImpulse(750, self.jumpHeight * 1.6)
-            print("this is riiiiiiight")
-        elseif (self.wallJump == "l") and self.yVel > -100 and love.keyboard.isDown("d") then
-            self.body:applyLinearImpulse(-750, self.jumpHeight * 1.6)
+
+        -- Sticky jump
+        elseif self.isGrounded and self.bottomContact == "sticky" then 
+            self.body:applyLinearImpulse(0, self.halfJump)
+            self.isGrounded = false
+            self.upKeyBuffer = false
+
+        -- Sticking to top of thing
+        elseif self.topContact == "sticky" then
+            self.body:setLinearVelocity(self.xVel, self.halfJump)
+
+        -- double jump
         elseif (self.hasDouble and self.upKeyBuffer) then
             self.body:setLinearVelocity(self.xVel, self.jumpHeight)
             self.hasDouble = false 

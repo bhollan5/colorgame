@@ -12,9 +12,13 @@ function tutorial3:load()
     solid:newBlock(0, 0, 6, 6)
 
     sticky:newBlock(12, 0, 24, 6)
-    solid:newBlock(51, 0, 6, 6)
+
+    solid:newBlock(51, 0, 6, 6)     -- Decorative black box
+
     sticky:newBlock(36, -24, 6, 30)
-    sticky:newBlock(42, -24, 30, 6)
+    sticky:newBlock(42, -24, 9, 6)
+    sticky:newBlock(57, -24, 15, 6)
+
     sticky:newBlock(66, -18, 6, 24)
 
     sticky:newBlock(66, 0, 24, 6)

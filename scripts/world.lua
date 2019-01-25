@@ -162,11 +162,9 @@ function beginContactCollisionCheck(aType, bType, x, y)
             piet.hasDouble = true
         elseif (x == -1 and y == 0) then
             piet.isGrounded = false
-            piet.wallJump = "l"
             piet.xVel = 0
         elseif (x == 1 and y == 0) then
             piet.isGrounded = false
-            piet.wallJump = "r"
             piet.xVel = 0
         end
     
@@ -184,7 +182,6 @@ function endContact(a, b, coll)
     piet.isNormal = false
     piet.isBouncy = false
     piet.isSticky = false
-    piet.wallJump = "f"
     
     --piet.fixture:setRestitution(0)
     local x, y = coll:getNormal() 
@@ -230,11 +227,9 @@ function preSolveCollisionCheck(aType, bType, x, y)
         elseif (aType == "solid" and bType == "piet") then
             if (x == -1 and y == 0) then
                 piet.isGrounded = false
-                piet.wallJump = "l"
                 piet.xVel = 0
             elseif (x == 1 and y == 0) then
                 piet.isGrounded = false
-                piet.wallJump = "r"
                 piet.xVel = 0
             elseif (x == 0 and y == -1) then
                 piet.isGrounded = true
@@ -305,10 +300,10 @@ function drawDebug() -- Used to output some debug values on screen
         "piet.hasDouble:  " .. hasDoubleString,
         "Collision A type: " .. debug_lastCollisionA,
         "Collision B type: " .. debug_lastCollisionB,
-        "piet.wallJump: " .. piet.wallJump,
         "piet.won: " .. hasWonString,
         "gamestate:  " .. gamestate,
-        "transitionHeight: " .. world.transitionHeight
+        "xVel: " .. piet.xVel,
+        "yVel: " .. piet.yVel,
     }
     
     local printoutColors = { 'death', 'bouncy', 'sticky', 'solid'}
