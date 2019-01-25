@@ -12,11 +12,10 @@ function tutorial3:load()
     solid:newBlock(0, 0, 6, 6)
 
     sticky:newBlock(12, 0, 24, 6)
-    solid:newBlock(42, -6, 6, 6)
+    solid:newBlock(54, 0, 6, 6)
+    sticky:newBlock(36, -18, 6, 24)
+    sticky:newBlock(36, -24, 24, 6)
 
-    solid:newBlock(30, -12, 6, 6)
-
-    solid:newBlock(30, -12, 6, 6)
 
     
 

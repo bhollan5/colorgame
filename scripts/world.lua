@@ -191,7 +191,7 @@ function endContact(a, b, coll)
     local aType = a:getUserData()
     local bType = b:getUserData()
 
-    if bType == 'piet' then
+    if bType == 'piet' or aType == 'piet' then
         piet.rightContact = 'air'
         piet.leftContact = 'air'
         
