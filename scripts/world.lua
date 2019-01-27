@@ -74,6 +74,7 @@ function world:update(dt)
     elseif self.isTransitioningUp and not self.isTransitioningDown then
         if (self.transitionHeight < -30000) then
             self.isTransitioningUp = false
+            piet.won = false
             changeGameState(world.nextLevel)
         end
         if self.transitionBuffer > 0 then 
@@ -187,6 +188,11 @@ function endContact(a, b, coll)
     piet.bottomContact = 'air'
     piet.topContact = 'air'
 
+    local x, y = coll:getNormal() 
+    local char = b:getUserData() -- used to get the data from the FIRST body
+    local platform = a:getUserData() -- used to get the data from the SECOND body
+    print(x)
+    print(y)
 
 
 end
@@ -231,8 +237,10 @@ function preSolve(a, b, coll)
     end
     
     if (char == "piet" and platform == "goal") and not piet.won then
-            piet.won = true
-            
+        piet.won = true
+        world.isTransitioningUp = true
+        world.transitionBuffer = .5 -- In seconds
+        changeColorScheme(world.nextLevel) -- Found in gamestateManager
     end
     
 

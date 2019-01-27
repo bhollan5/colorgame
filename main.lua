@@ -9,7 +9,7 @@ require "scripts/gamestateManager"
 require "scripts/GUIs/title"
 
 local show_message = false
-gamestate = 'tutorial3' -- Keeps track of what context we're in!
+gamestate = 'tutorial1' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'tutorial1'
@@ -103,6 +103,7 @@ function love.update(dt)
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
     if (gamestate == 'title') then
         title:update(dt)
+    elseif gamestate == 'paused' then
     else
         world:update(dt)
         piet:update(dt)

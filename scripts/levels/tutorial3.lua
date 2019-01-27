@@ -4,7 +4,7 @@ function tutorial3:load()
 
     world:fadeIn()
 
-    world.nextLevel = "lvl2"
+    world.nextLevel = "lvl1"
     piet.startPos = {1 * 16, -10 * 16}
 
 

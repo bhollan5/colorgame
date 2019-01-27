@@ -115,11 +115,7 @@ function piet:update(dt)
 
     if self.won then 
         self.body:setLinearVelocity(0,0)
-        world.isTransitioningUp = true
-        world.transitionBuffer = .5 -- In seconds
-        changeColorScheme(world.nextLevel) -- Found in gamestateManager
         
-        self.won = false
         return 
     end
 
