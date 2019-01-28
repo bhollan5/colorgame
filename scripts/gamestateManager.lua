@@ -11,6 +11,8 @@ function changeGameState(newState)
     world:unloadLevel()
     if gamestate == 'title' then
         title:load()
+    elseif gamestate == 'pause' then 
+        pause:load()
     elseif gamestate == 'debugLevel' then 
         world:load() 
         debugLevel:load()

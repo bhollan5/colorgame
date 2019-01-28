@@ -102,6 +102,11 @@ function piet:update(dt)
         self.dead = true
     end
 
+    -- Pausing the game
+    if love.keyboard.isDown("p") or love.keyboard.isDown("return") then
+        changeGameState('pause')
+    end
+
     -- Pausing controls for dialogue
     if love.keyboard.isDown("space") and dialogue.skipBuffer then
         dialogue:next()
@@ -115,7 +120,7 @@ function piet:update(dt)
 
     if self.won then 
         self.body:setLinearVelocity(0,0)
-        
+        -- freezes player when world is transitioning
         return 
     end
 

@@ -191,8 +191,6 @@ function endContact(a, b, coll)
     local x, y = coll:getNormal() 
     local char = b:getUserData() -- used to get the data from the FIRST body
     local platform = a:getUserData() -- used to get the data from the SECOND body
-    print(x)
-    print(y)
 
 
 end

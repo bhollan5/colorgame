@@ -7,6 +7,7 @@ require "scripts.globalFunctions"
 require "scripts/gamestateManager"
 
 require "scripts/GUIs/title"
+require "scripts/GUIs/pause"
 
 local show_message = false
 gamestate = 'tutorial1' -- Keeps track of what context we're in!
@@ -103,7 +104,8 @@ function love.update(dt)
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
     if (gamestate == 'title') then
         title:update(dt)
-    elseif gamestate == 'paused' then
+    elseif gamestate == 'pause' then
+        pause:update(dt)
     else
         world:update(dt)
         piet:update(dt)
@@ -116,6 +118,8 @@ function love.draw()
 
     if gamestate == 'title' then
         title:draw()
+    elseif gamestate == 'pause' then
+        pause:draw()
     else
         -- Calling the draw functions in both of these files
         cameraFollow() 
