@@ -11,8 +11,6 @@ function changeGameState(newState)
     world:unloadLevel()
     if gamestate == 'title' then
         title:load()
-    elseif gamestate == 'pause' then 
-        pause:load()
     elseif gamestate == 'debugLevel' then 
         world:load() 
         debugLevel:load()
@@ -30,11 +28,9 @@ function changeGameState(newState)
         tutorial3:load()
         piet:load()
     elseif gamestate == 'lvl1' then 
-        if (not world.isInitialized) then
-            world:load() 
-            piet:load()
-        end
+        world:load() 
         level1:load()
+        piet:load()
     elseif gamestate == 'lvl2' then
         world:load()
         level2:load()

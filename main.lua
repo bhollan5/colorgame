@@ -20,6 +20,11 @@ gamestate = 'tutorial1' -- Keeps track of what context we're in!
                         -- 'lvl2'
                         -- 'debugLevel'
 
+isPaused = false        -- keeps track of wether the game is paused
+                        -- note, this is NOT a separate gamestate, but rather a thing that
+                        -- can happen any time Piet is being updated.
+                        -- When isPaused is true, world will not be drawn or updated
+
 time = 0
 
 debug = true
@@ -95,6 +100,7 @@ function love.load() -- Runs at the start of our program
 end
 
 function love.update(dt)
+    time = time + 1
 
     if (piet.yVel < -1000) then
         return 
@@ -102,24 +108,23 @@ function love.update(dt)
     end
     -- Calling the update functions in both of these files
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
-    if (gamestate == 'title') then
-        title:update(dt)
-    elseif gamestate == 'pause' then
+    if isPaused then 
         pause:update(dt)
+    elseif(gamestate == 'title') then
+        title:update(dt)
     else
         world:update(dt)
         piet:update(dt)
     end
-    time = time + 1
 end
 
 function love.draw()
 
 
-    if gamestate == 'title' then
-        title:draw()
-    elseif gamestate == 'pause' then
+    if isPaused then 
         pause:draw()
+    elseif gamestate == 'title' then
+        title:draw()
     else
         -- Calling the draw functions in both of these files
         cameraFollow() 

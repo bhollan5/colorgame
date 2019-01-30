@@ -57,6 +57,9 @@ function world:newArenaStructure(x, y, w, h)
 end
 
 function world:update(dt)    
+    if (isPaused) then
+        return 
+    end
     particles:update(dt)
 
     solid:update(dt)
@@ -95,6 +98,9 @@ function world:unloadLevel()
 end
 
 function world:draw()
+    if (isPaused) then
+        return 
+    end
 
     solid:draw()
     death:draw()
@@ -126,6 +132,7 @@ function beginContact(a, b, coll)
     debug_lastCollisionB = char
     local platform = a:getUserData() -- used to get the data from the SECOND body
     debug_lastCollisionA = platform
+
 
     if (char == 'piet') then
         if (x == 0 and y == -1) then

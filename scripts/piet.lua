@@ -28,6 +28,8 @@ piet.isNormal = false           -- ^^ same with this
 piet.dead =  false
 piet.won = false                -- Triggered when piet wins a level
 
+piet.pauseBuffer = true        -- Ensures we have to unpause before we can pause again
+
 piet.hasDied = false
 
 piet.stuckToCeiling = false     -- indicates whether Piet is stuck to the bottom of a sticky blocks
@@ -103,8 +105,12 @@ function piet:update(dt)
     end
 
     -- Pausing the game
-    if love.keyboard.isDown("p") or love.keyboard.isDown("return") then
-        changeGameState('pause')
+    if (love.keyboard.isDown("p") or love.keyboard.isDown("return")) and self.pauseBuffer then
+        isPaused = true
+        pause:load()
+        self.pauseBuffer = false
+    elseif not love.keyboard.isDown("p") and not love.keyboard.isDown("return") then
+        self.pauseBuffer = true
     end
 
     -- Pausing controls for dialogue
