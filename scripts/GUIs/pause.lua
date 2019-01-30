@@ -1,8 +1,9 @@
 pause = {}
 
-pause.unpauseBuffer = false         -- True if the player has released the pause button 
+pause.unpauseBuffer = fal
+pause.menuOptions = {"resume", "levels", "options"}
 
-pause.selection = "start"
+pause.selection = 1
 pause.keyBuffer = true
 
 pause.startChange = false   -- True while the pause is rising up
@@ -15,21 +16,27 @@ end
 
 function pause:update(dt)
     -- Selecting with keyboard
-    if (love.keyboard.isDown("up") or love.keyboard.isDown("down") 
-        or love.keyboard.isDown("w") or love.keyboard.isDown("s")) and self.keyBuffer then
-        if self.selection == 'start' then
-            self.selection = 'levels'
-        else 
-            self.selection = 'start'
-        end
+    if (self.keyBuffer) and (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+        self.selection = self.selection - 1
         self.keyBuffer = false
-    elseif not love.keyboard.isDown("up") and not love.keyboard.isDown("down") 
+    elseif (self.keyBuffer) and (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
+        self.selection = self.selection + 1
+        self.keyBuffer = false
+    end
+
+    if self.selection > 3 then
+        self.selection = 1
+    elseif self.selection < 1 then
+        self.selection = 3
+    end
+    
+    if not love.keyboard.isDown("up") and not love.keyboard.isDown("down") 
             and not love.keyboard.isDown("w") and not love.keyboard.isDown("s") then
         self.keyBuffer = true
     end
     -- Enter:
     if love.keyboard.isDown("return") and not self.startChange then 
-        if pause.selection == 'start' then
+        if pause.selection == 'resume' then
             
         elseif pause.selection == 'levels' then
 
@@ -74,17 +81,24 @@ function pause:draw()
     --
 
     love.graphics.setFont(titleFont) -- This *is* the title screen, after all
-
     local startYPos = 350
-    love.graphics.setColor(0,0,0, 1)
-    love.graphics.print("Options", midX - ((titleFontSize / 4) * 6.5), startYPos - self.textHeight) 
-                                -- Note this centering pattern:
-                                -- Middle of the screen, minus 1/4 the font size times the character count
-                                -- This one uses 6.5 instead of 7 because the "i" is skinny
 
-    local levelSelectYPos = 425
-    love.graphics.setColor(0,0,0, 1)
-    love.graphics.print("Levels", midX - ((titleFontSize / 4) * 6), levelSelectYPos - self.textHeight) 
+    for i in ipairs(self.menuOptions) do
+        local stringLength = string.len(self.menuOptions[i])
+        love.graphics.setColor(0,0,0, 1)
+        love.graphics.print(self.menuOptions[i], midX - ((titleFontSize / 4) * stringLength), startYPos + (75 * (i - 1)) - self.textHeight) 
+    end
+
+    -- local startYPos = 350
+    -- love.graphics.setColor(0,0,0, 1)
+    -- love.graphics.print("Options", midX - ((titleFontSize / 4) * 6.5), startYPos - self.textHeight) 
+    --                             -- Note this centering pattern:
+    --                             -- Middle of the screen, minus 1/4 the font size times the character count
+    --                             -- This one uses 6.5 instead of 7 because the "i" is skinny
+
+    -- local levelSelectYPos = 425
+    -- love.graphics.setColor(0,0,0, 1)
+    -- love.graphics.print("Levels", midX - ((titleFontSize / 4) * 6), levelSelectYPos - self.textHeight) 
 
     -- 
     -- OPTION SELECT INDICATOR:
@@ -94,11 +108,12 @@ function pause:draw()
 
     for i in ipairs(selectPositions) do 
         local selectYPos = 0
-        if (self.selection == 'start') then
-            selectYPos = startYPos + 15
-        elseif self.selection == 'levels' then 
-            selectYPos = levelSelectYPos + 15
-        end
+        selectYPos = startYPos + 15 + (75 * (self.selection - 1))
+        -- if (self.selection == 'resume') then
+        --     selectYPos = startYPos + 15
+        -- elseif self.selection == 'levels' then 
+        --     selectYPos = levelSelectYPos + 15
+        -- end
         local selectXPos = midX - selectPositions[i]
 
         drawColor(selectColors[i])
@@ -112,5 +127,5 @@ function pause:draw()
     love.graphics.setFont(dialogueFont)
 
     love.graphics.setColor(0,0,0, 1)
-    love.graphics.print("(use arrow keys and enter to select)", midX - ((dialogueFontSize / 4) * 36), 500 - self.textHeight) 
+    --love.graphics.print("(use arrow keys and enter to select)", midX - ((dialogueFontSize / 4) * 36), 500 - self.textHeight) 
 end
