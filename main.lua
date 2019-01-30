@@ -8,6 +8,7 @@ require "scripts/gamestateManager"
 
 require "scripts/GUIs/title"
 require "scripts/GUIs/pause"
+require "scripts/GUIs/levelSelect"
 
 local show_message = false
 gamestate = 'tutorial1' -- Keeps track of what context we're in!
@@ -110,6 +111,8 @@ function love.update(dt)
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
     if pauseState == 'main' then 
         pause:update(dt)
+    elseif pauseState == 'levelSelect' then
+        levelSelect:update(dt)
     elseif(gamestate == 'title') then
         title:update(dt)
     else
@@ -123,6 +126,8 @@ function love.draw()
 
     if pauseState == 'main' then 
         pause:draw()
+    elseif pauseState == 'levelSelect' then 
+        levelSelect:draw()
     elseif gamestate == 'title' then
         title:draw()
     else

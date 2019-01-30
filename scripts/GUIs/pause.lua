@@ -36,15 +36,16 @@ function pause:update(dt)
     end
     -- Enter:
     if love.keyboard.isDown("return") and not self.startChange then 
-        if pause.selection == 'resume' then
-            
-        elseif pause.selection == 'levels' then
-
+        if pause.selection == 1 then
+            self.unpauseBuffer = false
+            pauseState = 'none'
+        elseif pause.selection == 2 then
+            pauseState = 'levelSelect'
         end
     end
     -- Unpausing:
     -- Pausing the game
-    if (love.keyboard.isDown("p") or love.keyboard.isDown("return")) and self.unpauseBuffer then
+    if love.keyboard.isDown("p") and self.unpauseBuffer then
         self.unpauseBuffer = false
         pauseState = 'none'
     elseif not love.keyboard.isDown("p") and not love.keyboard.isDown("return") then
