@@ -106,7 +106,7 @@ function piet:update(dt)
 
     -- Pausing the game
     if (love.keyboard.isDown("p") or love.keyboard.isDown("return")) and self.pauseBuffer then
-        isPaused = true
+        pauseState = 'main'
         pause:load()
         self.pauseBuffer = false
     elseif not love.keyboard.isDown("p") and not love.keyboard.isDown("return") then

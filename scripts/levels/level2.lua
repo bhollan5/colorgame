@@ -48,7 +48,9 @@ function level2:load()
 
     -- big blue block + movables
     bouncy:newBlock(75, 4, 24, 20)
-    solid:newMovableBlock(78, 0, 2, 2)
+    -- solid:newMovableBlock(78, 0, 2, 2)
+    solid:newBlock(90, -8, 8, 8)
+    death:newBlock(83, -18, 4, 4)
 
     -- UPPER LEVEL, from RIGHT TO LEFT
     bouncy:newBlock(67, -12, 7, 7)

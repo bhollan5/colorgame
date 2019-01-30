@@ -57,7 +57,7 @@ function world:newArenaStructure(x, y, w, h)
 end
 
 function world:update(dt)    
-    if (isPaused) then
+    if (pauseState ~= 'none') then
         return 
     end
     particles:update(dt)
@@ -98,7 +98,7 @@ function world:unloadLevel()
 end
 
 function world:draw()
-    if (isPaused) then
+    if (pauseState ~= 'none') then
         return 
     end
 

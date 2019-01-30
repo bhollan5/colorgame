@@ -20,10 +20,10 @@ gamestate = 'tutorial1' -- Keeps track of what context we're in!
                         -- 'lvl2'
                         -- 'debugLevel'
 
-isPaused = false        -- keeps track of wether the game is paused
+pauseState = 'none'     -- keeps track of wether the game is paused
                         -- note, this is NOT a separate gamestate, but rather a thing that
                         -- can happen any time Piet is being updated.
-                        -- When isPaused is true, world will not be drawn or updated
+                        -- When pauseState isn't 'none', world will not be drawn or updated
 
 time = 0
 
@@ -108,7 +108,7 @@ function love.update(dt)
     end
     -- Calling the update functions in both of these files
     -- 'dt' is the number of seconds since last update. Probably something like 0.01
-    if isPaused then 
+    if pauseState == 'main' then 
         pause:update(dt)
     elseif(gamestate == 'title') then
         title:update(dt)
@@ -121,7 +121,7 @@ end
 function love.draw()
 
 
-    if isPaused then 
+    if pauseState == 'main' then 
         pause:draw()
     elseif gamestate == 'title' then
         title:draw()

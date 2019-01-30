@@ -39,7 +39,7 @@ function pause:update(dt)
     -- Pausing the game
     if (love.keyboard.isDown("p") or love.keyboard.isDown("return")) and self.unpauseBuffer then
         self.unpauseBuffer = false
-        isPaused = false
+        pauseState = 'none'
     elseif not love.keyboard.isDown("p") and not love.keyboard.isDown("return") then
         self.unpauseBuffer = true
     end
