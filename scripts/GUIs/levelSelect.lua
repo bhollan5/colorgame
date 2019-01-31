@@ -11,6 +11,7 @@ function levelSelect:load()
 end
 
 function levelSelect:update(dt)
+
     -- Selecting with keyboard
     if (love.keyboard.isDown("up") or love.keyboard.isDown("down")) and levelSelect.keyBuffer then
         if levelSelect.selection == 'start' then
@@ -42,19 +43,27 @@ end
 
 function levelSelect:draw()
 
-
-    -- logo
     local midX = love.graphics.getWidth() / 2
-
-    local logoXPos = midX - 320
-    love.graphics.setColor(1, 1, 1, 1)
-
     --
-    love.graphics.setFont(titleFont) -- This *is* the levelSelect screen, after all
+    love.graphics.setFont(headerFont) -- This *is* the levelSelect screen, after all
 
-    local startYPos = 350
+    local startYPos = 100
     love.graphics.setColor(0,0,0, 1)
-    love.graphics.print("game level thing", midX - ((titleFontSize / 4) * 5), startYPos - levelSelect.textHeight) 
+    love.graphics.print("MONDRIAN", midX - ((headerFontSize / 4) * 8), startYPos - levelSelect.textHeight) 
                                 -- Note this centering pattern:
                                 -- Middle of the screen, minus 1/4 the font size times the character count
+    -- 
+    -- TITLE DECORATIONS:
+    --
+    local selectPositions = {-300, -268, -236, -204, -172, 172, 204, 236, 268, 300} -- Lets us loop through the square positions
+    local selectColors = {'black', 'black', 'blue', 'black', 'black', 
+                            'black', 'yellow', 'black', 'black', 'red'}
+
+    for i in ipairs(selectPositions) do 
+        local selectYPos = 120
+        local selectXPos = midX - selectPositions[i]
+
+        drawColor(selectColors[i])
+        love.graphics.rectangle( 'fill', selectXPos, selectYPos - self.textHeight, 16, 16 )
+    end
 end

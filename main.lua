@@ -40,6 +40,8 @@ function love.load() -- Runs at the start of our program
 
     -- Fonts:
 
+    headerFontSize = 64
+    headerFont = love.graphics.newFont("assets/fonts/Square.ttf", headerFontSize)
     titleFontSize = 48
     titleFont = love.graphics.newFont("assets/fonts/Square.ttf", titleFontSize)
     dialogueFontSize = 20
