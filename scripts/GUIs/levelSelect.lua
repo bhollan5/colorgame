@@ -1,6 +1,11 @@
 levelSelect = {}
 
-levelSelect.selection = "Level1"
+
+levelSelect.levelOptions = {{'1', '2', '3'},
+                            {'4', '5', '6'}}    -- Note, this is a double linked array!
+                                                -- You can reference any of it's values like this:
+                                                -- levelOptions[2][3] would return '6'
+levelSelect.selection = {1, 1}
 levelSelect.keyBuffer = true
 
 levelSelect.startChange = false
@@ -43,9 +48,12 @@ end
 
 function levelSelect:draw()
 
+    -- Finding the midway x value
     local midX = love.graphics.getWidth() / 2
-    --
-    love.graphics.setFont(headerFont) -- This *is* the levelSelect screen, after all
+
+
+    -- TITLE TEXT:
+    love.graphics.setFont(headerFont) -- Biggest font yet
 
     local startYPos = 100
     love.graphics.setColor(0,0,0, 1)
@@ -66,4 +74,48 @@ function levelSelect:draw()
         drawColor(selectColors[i])
         love.graphics.rectangle( 'fill', selectXPos, selectYPos - self.textHeight, 16, 16 )
     end
+
+    -- SUBTITLE:
+    love.graphics.setColor(0,0,0, 1)
+    love.graphics.setFont(dialogueFont) -- Biggest font yet
+    love.graphics.print("Level Select", midX - ((dialogueFontSize / 4) * 12), 170 - levelSelect.textHeight) 
+
+    -- 
+    -- LEVEL OPTIONS:
+    -- 
+    love.graphics.setLineWidth( 16 ) -- Making our lines thicc
+
+    local startYPos = 250       -- Where the level selection options start
+    local boxSize = 120         -- Indicates the height/width of the boxes
+    local boxGap = 64           -- Gap in between options
+
+    for i in ipairs(self.levelOptions[1]) do 
+
+        if (self.selection[1] == 1 and self.selection[2] == i) then 
+            drawBlue()    -- If we're on the selected level, draw a diff color!
+                            -- (or do whatever, this is just to show how to detect what we've selected)
+        else
+            drawBlack()     -- Otherwise, draw black!
+        end
+
+
+        local adjustedXPos = midX - (boxSize/2);            -- Leaving it like this centers it
+        adjustedXPos = adjustedXPos - (boxSize + boxGap)    -- AdjustedXPos now is at our leftmost position
+        adjustedXPos = adjustedXPos + ((i - 1) * (boxSize + boxGap))    -- THE MAGIC
+
+        local adjustedYPos = startYPos - self.textHeight                -- For Edward to mess with
+
+        love.graphics.rectangle('line',                                 -- Outline mode
+                                adjustedXPos,                           -- xPosition
+                                adjustedYPos,                           -- yPosition
+                                boxSize,                                -- Width
+                                boxSize )                               -- Height
+
+        love.graphics.setFont(dialogueFont) 
+        love.graphics.print("Lvl", adjustedXPos + 43, adjustedYPos + 15) 
+        love.graphics.setFont(headerFont) 
+        love.graphics.print(self.levelOptions[1][i], adjustedXPos + 43, adjustedYPos + 35) 
+    end
+
+
 end
