@@ -157,7 +157,7 @@ function beginContact(a, b, coll)
         elseif (platform == "death") then 
             piet.deathCoords[1] = piet.x
             piet.deathCoords[2] = piet.y
-            piet.deathParticles:emit(10)
+            piet.deathParticles:emit(100)
         end
     end
 

@@ -18,7 +18,7 @@ function tutorial1:load()
     solid:newBlock(54, -10, 24, 6)
 
     solid:newBlock(42, -10, 6, 24) -- Left walljump wall 
-    solid:newBlock(66, 0, 6, 24) -- Decorative opposite to walljump wall
+    solid:newBlock(66, 2, 6, 24) -- Decorative opposite to walljump wall
 
     death:newBlock(84, -10, 6, 6)
     solid:newBlock(96, -10, 24, 6)

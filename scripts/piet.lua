@@ -67,6 +67,7 @@ function piet:load()
     self.bouncyParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
     self.bouncyParticles:setEmissionArea('borderrectangle', 16, 16)
     self.bouncyParticles:setRadialAcceleration( 500, 1000 )
+    self.bouncyParticles:setColors(255, 255, 255, 255, 255, 255, 255, 0)
 
     self.stickyParticles = love.graphics.newParticleSystem( particleImage, 16 )
     self.stickyParticles:setParticleLifetime(1, 1.5) -- Particles live at least 2s and at most 5s.
@@ -74,13 +75,18 @@ function piet:load()
     self.stickyParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
     self.stickyParticles:setEmissionArea('borderrectangle', 16, 16)
     self.stickyParticles:setRadialAcceleration( 500, 1000 )
+    self.stickyParticles:setColors(255, 255, 255, 255, 255, 255, 255, 0)
+
 
     self.deathParticles = love.graphics.newParticleSystem( particleImage, 16 )
-    self.deathParticles:setParticleLifetime(1, 1.5) -- Particles live at least 2s and at most 5s.
+    self.deathParticles:setParticleLifetime(1) -- Particles live at least 2s and at most 5s.
 	self.deathParticles:setSizeVariation(1)
-    self.deathParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
+    self.deathParticles:setLinearAcceleration(-100, -100, 100, 100) -- Random movement in all directions.
     self.deathParticles:setEmissionArea('borderrectangle', 16, 16)
     self.deathParticles:setRadialAcceleration( 500, 1000 )
+    self.deathParticles:setColors(255, 255, 255, 255, 255, 255, 255, 0)
+    self.deathParticles:setSpinVariation(1)
+
 
     -- self.body:setFixedRotation( true )
 
