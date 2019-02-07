@@ -149,6 +149,18 @@ function beginContact(a, b, coll)
         end
     end
 
+    if (char == "piet") then
+        if (platform == "bouncy") then
+            piet.bouncyParticles:emit(10)
+        elseif (platform == "sticky") then 
+            piet.stickyParticles:emit(10)
+        elseif (platform == "death") then 
+            piet.deathCoords[1] = piet.x
+            piet.deathCoords[2] = piet.y
+            piet.deathParticles:emit(10)
+        end
+    end
+
     if (char == "piet" and (platform == "solid" or platform == "bouncy")) then
         if (x == 0 and y == -1) then
             piet.isGrounded = true

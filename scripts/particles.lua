@@ -45,22 +45,22 @@ function particles:load(args)
     blackPart:setColors(255, 255, 255, 255, 255, 255, 255, 0)
 
     
-    table.insert(self.color, redParticles)
-    table.insert(self.color, blueParticles)
-    table.insert(self.color, yellowParticles)
-    table.insert(self.color, blackParticles)
+    -- table.insert(self.color, redParticles)
+    -- table.insert(self.color, blueParticles)
+    -- table.insert(self.color, yellowParticles)
+    -- table.insert(self.color, blackParticles)
 end
 
 function particles:update(dt)
-    redPart:update(dt)
-    bluePart:update(dt)
-    yellowPart:update(dt)
-    blackPart:update(dt)
+    -- redPart:update(dt)
+    -- bluePart:update(dt)
+    -- yellowPart:update(dt)
+    -- blackPart:update(dt)
 end
 
 function particles:draw()
     drawColor(red)
-    love.graphics.draw(redPart, piet.x, piet.y, 0, 0.5, 0.5)
+    -- love.graphics.draw(redPart, piet.x, piet.y, 0, 0.5, 0.5)
 end
          
 

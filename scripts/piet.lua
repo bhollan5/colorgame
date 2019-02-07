@@ -40,15 +40,13 @@ piet.jumpHeight = -400
 piet.halfJump = (piet.jumpHeight / 2)
 piet.wallJumpHeight = -10
 
-piet.particles = {}
+piet.bouncyParticles = {}
+piet.stickyParticles = {}
+piet.deathParticles = {}
+piet.deathCoords = { piet.startPos[1], piet.startPos[2]} -- Used to keep track of where piet died, for particles
 
 function piet:load()
-    particles.color = {}
-
-    particles:load()
-
     piet.isFresh = true
-
 
     self.body = love.physics.newBody(world.world, self.startPos[1], self.startPos[2], "dynamic", 0, 100)
     --self.body:setMass(5)
@@ -60,14 +58,29 @@ function piet:load()
     self.fixture:setFriction(0.3)
     self.fixture:setUserData("piet")
 
+    -- Setting up different particles
     local particleImage = love.graphics.newImage("assets/particles/white.png")
 
-    self.particles = love.graphics.newParticleSystem( particleImage, 10 )
-    self.particles:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
-	self.particles:setEmissionRate(5)
-	self.particles:setSizeVariation(1)
-    self.particles:setLinearAcceleration(20, -20, 20, 20) -- Random movement in all directions.
-	self.particles:setColors(255, 255, 255, 255, 255, 255, 255, 0) -- Fade to transparency.
+    self.bouncyParticles = love.graphics.newParticleSystem( particleImage, 16 )
+    self.bouncyParticles:setParticleLifetime(1, 1.5) -- Particles live at least 2s and at most 5s.
+	self.bouncyParticles:setSizeVariation(1)
+    self.bouncyParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
+    self.bouncyParticles:setEmissionArea('borderrectangle', 16, 16)
+    self.bouncyParticles:setRadialAcceleration( 500, 1000 )
+
+    self.stickyParticles = love.graphics.newParticleSystem( particleImage, 16 )
+    self.stickyParticles:setParticleLifetime(1, 1.5) -- Particles live at least 2s and at most 5s.
+	self.stickyParticles:setSizeVariation(1)
+    self.stickyParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
+    self.stickyParticles:setEmissionArea('borderrectangle', 16, 16)
+    self.stickyParticles:setRadialAcceleration( 500, 1000 )
+
+    self.deathParticles = love.graphics.newParticleSystem( particleImage, 16 )
+    self.deathParticles:setParticleLifetime(1, 1.5) -- Particles live at least 2s and at most 5s.
+	self.deathParticles:setSizeVariation(1)
+    self.deathParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
+    self.deathParticles:setEmissionArea('borderrectangle', 16, 16)
+    self.deathParticles:setRadialAcceleration( 500, 1000 )
 
     -- self.body:setFixedRotation( true )
 
@@ -75,10 +88,10 @@ function piet:load()
 end
 
 function piet:update(dt)
-    particles:update(dt)
-    --local nx, ny = self.x + (self.xVel * dt), self.y + (self.yVel * dt)
+    self.bouncyParticles:update(dt)
+    self.stickyParticles:update(dt)
+    self.deathParticles:update(dt)
 
-    self.particles:update(dt)
 
     self.xVel, self.yVel = self.body:getLinearVelocity()
     self.x, self.y = self.body:getPosition()
@@ -199,70 +212,14 @@ end
 
 function piet:draw()
 
-    
-    
-    if (self.isSticky) then
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-        yellowPart:setParticleLifetime(2, 3) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(10)
-        blackPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        blackPart:setEmissionRate(0)
-    elseif (self.isBouncy) then
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(1, 2) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(15)
-        bluePart:setSpeed(20, 25)
-        yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(0)
-        blackPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        blackPart:setEmissionRate(0)
-    elseif (self.isNormal) then
-        
-        redPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(0)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-        yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(0)
-        blackPart:setParticleLifetime(2, 3) --used to denote time on screen from minimum time alive to maximum
-        blackPart:setEmissionRate(5)
-    elseif (self.dead) then
-        redPart:setParticleLifetime(2, 3) --used to denote time on screen from minimum time alive to maximum
-        redPart:setEmissionRate(15)
-        redPart:setSpeed(20, 25)
-        bluePart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        bluePart:setEmissionRate(0)
-        yellowPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        yellowPart:setEmissionRate(0)
-        blackPart:setParticleLifetime(0, 0) --used to denote time on screen from minimum time alive to maximum
-        blackPart:setEmissionRate(0)
-    
-        
-    end 
-
-    love.graphics.draw(yellowPart, self.x, self.y, 0, 0.5, 0.5)
-    love.graphics.draw(redPart, self.x, self.y, 0, 0.5, 0.5)
-    love.graphics.draw(bluePart, self.x, self.y, 0, 0.5, 0.5)
-    love.graphics.draw(blackPart, self.x, self.y, 0, 0.5, 0.5)
-    
-
-        
-    
-
-    -- if (contactType == "sticky") then
-
-    -- elseif contactType == "normal" then
-
-    -- elseif
-
-
-    
+    drawColor('bouncy')
+    love.graphics.draw(self.bouncyParticles, piet.x, piet.y, 0, 0.5, 0.5)
     drawColor('sticky')
-    love.graphics.draw(self.particles, self.x, self.y)
+    love.graphics.draw(self.stickyParticles, piet.x, piet.y, 0, 0.5, 0.5)
+    drawColor('death')
+    love.graphics.draw(self.deathParticles, piet.deathCoords[1], piet.deathCoords[2], 0, 0.5, 0.5)
+
+
     drawColor('solid')
     love.graphics.polygon("fill", self.body:getWorldPoints(self.shape:getPoints()))
 
