@@ -28,6 +28,9 @@ pauseState = 'none'     -- keeps track of wether the game is paused
 
 time = 0
 
+cameraPos = { 0, 0 }    -- Used to track camera position. We have to store it manually so we
+                        -- can slowly pan to Piet, instead of snapping right to him. 
+
 debug = true
 
 function love.load() -- Runs at the start of our program
@@ -144,18 +147,22 @@ end
 
 function cameraFollow() 
 
-
     -- Camera logic
     local w = love.graphics.getWidth()
     local h = love.graphics.getHeight()
     local screenLock = (piet.y + (h/2));
-    
 
-    if screenLock < (piet.deathHeight) then
-        love.graphics.translate(-piet.x + w / 2, (-piet.y + h / 2) + (world.transitionHeight))
-    else
-        love.graphics.translate(-piet.x + w / 2, -(piet.deathHeight - h) + (world.transitionHeight))
+        -- Changing this function so it now pans to Piet, instead of snapping right to him. 
+    local xDifference = cameraPos[1] - (-piet.x + w / 2)
+    local yDifference = cameraPos[2] - (-piet.y + h / 2)
+    
+    cameraPos[1] = cameraPos[1] - (xDifference * .1)    -- We approach piet at .1 the distance every click
+    if screenLock < (piet.deathHeight) then             -- Only lower yPosition if we're above death height
+        cameraPos[2] = cameraPos[2] - (yDifference * .1)
     end
+
+    love.graphics.translate(cameraPos[1], cameraPos[2] + (world.transitionHeight))
+
 end
 
 function love.keypressed(key)
