@@ -52,6 +52,7 @@ function level2:load()
     solid:newBlock(90, -8, 8, 8)
     death:newBlock(83, -22, 4, 4)
     sticky:newBlock(97, -28, 7, 7)
+    death:newBlock(115, -40, 30, 30)
 
     -- UPPER LEVEL, from RIGHT TO LEFT
     bouncy:newBlock(67, -12, 7, 7)
