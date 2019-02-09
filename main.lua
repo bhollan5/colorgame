@@ -11,7 +11,7 @@ require "scripts/GUIs/pause"
 require "scripts/GUIs/levelSelect"
 
 local show_message = false
-gamestate = 'tutorial1' -- Keeps track of what context we're in!
+gamestate = 'lvl2' -- Keeps track of what context we're in!
                     -- Gamestate options:
                         -- 'title'
                         -- 'tutorial1'

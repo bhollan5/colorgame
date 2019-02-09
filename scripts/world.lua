@@ -152,8 +152,12 @@ function beginContact(a, b, coll)
     if (char == "piet") then
         if (platform == "bouncy") then
             piet.bouncyParticles:emit(10)
+            piet.bouncyCoords[1] = piet.x
+            piet.bouncyCoords[2] = piet.y
         elseif (platform == "sticky") then 
             piet.stickyParticles:emit(10)
+            piet.stickyCoords[1] = piet.x
+            piet.stickyCoords[2] = piet.y
         elseif (platform == "death") then 
             piet.deathCoords[1] = piet.x
             piet.deathCoords[2] = piet.y

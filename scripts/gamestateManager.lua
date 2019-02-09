@@ -40,19 +40,19 @@ function changeGameState(newState)
 end
 
 function changeColorScheme(newState) 
-    -- if newState == 'lvl1' then 
-    --     backgroundColor = whiteRGB
-    --     solidColor = blackRGB
-    --     bouncyColor = blueRGB
-    --     stickyColor = yellowRGB
-    --     deathColor = redRGB
-    -- elseif newState == 'lvl2' or newState == 'debugLevel' then 
-    --     backgroundColor = candyBackground
-    --     solidColor = candyBlackRGB
-    --     bouncyColor = candyBlueRGB
-    --     stickyColor = candyYellowRGB
-    --     deathColor = candyRedRGB
-    -- end
-    -- love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])
+    if newState == 'lvl1' then 
+        backgroundColor = whiteRGB
+        solidColor = blackRGB
+        bouncyColor = blueRGB
+        stickyColor = yellowRGB
+        deathColor = redRGB
+    elseif newState == 'lvl2' or newState == 'debugLevel' then 
+        backgroundColor = whiteRGB
+        solidColor = candyBlackRGB
+        bouncyColor = candyBlueRGB
+        stickyColor = candyYellowRGB
+        deathColor = candyRedRGB
+    end
+    love.graphics.setBackgroundColor(backgroundColor[1], backgroundColor[2], backgroundColor[3])
 
 end

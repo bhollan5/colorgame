@@ -44,6 +44,9 @@ piet.bouncyParticles = {}
 piet.stickyParticles = {}
 piet.deathParticles = {}
 piet.deathCoords = { piet.startPos[1], piet.startPos[2]} -- Used to keep track of where piet died, for particles
+piet.bouncyCoords = { piet.startPos[1], piet.startPos[2] }
+piet.stickyCoords = { piet.startPos[1], piet.startPos[2] }
+
 
 function piet:load()
     piet.isFresh = true
@@ -64,7 +67,7 @@ function piet:load()
     self.bouncyParticles = love.graphics.newParticleSystem( particleImage, 16 )
     self.bouncyParticles:setParticleLifetime(1, 1.5) -- Particles live at least 2s and at most 5s.
 	self.bouncyParticles:setSizeVariation(1)
-    self.bouncyParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
+    self.bouncyParticles:setLinearAcceleration(0, 1000, 0, 1000) -- Random movement in all directions.
     self.bouncyParticles:setEmissionArea('borderrectangle', 16, 16)
     self.bouncyParticles:setRadialAcceleration( 500, 1000 )
     self.bouncyParticles:setColors(255, 255, 255, 255, 255, 255, 255, 0)
@@ -72,7 +75,7 @@ function piet:load()
     self.stickyParticles = love.graphics.newParticleSystem( particleImage, 16 )
     self.stickyParticles:setParticleLifetime(1, 1.5) -- Particles live at least 2s and at most 5s.
 	self.stickyParticles:setSizeVariation(1)
-    self.stickyParticles:setLinearAcceleration(-20, -10, 20, 1000) -- Random movement in all directions.
+    self.stickyParticles:setLinearAcceleration(-20, 1000, 20, 1000) -- Random movement in all directions.
     self.stickyParticles:setEmissionArea('borderrectangle', 16, 16)
     self.stickyParticles:setRadialAcceleration( 500, 1000 )
     self.stickyParticles:setColors(255, 255, 255, 255, 255, 255, 255, 0)
@@ -219,9 +222,9 @@ end
 function piet:draw()
 
     drawColor('bouncy')
-    love.graphics.draw(self.bouncyParticles, piet.x, piet.y, 0, 0.5, 0.5)
+    love.graphics.draw(self.bouncyParticles,  piet.bouncyCoords[1], piet.bouncyCoords[2], 0, 0.5, 0.5)
     drawColor('sticky')
-    love.graphics.draw(self.stickyParticles, piet.x, piet.y, 0, 0.5, 0.5)
+    love.graphics.draw(self.stickyParticles, piet.stickyCoords[1], piet.stickyCoords[2], 0, 0.5, 0.5)
     drawColor('death')
     love.graphics.draw(self.deathParticles, piet.deathCoords[1], piet.deathCoords[2], 0, 0.5, 0.5)
 
