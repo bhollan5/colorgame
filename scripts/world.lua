@@ -171,17 +171,20 @@ function beginContact(a, b, coll)
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
+            piet.walljumpCount = 1
         end
     elseif (char == "piet" and platform == "bouncy") then
         if (x == 0 and y == -1) then
             piet.isGrounded = true
             piet.hasDouble = true
+            piet.walljumpCount = 1
         end
     elseif (char == "piet" and platform == "solid") then
         if (x == 0 and y == -1) then
             piet.isNormal = true
             piet.isGrounded = true
             piet.hasDouble = true
+            piet.walljumpCount = 1
         elseif (x == -1 and y == 0) then
             piet.isGrounded = false
             piet.xVel = 0

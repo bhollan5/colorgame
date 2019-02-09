@@ -28,6 +28,8 @@ piet.isNormal = false           -- ^^ same with this
 piet.dead =  false
 piet.won = false                -- Triggered when piet wins a level
 
+piet.walljumpCount = 1          -- used to keep track of wall jump sounds
+
 piet.pauseBuffer = true        -- Ensures we have to unpause before we can pause again
 
 piet.hasDied = false
@@ -46,7 +48,6 @@ piet.deathParticles = {}
 piet.deathCoords = { piet.startPos[1], piet.startPos[2]} -- Used to keep track of where piet died, for particles
 piet.bouncyCoords = { piet.startPos[1], piet.startPos[2] }
 piet.stickyCoords = { piet.startPos[1], piet.startPos[2] }
-
 
 function piet:load()
     piet.isFresh = true
@@ -94,6 +95,14 @@ function piet:load()
     -- self.body:setFixedRotation( true )
 
     --self.fixture:setRestitution(0.9)
+    piet.jumpSound = love.audio.newSource("assets/SFX/mondrian_jump1.wav", "static")
+    piet.jumpSound:setVolume(sfxVolume)
+    piet.doubleJumpSound = love.audio.newSource("assets/SFX/mondrian_jump2.wav", "static")
+    piet.doubleJumpSound:setVolume(sfxVolume)
+    piet.wallJumpSound = love.audio.newSource("assets/SFX/mondrian_walljump1.wav", "static");
+    piet.wallJumpSound:setVolume(sfxVolume)
+
+
 end
 
 function piet:update(dt)
@@ -169,8 +178,16 @@ function piet:update(dt)
         -- Normal walljump
         if self.leftContact == "solid" and self.yVel > -100 and love.keyboard.isDown("a") then
             self.body:applyLinearImpulse(750, self.jumpHeight * 1.6)
+            -- Wall jump sfx:
+            self.walljumpCount = self.walljumpCount + 1
+            self.wallJumpSound:setPitch(1 + (self.walljumpCount / 12))
+            self.wallJumpSound:play()
         elseif self.rightContact == "solid" and self.yVel > -100 and love.keyboard.isDown("d") then
             self.body:applyLinearImpulse(-750, self.jumpHeight * 1.6)
+            -- Wall jump sfx:
+            self.walljumpCount = self.walljumpCount + 1
+            self.wallJumpSound:setPitch(1 + (self.walljumpCount / 12))
+            self.wallJumpSound:play()
 
         -- Sticky wall climb
         elseif self.leftContact == "sticky" and self.yVel > -100 and love.keyboard.isDown("a") then
@@ -183,6 +200,8 @@ function piet:update(dt)
             self.body:applyLinearImpulse(0, self.jumpHeight)
             self.isGrounded = false
             self.upKeyBuffer = false
+
+            piet.jumpSound:play()
 
         -- Sticky jump
         elseif self.isGrounded and self.bottomContact == "sticky" then 
@@ -204,7 +223,10 @@ function piet:update(dt)
         -- double jump
         elseif (self.hasDouble and self.upKeyBuffer) then
             self.body:setLinearVelocity(self.xVel, self.jumpHeight)
-            self.hasDouble = false 
+            self.doubleJumpSound:play()
+            if not infiniteDoubleJump then 
+                self.hasDouble = false 
+            end
         end
     end
     

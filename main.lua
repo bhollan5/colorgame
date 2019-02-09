@@ -32,6 +32,9 @@ cameraPos = { 0, 0 }    -- Used to track camera position. We have to store it ma
                         -- can slowly pan to Piet, instead of snapping right to him. 
 
 debug = true
+infiniteDoubleJump = false      -- debug feature
+
+sfxVolume = 0.0                 -- Sound effects vol. 1 for full volume
 
 function love.load() -- Runs at the start of our program
 
